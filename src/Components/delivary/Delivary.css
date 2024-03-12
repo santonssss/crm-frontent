@@ -1,0 +1,39 @@
+.delivary {
+  margin-top: 51px;
+}
+.delivary table caption {
+  font-family: Montserrat;
+  text-align: left;
+  margin-bottom: 18px;
+  font-size: 20px;
+  font-weight: 500;
+  margin-left: 20px;
+}
+
+.delivary table {
+  width: 593px;
+  border-spacing: 0;
+}
+.delivary table tr th {
+  background-color: var(--back-blue);
+  height: 46px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: left;
+  border: 1px solid #ccc;
+  padding: 20px 12px;
+}
+
+.delivary table tr td {
+  text-align: center;
+  padding: 20px 12px;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+.delivary table tr td:nth-child(2n) {
+  text-align: center;
+}
+.delivary table tr td:nth-child(3n) {
+  padding: 20px 40px;
+}

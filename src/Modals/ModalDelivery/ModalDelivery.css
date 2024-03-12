@@ -1,0 +1,92 @@
+.modal-overlay_del {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal_del {
+  background: #fff;
+  width: 995px;
+  height: 612px;
+  position: relative;
+  border-radius: 10px;
+  padding-top: 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+}
+.close_del {
+  position: absolute;
+  cursor: pointer;
+  left: 41px;
+  top: 26px;
+}
+.info_del {
+  display: flex;
+  gap: 0 35px;
+  margin-bottom: 63px;
+}
+.info-card {
+  width: 134px;
+  height: 126px;
+  border: 1px solid var(--back-blue);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.info-card .sum-info {
+  font-size: 30px;
+  font-weight: 500;
+}
+.info-card span {
+  font-size: 13px;
+  font-weight: 500;
+}
+.modal_del {
+  margin-top: 51px;
+}
+.modal_del table caption {
+  font-family: Montserrat;
+  text-align: left;
+  margin-bottom: 18px;
+  font-size: 20px;
+  font-weight: 500;
+  margin-left: 20px;
+}
+
+.modal_del table {
+  width: 593px;
+  border-spacing: 0;
+  max-height: 420px;
+}
+.modal_del table tr th {
+  height: 46px;
+  color: #000;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: left;
+  border: 1px solid #ccc;
+  padding: 20px 12px;
+}
+
+.modal_del table tr td {
+  text-align: center;
+  padding: 20px 12px;
+  text-align: left;
+  border: 1px solid #ccc;
+}
+.modal_del table tr td:nth-child(2n) {
+  text-align: center;
+}
+.modal_del table tr td:nth-child(3n) {
+  padding: 20px 40px;
+}

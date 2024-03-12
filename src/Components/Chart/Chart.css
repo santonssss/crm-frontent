@@ -1,0 +1,84 @@
+.sc {
+  padding-top: 50px;
+}
+.sc h1 {
+  font-family: var(--font-mons);
+  font-weight: 400;
+  margin-bottom: 27px;
+}
+.chart-wrapper {
+  width: 327px;
+  min-height: 250px;
+  border-radius: 10px;
+  border: 1px solid var(--back-blue);
+  padding: 14px 20px;
+}
+
+.chart-wrapper .chart_title h2 {
+  font-family: var(--font-mons);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+}
+.chart-wrapper .chart_title {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.chart-wrapper .chart_title select {
+  border: 1px solid var(--back-blue);
+  border-radius: 5px;
+}
+.chart-wrapper .chart_title select:active {
+  border: 1px solid var(--back-blue);
+}
+.cc-sa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.apexcharts-legend {
+  display: none !important;
+}
+.quadrate {
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+}
+.bg {
+  background-color: var(--back-blue);
+}
+.bg2 {
+  background: #f65531;
+}
+.sum {
+  font-family: Montserrat;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+.series {
+  display: flex;
+  width: 100%;
+  gap: 0 88px;
+  justify-content: center;
+}
+.series-a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px 0;
+}
+.tit {
+  display: flex;
+  align-items: center;
+  gap: 0 5px;
+  font-family: Montserrat;
+  font-size: 10px;
+  font-weight: 500;
+  text-align: left;
+}
