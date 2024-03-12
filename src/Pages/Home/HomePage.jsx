@@ -17,7 +17,7 @@ const HomePage = () => {
       <Profile />
       {modalProfileOpen && <ModalProfile />}
       {logoutOpen && <ModalLogout />}
-      <ModalDelivery />
+      {deliveryOpen && <ModalDelivery />}
     </div>
   );
 };

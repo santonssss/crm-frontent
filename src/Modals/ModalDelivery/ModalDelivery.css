@@ -20,8 +20,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-y: scroll;
 }
+
 .close_del {
   position: absolute;
   cursor: pointer;
@@ -66,7 +66,6 @@
 .modal_del table {
   width: 593px;
   border-spacing: 0;
-  max-height: 420px;
 }
 .modal_del table tr th {
   height: 46px;
@@ -74,19 +73,61 @@
   font-size: 16px;
   font-weight: 400;
   text-align: left;
-  border: 1px solid #ccc;
-  padding: 20px 12px;
 }
 
 .modal_del table tr td {
-  text-align: center;
-  padding: 20px 12px;
-  text-align: left;
-  border: 1px solid #ccc;
+  margin: 3px 0;
+  padding: 5px 0;
+  border: 1px solid #fff;
 }
-.modal_del table tr td:nth-child(2n) {
-  text-align: center;
+
+.modal_del table tr td:nth-child(4) {
+  background-color: #ffb1b1;
 }
-.modal_del table tr td:nth-child(3n) {
-  padding: 20px 40px;
+.modal_del table tr:nth-child(2n) {
+  background-color: #eee;
+}
+.table-deli {
+  height: 430px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+.table-deli::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.table-deli::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: #dfe9eb;
+}
+
+.table-deli::-webkit-scrollbar-track:hover {
+  background-color: #b8c0c2;
+}
+
+.table-deli::-webkit-scrollbar-track:active {
+  background-color: #b8c0c2;
+}
+
+.table-deli::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #cccccc;
+}
+
+.table-deli::-webkit-scrollbar-thumb:hover {
+  background-color: #62a34b;
+}
+
+.table-deli::-webkit-scrollbar-thumb:active {
+  background-color: #62a34b;
+}
+.modal_del .nakladnoy {
+  font-size: 13px;
+  font-weight: 400;
+  padding: 7px 22px;
+  border: 1px solid var(--back-blue);
+  background-color: transparent;
+  border-radius: 10px;
+  margin: 20px 0;
+  cursor: pointer;
 }

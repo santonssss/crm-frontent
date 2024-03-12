@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./ModalDelivery.css";
+import { UserContext } from "../../Context/Context";
 
 const ModalDelivery = () => {
+  const { setDeliveryOpen } = useContext(UserContext);
   return (
     <div className="modal-overlay_del">
-      <div className="modal_del">
+      <div
+        className="modal_del"
+        onClick={() => {
+          setDeliveryOpen(false);
+        }}
+      >
         <div className="close_del">
           <svg
             width="39"
@@ -54,92 +61,113 @@ const ModalDelivery = () => {
             <span>Долги</span>
           </div>
         </div>
-        <table>
-          <tr>
-            <th>Клиент</th>
-            <th>Телефон</th>
-            <th>Сумма</th>
-            <th>Долг</th>
-          </tr>
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>{" "}
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>{" "}
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>{" "}
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>{" "}
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>{" "}
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>{" "}
-          <tr>
-            <td>Вася Смирнов</td>
-            <td>+7 777 77 77</td>
-            <td>100455</td>
-            <td>923455</td>
-          </tr>
-        </table>
+        <div className="table-deli">
+          <table>
+            <tr>
+              <th>Клиент</th>
+              <th>Телефон</th>
+              <th>Сумма</th>
+              <th>Долг</th>
+            </tr>
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>{" "}
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>{" "}
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>{" "}
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>{" "}
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>{" "}
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>{" "}
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>{" "}
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>{" "}
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>{" "}
+            <tr>
+              <td>Вася Смирнов</td>
+              <td>+7 777 77 77</td>
+              <td>100455</td>
+              <td>923455</td>
+            </tr>
+          </table>
+        </div>
+        <button className="nakladnoy">Напечатать накладную</button>
       </div>
     </div>
   );

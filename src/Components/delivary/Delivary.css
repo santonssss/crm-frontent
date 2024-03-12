@@ -14,6 +14,9 @@
   width: 593px;
   border-spacing: 0;
 }
+.delivary table tr {
+  cursor: pointer;
+}
 .delivary table tr th {
   background-color: var(--back-blue);
   height: 46px;
