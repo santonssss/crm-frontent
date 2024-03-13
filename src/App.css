@@ -21,6 +21,19 @@ body {
   width: 100%;
   margin: 0 auto;
 }
+.products_title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #000;
+  margin-top: 56px;
+}
+.sum-tovars {
+  color: #1e89ec;
+  margin-top: 15px;
+  margin-bottom: 19px;
+  font-size: 20px;
+  font-weight: 500;
+}
 .p-o {
   padding-left: 337px;
 }

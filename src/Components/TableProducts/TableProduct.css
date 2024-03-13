@@ -1,0 +1,31 @@
+.tableProducts {
+  width: 100%;
+  border-spacing: 0;
+}
+.head-table {
+  background-color: var(--back-blue);
+}
+
+.head-table th {
+  padding: 12px 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+}
+.tableProducts td {
+  padding: 17px 0;
+  text-align: center;
+}
+.tableProducts td div {
+  display: flex;
+  align-items: center;
+  gap: 0 46px;
+}
+.tableProducts td div button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+.tableProducts td img {
+  margin-left: 41px;
+}

@@ -6,13 +6,13 @@ const ModalDelivery = () => {
   const { setDeliveryOpen } = useContext(UserContext);
   return (
     <div className="modal-overlay_del">
-      <div
-        className="modal_del"
-        onClick={() => {
-          setDeliveryOpen(false);
-        }}
-      >
-        <div className="close_del">
+      <div className="modal_del">
+        <div
+          className="close_del"
+          onClick={() => {
+            setDeliveryOpen(false);
+          }}
+        >
           <svg
             width="39"
             height="39"

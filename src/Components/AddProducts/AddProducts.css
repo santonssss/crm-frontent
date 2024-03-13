@@ -1,0 +1,22 @@
+.search-wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.search-wrapper input {
+  padding: 8px 19px;
+  border: 1px solid var(--back-blue);
+  border-radius: 5px;
+}
+.search-wrapper button {
+  color: white;
+  padding: 8px 13px;
+  background-color: var(--back-blue);
+  border: 1px solid var(--back-blue);
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0 15px;
+}
