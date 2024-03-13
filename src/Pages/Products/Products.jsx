@@ -5,8 +5,7 @@ import TableProducts from "../../Components/TableProducts/TableProducts";
 import ModalAddProducts from "../../Modals/ModalAddProducts/ModalAddProducts";
 
 const Products = () => {
-  const { sidebarOpen, addProductsOpen, setAddProductsOpen } =
-    useContext(UserContext);
+  const { sidebarOpen, addProductsOpen } = useContext(UserContext);
   return (
     <div className={`home-wrap ${sidebarOpen ? "p-o" : "p-c"}`}>
       <h2 className="products_title">Продукты</h2>

@@ -34,6 +34,11 @@ body {
   font-size: 20px;
   font-weight: 500;
 }
+.orders-wrap {
+  display: flex;
+  gap: 0 35px;
+  margin-top: 35px;
+}
 .p-o {
   padding-left: 337px;
 }

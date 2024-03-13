@@ -1,0 +1,63 @@
+.right-btns {
+  display: flex;
+  gap: 0 30px;
+}
+.right-btn {
+  padding: 4px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0 29px;
+  background-color: var(--back-blue);
+  border: 1px solid var(--back-blue);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.right-btn span {
+  font-size: 20px;
+}
+.right-print-btn {
+  padding: 6px 26px;
+  background-color: var(--back-blue);
+  color: #fff;
+  font-size: 12px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+.orders-right {
+  margin-bottom: 13px;
+}
+.order-table {
+  margin-top: 20px;
+  border-spacing: 0;
+}
+
+.order-table thead {
+  background-color: var(--back-blue);
+}
+.order-table thead th {
+  padding: 19px 0;
+  padding-left: 40px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 400;
+}
+.order-table thead th:last-child {
+  padding-right: 40px;
+}
+.order-table tbody tr td {
+  padding: 19px 0;
+  padding-left: 40px;
+}
+.order-table tbody tr td:last-child {
+  padding-right: 40px;
+}
+.custom-datepicker {
+  width: 96px;
+  margin-left: 14px;
+}

@@ -7,7 +7,7 @@ const UserProvider = ({ children }) => {
   const [modalProfileOpen, setModalProfileOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [deliveryOpen, setDeliveryOpen] = useState(false);
-  const [addProductsOpen, setAddProductsOpen] = useState(true);
+  const [addProductsOpen, setAddProductsOpen] = useState(false);
   return (
     <UserContext.Provider
       value={{
