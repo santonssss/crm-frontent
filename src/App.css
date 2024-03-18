@@ -1,8 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-weight: 400;
+}
+button {
+  cursor: pointer;
+}
+table {
+  border-spacing: 0;
 }
 
 :root {
@@ -12,20 +22,61 @@
 body {
   font-family: var(--font-mons);
 }
+input {
+  border: none;
+  outline: none;
+}
 .home-wrap {
   transition: all 0.3s ease-in-out;
   position: relative;
+}
+.clients {
+  display: flex;
+  flex-direction: column;
+  gap: 29px 0;
+}
+.clients-page {
+  display: flex;
+  gap: 0 44px;
+  transition: all 0.3s ease-in-out;
 }
 .container {
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
+  padding-right: 15px;
 }
 .products_title {
   font-size: 20px;
   font-weight: 500;
   color: #000;
   margin-top: 56px;
+}
+.right-abacus {
+  display: flex;
+  flex-direction: column;
+  gap: 5px 0;
+  width: 400px;
+}
+.abacus-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.abacus-info span {
+  flex: 1;
+}
+
+.date-pick {
+  margin-top: 35px;
+  display: flex;
+  align-items: center;
+  gap: 0 10px;
+}
+
+.abacus-info span:nth-child(1) {
+  font-weight: 500;
 }
 .sum-tovars {
   color: #1e89ec;
@@ -44,6 +95,27 @@ body {
 }
 .p-c {
   padding-left: 197px;
+}
+.signin-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  flex-direction: column;
+  gap: 17px 0;
+}
+.signin-wrap button {
+  padding: 9px 18px;
+  border-radius: 5px;
+  background-color: var(--back-blue);
+  color: #fff;
+}
+.sign-inp {
+  border-bottom: 1px solid #656565;
+}
+.sign-inp input {
+  border: none;
+  outline: none;
 }
 @media (min-width: 1462px) {
   .p-o {

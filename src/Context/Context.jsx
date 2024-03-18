@@ -8,6 +8,8 @@ const UserProvider = ({ children }) => {
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [deliveryOpen, setDeliveryOpen] = useState(false);
   const [addProductsOpen, setAddProductsOpen] = useState(false);
+  const [addClientsOpen, setAddClientsOpen] = useState(false);
+  const [addDeliveryOpen, setAddDeliveryOpen] = useState(false);
   return (
     <UserContext.Provider
       value={{
@@ -21,6 +23,10 @@ const UserProvider = ({ children }) => {
         setDeliveryOpen,
         addProductsOpen,
         setAddProductsOpen,
+        addClientsOpen,
+        setAddClientsOpen,
+        addDeliveryOpen,
+        setAddDeliveryOpen,
       }}
     >
       {children}

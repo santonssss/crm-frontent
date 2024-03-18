@@ -60,6 +60,9 @@
   line-height: 24px;
   letter-spacing: 0em;
   text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0 2px;
 }
 .series {
   display: flex;

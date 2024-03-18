@@ -1,0 +1,24 @@
+.client-right {
+  margin-top: 233px;
+  display: flex;
+  flex-direction: column;
+}
+.tableclient thead {
+  background-color: var(--back-blue);
+}
+.tableclient thead th {
+  padding: 10px 20px;
+  color: #fff;
+}
+
+.tableclient tbody tr td {
+  padding: 10px 20px;
+  text-align: center;
+}
+
+.tableclient tbody tr td svg {
+  cursor: pointer;
+}
+.tableclient tbody tr:nth-child(2n) {
+  background-color: #eee;
+}

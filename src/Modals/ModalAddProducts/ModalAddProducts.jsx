@@ -27,7 +27,6 @@ const ModalAddProducts = () => {
     const file = e.dataTransfer.files[0];
     onFileUpload(file);
   };
-
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     onFileUpload(file);

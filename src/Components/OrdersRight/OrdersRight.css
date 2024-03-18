@@ -60,4 +60,10 @@
 .custom-datepicker {
   width: 96px;
   margin-left: 14px;
+  color: black;
+  text-align: center;
+}
+.date-pick .custom-datepicker {
+  border: 1px solid var(--back-blue);
+  border-radius: 5px;
 }
