@@ -17,10 +17,15 @@ const ModalDelete = () => {
           },
         }
       );
-
+      const data = await response.json();
+      console.log(data);
       if (response.ok) {
         console.log("Пользователь успешно удален");
       } else {
+        console.error(
+          "Ошибка удаления пользователя. Статус ответа:",
+          response.status
+        );
         throw new Error("Ошибка удаления пользователя");
       }
     } catch (error) {

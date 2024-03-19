@@ -6,20 +6,7 @@
   overflow-y: scroll;
 }
 .client-right::-webkit-scrollbar {
-  width: 3px;
-}
-
-.client-right::-webkit-scrollbar-thumb {
-  background-color: var(--back-blue);
-  border-radius: 5px;
-}
-
-.client-right::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
-
-.client-right::-webkit-scrollbar-track {
-  background-color: #ddd;
+  width: 0;
 }
 .tableclient thead {
   background-color: var(--back-blue);
