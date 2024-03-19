@@ -1,10 +1,36 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import "./OrdersLeft.css";
+import { UserContext } from "../../Context/Context";
 const OrdersLeft = () => {
+  const {
+    deliveryData,
+    setDeliveryId,
+    deliverysClients,
+    setCheckedDelivery,
+    checkedDelivery,
+  } = useContext(UserContext);
+  const [searchQuery, setSearchQuery] = useState("");
+  const deliveryMen = deliveryData.filter(
+    (user) => user.role === "deliveryman"
+  );
+  const handleInputChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+  const handleSelectChange = (e) => {
+    const selectedDeliveryId = parseInt(e.target.value, 10);
+    setDeliveryId(selectedDeliveryId);
+    const selectedDelivery = deliveryMen.find(
+      (delivery) => delivery.id === selectedDeliveryId
+    );
+    setCheckedDelivery(selectedDelivery);
+  };
+  const filteredClients = deliverysClients.filter((client) =>
+    client.username.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   return (
     <div className="orders-left">
       <div className="left-input">
-        <input type="text" placeholder="Поиск" />
+        <input type="text" placeholder="Поиск" onChange={handleInputChange} />
         <svg
           width="26"
           height="26"
@@ -29,24 +55,31 @@ const OrdersLeft = () => {
         </svg>
       </div>
       <div className="delivery-list">
-        <div className="list-title">
-          Список доставщиков{" "}
-          <svg
-            width="11"
-            height="5"
-            viewBox="0 0 11 5"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        <select className="list-title" onChange={handleSelectChange}>
+          <option
+            value=""
+            style={{
+              display: "none",
+            }}
           >
-            <path
-              d="M9.6889 0.131419L5.73735 3.97369C5.65113 4.05796 5.53475 4.10522 5.41347 4.10522C5.29219 4.10522 5.1758 4.05796 5.08958 3.97369L1.13803 0.132252C1.05128 0.0480276 0.934514 0.000834035 0.812884 0.000834024C0.691253 0.000834012 0.574489 0.0480275 0.487735 0.132252C0.445016 0.173398 0.411065 0.222575 0.387885 0.276886C0.364704 0.331196 0.352761 0.389542 0.352761 0.448483C0.352761 0.507425 0.364704 0.565771 0.387884 0.620081C0.411065 0.674392 0.445016 0.723569 0.487735 0.764714L4.43844 4.60615C4.69866 4.85858 5.04878 5 5.41347 5C5.77816 5 6.12827 4.85858 6.38849 4.60615L10.3392 0.764715C10.3821 0.723557 10.4161 0.674329 10.4394 0.619941C10.4626 0.565553 10.4746 0.50711 10.4746 0.448068C10.4746 0.389025 10.4626 0.330583 10.4394 0.276195C10.4161 0.221807 10.3821 0.172577 10.3392 0.131419C10.2524 0.0471945 10.1357 9.21474e-07 10.0141 9.09918e-07C9.89242 8.98362e-07 9.77566 0.0471944 9.6889 0.131419Z"
-              fill="white"
-            />
-          </svg>
-        </div>
+            Доставщики
+          </option>
+          {deliveryMen.map((delivery) => (
+            <option key={delivery.id} value={delivery.id}>
+              {delivery.username}
+            </option>
+          ))}
+        </select>
         <div className="list-body">
-          <div className="list-name">Имя клиента</div>
-          <div className="list-name">Имя клиента</div>
+          {filteredClients.length > 0 ? (
+            filteredClients.map((client, index) => (
+              <div className="list-name" key={index}>
+                {client.username}
+              </div>
+            ))
+          ) : (
+            <div>Нет клиентов</div>
+          )}
         </div>
       </div>
     </div>

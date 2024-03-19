@@ -1,8 +1,52 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "./ModalAddClients.css";
 import { UserContext } from "../../Context/Context";
+
 const ModalAddClients = () => {
   const { setAddClientsOpen } = useContext(UserContext);
+  const [username, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [address, setAddress] = useState("");
+  const [deliverymanAsClient, setDeliverymanAsClient] = useState("");
+  const { deliveryData } = useContext(UserContext);
+  const deliveryMen = deliveryData.filter(
+    (user) => user.role === "deliveryman"
+  );
+  const handleSubmit = async (event) => {
+    const token = localStorage.getItem("accessToken");
+    event.preventDefault();
+    const role = "client";
+    try {
+      const response = await fetch(
+        "https://monkfish-app-v8pst.ondigitalocean.app/api/user",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            username,
+            phone,
+            address,
+            deliverymanAsClient,
+            role,
+          }),
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+      setName("");
+      setPhone("");
+      setAddress("");
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+    } catch (error) {
+      console.error("Ошибка при выполнении запроса:", error);
+    }
+  };
+
   return (
     <div className="add-clients" onClick={() => setAddClientsOpen(false)}>
       <form
@@ -10,25 +54,47 @@ const ModalAddClients = () => {
         onClick={(e) => {
           e.stopPropagation();
         }}
+        onSubmit={handleSubmit}
       >
         <div>
           <span>Имя клиента</span>
-          <input type="text" placeholder="Имя" />
+          <input
+            type="text"
+            placeholder="Имя"
+            value={username}
+            onChange={(e) => setName(e.target.value)}
+          />
         </div>
         <div>
           <span>Телефон</span>
-          <input type="text" placeholder="+7 (777) 777 77 77" />
+          <input
+            type="text"
+            placeholder="+7 (777) 777 77 77"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
         </div>
         <div>
           <span>Адрес</span>
-          <input type="text" placeholder="Адрес" />
+          <input
+            type="text"
+            placeholder="Адрес"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
         </div>
         <div>
           <span>Доставщик</span>
-          <select name="" id="">
-            <option value="">доставщика</option>
-            <option value="">доставщика</option>
-            <option value="">доставщика</option>
+          <select
+            value={deliverymanAsClient}
+            onChange={(e) => setDeliverymanAsClient(e.target.value)}
+          >
+            <option value="">Выберите доставщика</option>
+            {deliveryMen.map((delivery) => (
+              <option key={delivery.id} value={delivery.id}>
+                {delivery.username}
+              </option>
+            ))}
           </select>
         </div>
         <div className="add_btns">

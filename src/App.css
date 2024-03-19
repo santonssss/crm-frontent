@@ -67,7 +67,10 @@ input {
 .abacus-info span {
   flex: 1;
 }
-
+.link {
+  text-align: left;
+  color: var(--back-blue);
+}
 .date-pick {
   margin-top: 35px;
   display: flex;

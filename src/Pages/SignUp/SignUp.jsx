@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-const Signin = () => {
+const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const response = await fetch(
-        "https://monkfish-app-v8pst.ondigitalocean.app/api/auth/registration",
+        "https://monkfish-app-v8pst.ondigitalocean.app/api/auth/login",
         {
           method: "POST",
           headers: {
@@ -21,7 +20,6 @@ const Signin = () => {
           body: JSON.stringify({
             username,
             password,
-            phone,
           }),
         }
       );
@@ -29,8 +27,15 @@ const Signin = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      navigate("/login");
+
+      const data = await response.json();
+      console.log("Успешный ответ:", data);
+      localStorage.setItem("username", data.data.user.username);
+      localStorage.setItem("phone", data.data.user.phone);
+      localStorage.setItem("accessToken", data.data.accessToken);
+      navigate("/");
     } catch (error) {
+      console.error("Ошибка при выполнении запроса:", error);
       setError(error.message);
     }
   };
@@ -43,8 +48,10 @@ const Signin = () => {
           type="text"
           placeholder="Логин"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
+          onChange={(e) => {
+            setUsername(e.target.value);
+            setError(null);
+          }}
         />
       </div>
       <div className="sign-inp">
@@ -52,25 +59,23 @@ const Signin = () => {
           type="password"
           placeholder="Пароль"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
+          onChange={(e) => {
+            setError(null);
+            setPassword(e.target.value);
+          }}
         />
       </div>
-      <div className="sign-inp">
-        <input
-          type="text"
-          placeholder="Телефон"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          required
-        />
-      </div>
-      <Link className="link" to={"/login"}>
-        Есть аккаунт?
+      {error !== null ? (
+        <span style={{ color: "red" }}>
+          Логин или пароль введены неправильно
+        </span>
+      ) : null}
+      <Link className="link" to={"/sign-in"}>
+        Зарегистрироваться
       </Link>
-      <button type="submit">Зарегистрироваться</button>
+      <button type="submit">Войти</button>
     </form>
   );
 };
 
-export default Signin;
+export default SignUp;

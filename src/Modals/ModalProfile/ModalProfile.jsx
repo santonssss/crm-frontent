@@ -4,6 +4,8 @@ import { UserContext } from "../../Context/Context";
 const ModalProfile = () => {
   const { setModalProfileOpen, logoutOpen, setLogoutOpen } =
     useContext(UserContext);
+  const user = localStorage.getItem("username");
+  const phone = localStorage.getItem("phone");
   return (
     <div
       className="modal-overlay"
@@ -57,14 +59,14 @@ const ModalProfile = () => {
             />
           </svg>
         </div>
-        <h3>Имя Менеджера</h3>
+        <h3>{user}</h3>
         <div className="info">
           <span>Должность</span>
           <span>Менеджер</span>
         </div>
         <div className="info">
-          <span>Телефон</span>
-          <span>+7 777 77 77</span>
+          <span>Номер телефона</span>
+          <span>{phone}</span>
         </div>
       </div>
     </div>
