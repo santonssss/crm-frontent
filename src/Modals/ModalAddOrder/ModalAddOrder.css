@@ -1,0 +1,99 @@
+.modal-overlay_addOrder {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.table-order-wrapper {
+  width: 609px;
+  height: 459px;
+  overflow-y: scroll;
+}
+.table-order-wrapper img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
+.table-order-wrapper::-webkit-scrollbar {
+  width: 0;
+}
+.modal-content_addOrder {
+  position: relative;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 10px 0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--back-blue);
+  border-radius: 10px;
+}
+
+.modal-content_addOrder h3 {
+  font-weight: 500;
+}
+.modal-content_addOrder h3 span {
+  font-weight: 500;
+  text-decoration: underline;
+  font-size: 25px;
+}
+.bg {
+  background-color: var(--back-blue);
+  color: #fff;
+  padding: 6px 26px;
+  border-radius: 5px;
+}
+.bg:disabled {
+  background-color: gray;
+}
+.close_order img {
+  width: 30px;
+  height: 30px;
+}
+.close_order {
+  position: absolute;
+  right: 15px;
+  cursor: pointer;
+  display: flex;
+  background-color: var(--back-blue);
+  border-radius: 50%;
+  width: 40px;
+  align-items: center;
+  height: 40px;
+  position: absolute;
+}
+.modal-content_addOrder table {
+  border: 2px solid var(--back-blue);
+  width: 100%;
+}
+.modal-content_addOrder table thead {
+  background-color: var(--back-blue);
+}
+
+.modal-content_addOrder table thead tr th {
+  color: #fff;
+  padding: 8px 15px;
+  text-align: left;
+}
+.btns_order {
+  display: flex;
+  gap: 0 10px;
+  margin-top: auto;
+}
+.modal-content_addOrder table tbody tr td {
+  padding: 8px 15px;
+  text-align: left;
+}
+.sel {
+  border: 1px solid var(--back-blue);
+  border-radius: 5px;
+  width: 300px;
+  text-align: center;
+  outline: none;
+}

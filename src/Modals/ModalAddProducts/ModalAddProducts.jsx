@@ -1,11 +1,20 @@
 import React, { useContext, useState } from "react";
 import "./ModalAddProducts.css";
 import { UserContext } from "../../Context/Context";
+import { TailSpin } from "react-loader-spinner";
+import toast, { Toaster } from "react-hot-toast";
 const ModalAddProducts = () => {
   const [dragging, setDragging] = useState(false);
-  const [fileUpload, onFileUpload] = useState();
+  const [fileUpload, onFileUpload] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [productName, setProductName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [discount1, setDiscount1] = useState(0);
+  const [discount2, setDiscount2] = useState(0);
+  const token = localStorage.getItem("accessToken");
   const { setAddProductsOpen } = useContext(UserContext);
-  let fileInputRef = React.createRef();
+  const fileInputRef = React.createRef();
+
   const handleDragOver = (e) => {
     e.preventDefault();
     setDragging(true);
@@ -27,12 +36,89 @@ const ModalAddProducts = () => {
     const file = e.dataTransfer.files[0];
     onFileUpload(file);
   };
+
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     onFileUpload(file);
   };
+
+  const uploadImage = async () => {
+    const formData = new FormData();
+    formData.append("file", fileUpload);
+
+    const response = await fetch(
+      "https://monkfish-app-v8pst.ondigitalocean.app/api/cloud/image",
+      {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+    const imageId = data.data.db.id;
+    if (!response.ok) {
+      throw new Error("Ошибка при загрузке изображения");
+    }
+    return imageId;
+  };
+
+  const addProduct = async (imageId) => {
+    const productData = {
+      image: imageId,
+      name: productName,
+      standard: price,
+      discount1: discount1,
+      discount2: discount2,
+    };
+
+    const response = await fetch(
+      "https://monkfish-app-v8pst.ondigitalocean.app/api/product",
+      {
+        method: "POST",
+        body: JSON.stringify(productData),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error("Ошибка при добавлении продукта");
+    }
+    return data;
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      const id = await uploadImage();
+      const productData = await addProduct(id);
+      setProductName("");
+      setPrice("");
+      setDiscount1("");
+      setDiscount2("");
+      toast("Продукт добавлен успешно");
+    } catch (error) {
+      console.error(error);
+      toast("Не добавлен");
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
-    <form className="modal-overlay_addProd">
+    <form
+      className="modal-overlay_addProd"
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit();
+      }}
+    >
       <div
         className={`modal_addProd `}
         onDragOver={handleDragOver}
@@ -70,6 +156,8 @@ const ModalAddProducts = () => {
             <span>Название:</span>
             <input
               type="text"
+              onChange={(e) => setProductName(e.target.value)}
+              value={productName}
               className="prod_name"
               placeholder="Введите название"
             />
@@ -79,6 +167,8 @@ const ModalAddProducts = () => {
             <div>
               <input
                 type="number"
+                onChange={(e) => setPrice(e.target.value)}
+                value={price}
                 required
                 className="inp_price"
                 placeholder=""
@@ -106,6 +196,8 @@ const ModalAddProducts = () => {
                 type="number"
                 required
                 className="inp_price"
+                onChange={(e) => setDiscount1(e.target.value)}
+                value={discount1}
                 placeholder=""
               />
               <svg
@@ -130,6 +222,8 @@ const ModalAddProducts = () => {
               <input
                 type="number"
                 required
+                onChange={(e) => setDiscount2(e.target.value)}
+                value={discount2}
                 className="inp_price"
                 placeholder=""
               />
@@ -152,7 +246,11 @@ const ModalAddProducts = () => {
         </div>
         <div className="btns_prod">
           <button className="addProd_add" onSubmit={() => {}}>
-            Добавить
+            {!loading ? (
+              "Добавить"
+            ) : (
+              <TailSpin radius={"2px"} width={30} height={30} />
+            )}
           </button>
           <button
             className="addProd_close"
@@ -164,6 +262,7 @@ const ModalAddProducts = () => {
           </button>
         </div>
       </div>
+      <Toaster />
     </form>
   );
 };

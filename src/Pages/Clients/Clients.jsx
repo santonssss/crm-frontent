@@ -14,6 +14,7 @@ const Clients = () => {
     deliverysClients,
     deleteOpen,
   } = useContext(UserContext);
+
   return (
     <div className={`clients-page ${sidebarOpen ? "p-o" : "p-c"}`}>
       <div className="clients">

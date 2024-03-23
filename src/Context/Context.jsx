@@ -16,8 +16,59 @@ const UserProvider = ({ children }) => {
   const [deliverysClients, setDeliveryClients] = useState([]);
   const [checkedDelivery, setCheckedDelivery] = useState({});
   const [idDelete, setIdDelete] = useState();
+  const [products, setProducts] = useState([]);
+  const [searchProducts, setSearchProducts] = useState("");
+  const [orders, setOrders] = useState([]);
+  const [chechedClient, setCheckedClient] = useState(null);
+
   const token = localStorage.getItem("accessToken");
   useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const requestOptions = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        const response = await fetch(
+          "https://monkfish-app-v8pst.ondigitalocean.app/api/order",
+          requestOptions
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setOrders(data.data.records);
+        } else {
+          console.error(
+            "Ошибка при загрузке данных о заказах:",
+            response.statusText
+          );
+        }
+      } catch (error) {
+        console.error("Произошла ошибка:", error);
+      }
+    };
+
+    const fetchDataProducts = async () => {
+      try {
+        const response = await fetch(
+          "https://monkfish-app-v8pst.ondigitalocean.app/api/product?relations[0]=image",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        setProducts(data.data.records);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     const fetchUserData = async () => {
       try {
         const response = await fetch(
@@ -60,7 +111,9 @@ const UserProvider = ({ children }) => {
       fetchDeliveriesClients();
     }
     fetchUserData();
-  }, [deliveryId]);
+    fetchDataProducts();
+    fetchOrders();
+  }, [deliveryId, token]);
 
   return (
     <UserContext.Provider
@@ -89,6 +142,14 @@ const UserProvider = ({ children }) => {
         setDeleteOpen,
         idDelete,
         setIdDelete,
+        products,
+        setProducts,
+        searchProducts,
+        setSearchProducts,
+        orders,
+        setOrders,
+        chechedClient,
+        setCheckedClient,
       }}
     >
       {children}

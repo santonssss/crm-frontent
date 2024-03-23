@@ -8,6 +8,8 @@ const OrdersLeft = () => {
     deliverysClients,
     setCheckedDelivery,
     checkedDelivery,
+    chechedClient,
+    setCheckedClient,
   } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState("");
   const deliveryMen = deliveryData.filter(
@@ -73,7 +75,11 @@ const OrdersLeft = () => {
         <div className="list-body">
           {filteredClients.length > 0 ? (
             filteredClients.map((client, index) => (
-              <div className="list-name" key={index}>
+              <div
+                className="list-name"
+                key={index}
+                onClick={() => setCheckedClient(client.id)}
+              >
                 {client.username}
               </div>
             ))

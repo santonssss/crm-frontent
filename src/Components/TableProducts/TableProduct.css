@@ -5,6 +5,11 @@
 .head-table {
   background-color: var(--back-blue);
 }
+.tableProducts tbody td img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
 
 .head-table th {
   padding: 12px 0;

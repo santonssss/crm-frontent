@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
 import "./ModalAddClients.css";
 import { UserContext } from "../../Context/Context";
-
+import { TailSpin } from "react-loader-spinner";
+import toast, { Toaster } from "react-hot-toast";
 const ModalAddClients = () => {
   const { setAddClientsOpen } = useContext(UserContext);
   const [username, setName] = useState("");
+  const [loading, setLoading] = useState(false);
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [deliverymanAsClient, setDeliverymanAsClient] = useState("");
@@ -13,6 +15,7 @@ const ModalAddClients = () => {
     (user) => user.role === "deliveryman"
   );
   const handleSubmit = async (event) => {
+    setLoading(true);
     const token = localStorage.getItem("accessToken");
     event.preventDefault();
     const role = "client";
@@ -35,7 +38,7 @@ const ModalAddClients = () => {
         }
       );
       const data = await response.json();
-      console.log(data);
+      toast("Пользователь добавлен успешно");
       setName("");
       setPhone("");
       setAddress("");
@@ -43,7 +46,12 @@ const ModalAddClients = () => {
         throw new Error("Network response was not ok");
       }
     } catch (error) {
+      toast(
+        "Не удалось добавить пользователя, пожалуйста перепроверьте данные"
+      );
       console.error("Ошибка при выполнении запроса:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -98,12 +106,19 @@ const ModalAddClients = () => {
           </select>
         </div>
         <div className="add_btns">
-          <button type="submit">Добавить</button>
+          <button type="submit">
+            {!loading ? (
+              "Добавить"
+            ) : (
+              <TailSpin radius={"2px"} width={30} height={30} />
+            )}
+          </button>
           <button type="button" onClick={() => setAddClientsOpen(false)}>
             Отменить
           </button>
         </div>
       </form>
+      <Toaster />
     </div>
   );
 };

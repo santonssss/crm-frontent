@@ -14,7 +14,6 @@ function App() {
   const navigate = useNavigate();
   const tok = localStorage.getItem("accessToken");
   const isTokenPresent = tok !== null && tok !== undefined && tok !== "";
-
   useEffect(() => {
     if (!isTokenPresent) {
       if (
