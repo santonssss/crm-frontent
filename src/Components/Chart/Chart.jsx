@@ -38,7 +38,7 @@ const ChartWrapper = () => {
           />
           <div className="series">
             <Series
-              bg={"bg"}
+              bg={"bg1"}
               color={"#1E89EC"}
               sum={100085}
               text={"оплачено"}

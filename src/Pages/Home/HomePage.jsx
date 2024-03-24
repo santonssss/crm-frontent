@@ -10,14 +10,17 @@ import ModalDelivery from "../../Modals/ModalDelivery/ModalDelivery";
 const HomePage = () => {
   const { sidebarOpen, modalProfileOpen, logoutOpen, deliveryOpen } =
     useContext(UserContext);
+  const [atTheMomentDelivery, setTheMomentDelivery] = useState({});
   return (
     <div className={`home-wrap ${sidebarOpen ? "p-o" : "p-c"}`}>
       <ChartWrapper />
-      <Delivary />
+      <Delivary setTheMomentDelivery={setTheMomentDelivery} />
       <Profile />
       {modalProfileOpen && <ModalProfile />}
       {logoutOpen && <ModalLogout />}
-      {deliveryOpen && <ModalDelivery />}
+      {deliveryOpen && (
+        <ModalDelivery atTheMomentDelivery={atTheMomentDelivery} />
+      )}
     </div>
   );
 };

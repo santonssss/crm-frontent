@@ -1,10 +1,18 @@
 import React, { useContext, useEffect } from "react";
 import { UserContext } from "../Context/Context";
 
-const ClientsTable = ({ dilivery, tel, car_num, client_name, address }) => {
+const ClientsTable = ({
+  dilivery,
+  tel,
+  car_num,
+  client_name,
+  address,
+  setModalChange,
+  setDeliveryChange,
+}) => {
   const { deliverysClients, checkedDelivery, setDeleteOpen, setIdDelete } =
     useContext(UserContext);
-
+  console.log(checkedDelivery);
   return (
     <table className="mt-5 tableclient">
       <thead>
@@ -60,6 +68,10 @@ const ClientsTable = ({ dilivery, tel, car_num, client_name, address }) => {
                     viewBox="0 0 24 23"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    onClick={() => {
+                      setDeliveryChange(checkedDelivery);
+                      setModalChange(true);
+                    }}
                   >
                     <path
                       fill-rule="evenodd"
@@ -72,7 +84,9 @@ const ClientsTable = ({ dilivery, tel, car_num, client_name, address }) => {
               </td>
             </tr>
           ) : (
-            <p className="mt-4 mb-4">Выберите доставщика</p>
+            <tr className="mt-4 mb-4">
+              <div>Выберите доставщика</div>
+            </tr>
           )
         ) : (
           deliverysClients.map((delivery) => {
@@ -90,6 +104,10 @@ const ClientsTable = ({ dilivery, tel, car_num, client_name, address }) => {
                       viewBox="0 0 24 23"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
+                      onClick={() => {
+                        setIdDelete(delivery.id);
+                        setDeleteOpen(true);
+                      }}
                     >
                       <path
                         d="M19 3.83333H15.5L14.5 2.875H9.5L8.5 3.83333H5V5.75H19M6 18.2083C6 18.7167 6.21071 19.2042 6.58579 19.5636C6.96086 19.9231 7.46957 20.125 8 20.125H16C16.5304 20.125 17.0391 19.9231 17.4142 19.5636C17.7893 19.2042 18 18.7167 18 18.2083V6.70833H6V18.2083Z"
@@ -102,6 +120,10 @@ const ClientsTable = ({ dilivery, tel, car_num, client_name, address }) => {
                       viewBox="0 0 24 23"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
+                      onClick={() => {
+                        setDeliveryChange(delivery);
+                        setModalChange(true);
+                      }}
                     >
                       <path
                         fill-rule="evenodd"

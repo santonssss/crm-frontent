@@ -75,11 +75,11 @@ const OrdersRight = ({ setAddOrderOpen }) => {
           </tr>
         </thead>
         <tbody>
-          {orders ? (
+          {orders.length ? (
             orders.map((order) => {
               return (
                 <tr>
-                  <td>{order.id}</td>
+                  <td>№{order.id}</td>
                   <td>{formatDate(new Date(order.createdAt))}</td>
                   <td>{formatToRubles(order.amount)}</td>
                   <td></td>
@@ -89,7 +89,7 @@ const OrdersRight = ({ setAddOrderOpen }) => {
             })
           ) : (
             <tr>
-              <td>Заказов к сожалению нету</td>
+              <td>Заказов этого клиента к сожалению нету</td>
             </tr>
           )}
         </tbody>

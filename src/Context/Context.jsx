@@ -20,7 +20,8 @@ const UserProvider = ({ children }) => {
   const [searchProducts, setSearchProducts] = useState("");
   const [orders, setOrders] = useState([]);
   const [chechedClient, setCheckedClient] = useState(null);
-
+  const [clientForDelivary, setClientForDelivary] = useState([]);
+  const [devId, setDevId] = useState(null);
   const token = localStorage.getItem("accessToken");
   useEffect(() => {
     const fetchOrders = async () => {
@@ -32,7 +33,7 @@ const UserProvider = ({ children }) => {
         };
 
         const response = await fetch(
-          "https://monkfish-app-v8pst.ondigitalocean.app/api/order",
+          `https://monkfish-app-v8pst.ondigitalocean.app/api/order?relations[0]=owner&filter[owner][id]=${chechedClient}`,
           requestOptions
         );
         if (response.ok) {
@@ -72,7 +73,7 @@ const UserProvider = ({ children }) => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          "https://monkfish-app-v8pst.ondigitalocean.app/api/user",
+          "https://monkfish-app-v8pst.ondigitalocean.app/api/user?relations[0]=clientsAsDeliveryman.profile&filter[role]=deliveryman",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -83,6 +84,7 @@ const UserProvider = ({ children }) => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+
         setDeliveryData(data.data.records);
       } catch (error) {
         console.warn(error);
@@ -91,7 +93,7 @@ const UserProvider = ({ children }) => {
     const fetchDeliveriesClients = async () => {
       try {
         const response = await fetch(
-          `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${deliveryId}?relations[0]=clientsAsDeliveryman`,
+          `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${deliveryId}?relations[0]=clientsAsDeliveryman.profile`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -102,7 +104,27 @@ const UserProvider = ({ children }) => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
+        console.log(data);
         setDeliveryClients(data.data.clientsAsDeliveryman);
+      } catch (error) {
+        console.warn(error);
+      }
+    };
+    const fetchHomeDeliveryClient = async () => {
+      try {
+        const response = await fetch(
+          `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${devId}?relations[0]=clientsAsDeliveryman&relations[1]=profile`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setClientForDelivary(data.data.clientsAsDeliveryman);
       } catch (error) {
         console.warn(error);
       }
@@ -110,10 +132,15 @@ const UserProvider = ({ children }) => {
     if (deliveryId) {
       fetchDeliveriesClients();
     }
+    if (devId) {
+      fetchHomeDeliveryClient();
+    }
+    if (chechedClient !== null) {
+      fetchOrders();
+    }
     fetchUserData();
     fetchDataProducts();
-    fetchOrders();
-  }, [deliveryId, token]);
+  }, [deliveryId, token, chechedClient, devId]);
 
   return (
     <UserContext.Provider
@@ -150,6 +177,8 @@ const UserProvider = ({ children }) => {
         setOrders,
         chechedClient,
         setCheckedClient,
+        setDevId,
+        clientForDelivary,
       }}
     >
       {children}

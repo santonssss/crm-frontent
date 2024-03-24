@@ -52,6 +52,7 @@
 }
 .order-table tbody tr td {
   padding: 19px 0;
+  text-align: center;
   padding-left: 40px;
 }
 .order-table tbody tr td:last-child {

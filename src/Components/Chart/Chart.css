@@ -43,11 +43,11 @@
   display: none !important;
 }
 .quadrate {
-  width: 15px;
+  width: 15px !important;
   height: 15px;
   border-radius: 4px;
 }
-.bg {
+.bg1 {
   background-color: var(--back-blue);
 }
 .bg2 {

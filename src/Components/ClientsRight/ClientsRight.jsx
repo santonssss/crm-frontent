@@ -3,7 +3,7 @@ import "./ClientsRight.css";
 import CustomButton from "../../Decomponents/CustomButton";
 import ClientsTable from "../../Decomponents/ClientsTable";
 import { UserContext } from "../../Context/Context";
-const ClientsRight = () => {
+const ClientsRight = ({ setModalChange, setDeliveryChange }) => {
   const { setAddClientsOpen, setAddDeliveryOpen } = useContext(UserContext);
   return (
     <div className="client-right">
@@ -15,6 +15,8 @@ const ClientsRight = () => {
         tel={"Номер телефона"}
         car_num={"Номер машины"}
         client_name={"Клиенты"}
+        setModalChange={setModalChange}
+        setDeliveryChange={setDeliveryChange}
       />
       <CustomButton className="mt-5" onClick={() => setAddClientsOpen(true)}>
         Клиенты <span>+</span>
@@ -23,6 +25,8 @@ const ClientsRight = () => {
         address={"Адрес"}
         tel={"Номер телефона"}
         client_name={"Клиенты"}
+        setModalChange={setModalChange}
+        setDeliveryChange={setDeliveryChange}
       />
     </div>
   );

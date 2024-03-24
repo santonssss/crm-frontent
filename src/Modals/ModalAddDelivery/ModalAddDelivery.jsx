@@ -3,11 +3,15 @@ import "./ModalAddDelivery.css";
 import { UserContext } from "../../Context/Context";
 import { TailSpin } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
-const ModalAddDelivery = () => {
+const ModalAddDelivery = ({
+  username,
+  setUsername,
+  phone,
+  setPhone,
+  carNumber,
+  setCarNumber,
+}) => {
   const { setAddDeliveryOpen } = useContext(UserContext);
-  const [username, setUsername] = useState("");
-  const [phone, setPhone] = useState("");
-  const [carNumber, setСarNumber] = useState("");
   const [loading, setLoading] = useState(false);
   const handleSubmit = async (event) => {
     setLoading(true);
@@ -39,7 +43,7 @@ const ModalAddDelivery = () => {
       toast("Доставщик добавлен успешно");
       setUsername("");
       setPhone("");
-      setСarNumber("");
+      setCarNumber("");
     } catch (error) {
       console.error("Ошибка при выполнении запроса:", error);
       toast("Не удалось добавить доставщика, пожалуйста перепроверьте данные");
@@ -81,7 +85,7 @@ const ModalAddDelivery = () => {
             type="text"
             placeholder="Номер машины"
             value={carNumber}
-            onChange={(e) => setСarNumber(e.target.value)}
+            onChange={(e) => setCarNumber(e.target.value)}
           />
         </div>
 

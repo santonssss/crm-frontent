@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 import "./ModalDelivery.css";
 import { UserContext } from "../../Context/Context";
 
-const ModalDelivery = () => {
-  const { setDeliveryOpen } = useContext(UserContext);
+const ModalDelivery = ({ atTheMomentDelivery }) => {
+  const { setDeliveryOpen, clientForDelivary } = useContext(UserContext);
   return (
     <div className="modal-overlay_del">
       <div className="modal_del">
@@ -50,10 +50,10 @@ const ModalDelivery = () => {
                 stroke-width="2.46"
               />
             </svg>
-            <span>Имя доставщика</span>
+            <span>{atTheMomentDelivery.username}</span>
           </div>
           <div className="info-card">
-            <span className="sum-info">50</span>
+            <span className="sum-info">{clientForDelivary.length}</span>
             <span>клиентов</span>
           </div>
           <div className="info-card">
@@ -63,108 +63,27 @@ const ModalDelivery = () => {
         </div>
         <div className="table-deli">
           <table>
-            <tr>
-              <th>Клиент</th>
-              <th>Телефон</th>
-              <th>Сумма</th>
-              <th>Долг</th>
-            </tr>
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>{" "}
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>{" "}
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>{" "}
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>{" "}
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>{" "}
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>{" "}
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>{" "}
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>{" "}
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>{" "}
-            <tr>
-              <td>Вася Смирнов</td>
-              <td>+7 777 77 77</td>
-              <td>100455</td>
-              <td>923455</td>
-            </tr>
+            <thead>
+              <tr>
+                <th>Клиент</th>
+                <th>Телефон</th>
+                <th>Сумма</th>
+                <th>Долг</th>
+              </tr>
+            </thead>
+            <tbody>
+              {clientForDelivary.map((client) => {
+                console.log(client);
+                return (
+                  <tr>
+                    <td>{client.username}</td>
+                    <td>{client.phone}</td>
+                    <td>100455</td>
+                    <td>923455</td>
+                  </tr>
+                );
+              })}
+            </tbody>
           </table>
         </div>
         <button className="nakladnoy">Напечатать накладную</button>

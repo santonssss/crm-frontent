@@ -1,44 +1,51 @@
 import React, { useContext } from "react";
 import "./Delivary.css";
 import { UserContext } from "../../Context/Context";
-const Delivary = () => {
-  const { setDeliveryOpen } = useContext(UserContext);
+import { TailSpin } from "react-loader-spinner";
+const Delivary = ({ setTheMomentDelivery }) => {
+  const { setDeliveryOpen, deliveryData, setDevId } = useContext(UserContext);
+  const deliveryMen = deliveryData.filter(
+    (user) => user.role === "deliveryman"
+  );
   return (
     <section className="delivary">
       <table>
         <caption>Доставщики</caption>
-        <tr>
-          <th>Доставщик</th>
-          <th>Кол-во клиентов</th>
-          <th>Долги</th>
-        </tr>
-        <tr
-          onClick={() => {
-            setDeliveryOpen(true);
-          }}
-        >
-          <td>Вася Александров </td>
-          <td>10</td>
-          <td>100000</td>
-        </tr>
-        <tr
-          onClick={() => {
-            setDeliveryOpen(true);
-          }}
-        >
-          <td>Вася Александров </td>
-          <td>10</td>
-          <td>100000</td>
-        </tr>
-        <tr
-          onClick={() => {
-            setDeliveryOpen(true);
-          }}
-        >
-          <td>Вася Александров </td>
-          <td>10</td>
-          <td>100000</td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Доставщик</th>
+            <th>Кол-во клиентов</th>
+            <th>Долги</th>
+          </tr>
+        </thead>
+        <tbody>
+          {deliveryMen.length > 0 ? (
+            deliveryMen.map((delivery) => {
+              const totalDebts = delivery.clientsAsDeliveryman.reduce(
+                (accumulator, client) => accumulator + client.profile.debts,
+                0
+              );
+              return (
+                <tr
+                  onClick={() => {
+                    setDeliveryOpen(true);
+                    setTheMomentDelivery(delivery);
+                    setDevId(delivery.id);
+                  }}
+                  key={delivery.id}
+                >
+                  <td>{delivery.username}</td>
+                  <td>{delivery.clientsAsDeliveryman.length}</td>
+                  <td>{totalDebts}</td>
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <TailSpin radius={"2px"} width={30} height={30} />
+            </tr>
+          )}
+        </tbody>
       </table>
     </section>
   );

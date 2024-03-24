@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import "./ModalDelete.css";
 import { UserContext } from "../../Context/Context";
+import { TailSpin } from "react-loader-spinner";
+import toast from "react-hot-toast";
 const ModalDelete = () => {
-  const [success, setSuccess] = useState(false);
   const { idDelete, setDeleteOpen } = useContext(UserContext);
   const token = localStorage.getItem("accessToken");
   const handleDelete = async (e) => {
@@ -18,9 +19,9 @@ const ModalDelete = () => {
         }
       );
       const data = await response.json();
-      console.log(data);
       if (response.ok) {
-        console.log("Пользователь успешно удален");
+        toast("Пользователь удален успешно");
+        setDeleteOpen(false);
       } else {
         console.error(
           "Ошибка удаления пользователя. Статус ответа:",
@@ -30,6 +31,7 @@ const ModalDelete = () => {
       }
     } catch (error) {
       console.error("Произошла ошибка:", error);
+      toast("При удаление пользователя произошли технические проблемы");
     }
   };
   return (
@@ -38,24 +40,24 @@ const ModalDelete = () => {
         className="modal-content_delete"
         onClick={(e) => e.stopPropagation()}
       >
-        {!success ? (
-          <p>Вы точно хотите удалить доставщика?</p>
-        ) : (
-          <p>Доставщик удален успешно</p>
-        )}
-        {!success ? (
-          <div className="btns_delete">
-            <button>Да</button>
-            <button
-              onClick={() => {
-                setDeleteOpen(false);
-              }}
-              type="button"
-            >
-              Нет
-            </button>
-          </div>
-        ) : null}
+        <p
+          style={{
+            textAlign: "center",
+          }}
+        >
+          Вы точно хотите удалить выбранного пользователя?
+        </p>
+        <div className="btns_delete">
+          <button>Да</button>
+          <button
+            onClick={() => {
+              setDeleteOpen(false);
+            }}
+            type="button"
+          >
+            Нет
+          </button>
+        </div>
       </div>
     </form>
   );
