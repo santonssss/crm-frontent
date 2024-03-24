@@ -8,7 +8,7 @@ const OrdersLeft = () => {
     deliverysClients,
     setCheckedDelivery,
     checkedDelivery,
-    chechedClient,
+    checkedClient,
     setCheckedClient,
   } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState("");

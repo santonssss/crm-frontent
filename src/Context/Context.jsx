@@ -19,10 +19,35 @@ const UserProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [searchProducts, setSearchProducts] = useState("");
   const [orders, setOrders] = useState([]);
-  const [chechedClient, setCheckedClient] = useState(null);
+  const [checkedClient, setCheckedClient] = useState(null);
+  // const [myOrders, setMyOrders] = useState([]);
 
   const token = localStorage.getItem("accessToken");
   useEffect(() => {
+  //   const fetchOrdersOfClients = async (userId, params) => {
+  //   try {
+  //     const queryParams = new URLSearchParams(params).toString();
+  //     const response = await fetch(
+  //       `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${userId}?${queryParams}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+
+  //     const data = await response.json();
+  //     // Обработка полученных данных
+  //     console.log(data.data.records)
+  //     setMyOrders(data.data.records)
+  //   } catch (error) {
+  //     console.error("Error during fetch:", error);
+  //   }
+  // };
     const fetchOrders = async () => {
       try {
         const requestOptions = {
@@ -148,8 +173,10 @@ const UserProvider = ({ children }) => {
         setSearchProducts,
         orders,
         setOrders,
-        chechedClient,
+        checkedClient,
         setCheckedClient,
+        // myOrders,
+        // setMyOrders,
       }}
     >
       {children}

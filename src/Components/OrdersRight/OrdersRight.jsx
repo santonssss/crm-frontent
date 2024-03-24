@@ -52,6 +52,8 @@ const OrdersRight = ({ setAddOrderOpen }) => {
             <th>№ Накладного</th>
             <th>Дата</th>
             <th>Сумма</th>
+            <th>Оплачено</th>
+            <th>Долги</th>
             <th>
               от
               <DatePicker
