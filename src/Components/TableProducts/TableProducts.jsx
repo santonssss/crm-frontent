@@ -2,7 +2,11 @@ import React, { useContext } from "react";
 import "./TableProduct.css";
 import { UserContext } from "../../Context/Context";
 
-const TableProducts = () => {
+const TableProducts = ({
+  setCheckedProduct,
+  setProductsDelete,
+  setProductRedirect,
+}) => {
   const { products, searchProducts } = useContext(UserContext);
   const formatToRubles = (value) => {
     return new Intl.NumberFormat("ru-RU", {
@@ -47,6 +51,10 @@ const TableProducts = () => {
                     viewBox="0 0 28 28"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    onClick={() => {
+                      setCheckedProduct(product);
+                      setProductsDelete(true);
+                    }}
                   >
                     <path
                       d="M22.1668 4.66667H18.0835L16.9168 3.5H11.0835L9.91683 4.66667H5.8335V7H22.1668M7.00016 22.1667C7.00016 22.7855 7.246 23.379 7.68358 23.8166C8.12117 24.2542 8.71466 24.5 9.3335 24.5H18.6668C19.2857 24.5 19.8792 24.2542 20.3167 23.8166C20.7543 23.379 21.0002 22.7855 21.0002 22.1667V8.16667H7.00016V22.1667Z"
@@ -61,6 +69,10 @@ const TableProducts = () => {
                     viewBox="0 0 28 28"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    onClick={() => {
+                      setCheckedProduct(product);
+                      setProductRedirect(true);
+                    }}
                   >
                     <path
                       fill-rule="evenodd"

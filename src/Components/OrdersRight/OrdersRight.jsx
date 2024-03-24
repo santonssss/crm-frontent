@@ -1,17 +1,47 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./OrdersRight.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru";
 import { UserContext } from "../../Context/Context";
 const OrdersRight = ({ setAddOrderOpen }) => {
-  const [beforeSelectedDate, setSelectedDateBefore] = useState(new Date());
-  const [afterSelectedDate, setSelectedDateAfter] = useState(new Date());
+  const { orders } = useContext(UserContext);
+  const [sortedOrders, setSortedOrders] = useState([]);
+
+  useEffect(() => {
+    const sortOrdersByDate = (orders) => {
+      return orders.sort((a, b) => {
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+        return dateA - dateB;
+      });
+    };
+
+    const sorted = sortOrdersByDate(orders);
+    setSortedOrders(sorted);
+  }, [orders]);
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  const [beforeSelectedDate, setBeforeSelectedDate] = useState(yesterday);
+  const [afterSelectedDate, setAfterSelectedDate] = useState(new Date());
   const handleDateChangeBefore = (date) => {
-    setSelectedDateBefore(date);
+    setBeforeSelectedDate(date);
+    filterOrders(date, afterSelectedDate);
   };
+
   const handleDateChangeAfter = (date) => {
-    setSelectedDateAfter(date);
+    setAfterSelectedDate(date);
+    filterOrders(beforeSelectedDate, date);
+  };
+
+  const filterOrders = (beforeDate, afterDate) => {
+    const filtered = orders.filter((order) => {
+      const orderDate = new Date(order.createdAt);
+      return orderDate >= beforeDate && orderDate <= afterDate;
+    });
+    setSortedOrders(filtered);
   };
   const formatToRubles = (value) => {
     return new Intl.NumberFormat("ru-RU", {
@@ -19,7 +49,6 @@ const OrdersRight = ({ setAddOrderOpen }) => {
       currency: "RUB",
     }).format(value);
   };
-  const { orders } = useContext(UserContext);
   function formatDate(date) {
     const day = date.getDate();
     const month = date.getMonth() + 1;
@@ -52,6 +81,8 @@ const OrdersRight = ({ setAddOrderOpen }) => {
             <th>№ Накладного</th>
             <th>Дата</th>
             <th>Сумма</th>
+            <th>Оплачено</th>
+            <th>Долги</th>
             <th>
               от
               <DatePicker
@@ -75,21 +106,19 @@ const OrdersRight = ({ setAddOrderOpen }) => {
           </tr>
         </thead>
         <tbody>
-          {orders.length ? (
-            orders.map((order) => {
-              return (
-                <tr>
-                  <td>№{order.id}</td>
-                  <td>{formatDate(new Date(order.createdAt))}</td>
-                  <td>{formatToRubles(order.amount)}</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              );
-            })
+          {sortedOrders.length ? (
+            sortedOrders.map((order) => (
+              <tr key={order.id}>
+                <td>№{order.id}</td>
+                <td>{formatDate(new Date(order.createdAt))}</td>
+                <td>{formatToRubles(order.amount)}</td>
+                <td></td>
+                <td></td>
+              </tr>
+            ))
           ) : (
             <tr>
-              <td>Заказов этого клиента к сожалению нету</td>
+              <td colSpan="4">Заказов этого клиента к сожалению нету</td>
             </tr>
           )}
         </tbody>
