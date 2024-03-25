@@ -156,9 +156,11 @@ const Abacus = () => {
               className="custom-datepicker"
               locale={ru}
             />
-            <button>Найти</button>
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ml-10"
+            >Найти</button>
           </div>
-          <table className="order-table">
+          <table className="order-table z-0">
             <thead>
               <tr>
                 <th>№ Накладного</th>
@@ -214,6 +216,7 @@ const Abacus = () => {
           order={selectedOrder}
           onClose={() => setSelectedOrder(null)}
           client={client}
+          fetchOrdersOfClients={fetchOrdersOfClients}
           // Другие пропсы, которые могут понадобиться для редактирования
         />
       )}
