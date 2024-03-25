@@ -4,7 +4,7 @@ import { UserContext } from "../../Context/Context";
 import { TailSpin } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
 const ModalAddClients = () => {
-  const { setAddClientsOpen } = useContext(UserContext);
+  const { setAddClientsOpen, setSum } = useContext(UserContext);
   const [username, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [phone, setPhone] = useState("");
@@ -42,6 +42,7 @@ const ModalAddClients = () => {
       setName("");
       setPhone("");
       setAddress("");
+      setSum((prev) => prev + 1);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

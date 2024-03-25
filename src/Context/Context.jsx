@@ -23,6 +23,7 @@ const UserProvider = ({ children }) => {
   const [clientForDelivary, setClientForDelivary] = useState([]);
   const [devId, setDevId] = useState(null);
   const [atTheMom, setAtTheMom] = useState({});
+  const [sum, setSum] = useState(0);
   const token = localStorage.getItem("accessToken");
   useEffect(() => {
     const fetchOrders = async () => {
@@ -105,7 +106,6 @@ const UserProvider = ({ children }) => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        console.log(data);
         setDeliveryClients(data.data.clientsAsDeliveryman);
       } catch (error) {
         console.warn(error);
@@ -141,7 +141,7 @@ const UserProvider = ({ children }) => {
     }
     fetchUserData();
     fetchDataProducts();
-  }, [deliveryId, token, checkedClient, devId]);
+  }, [deliveryId, token, checkedClient, devId, orders, sum]);
 
   return (
     <UserContext.Provider
@@ -182,6 +182,7 @@ const UserProvider = ({ children }) => {
         clientForDelivary,
         atTheMom,
         setAtTheMom,
+        setSum,
       }}
     >
       {children}

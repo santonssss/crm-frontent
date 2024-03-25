@@ -88,6 +88,7 @@ const ModalAddProducts = () => {
 
     const data = await response.json();
 
+    setSum((prev) => prev + 1);
     if (!response.ok) {
       throw new Error("Ошибка при добавлении продукта");
     }

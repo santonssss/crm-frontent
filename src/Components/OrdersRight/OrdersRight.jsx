@@ -4,10 +4,11 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru";
 import { UserContext } from "../../Context/Context";
+import false_icon from "../../Assets/Image/true.svg";
+import true_icon from "../../Assets/Image/false.svg";
 const OrdersRight = ({ setAddOrderOpen }) => {
   const { orders } = useContext(UserContext);
   const [sortedOrders, setSortedOrders] = useState([]);
-
   useEffect(() => {
     const sortOrdersByDate = (orders) => {
       return orders.sort((a, b) => {
@@ -61,6 +62,39 @@ const OrdersRight = ({ setAddOrderOpen }) => {
 
     return formattedDate;
   }
+  const updateOrderStatus = async (orderId, confirmed) => {
+    const token = localStorage.getItem("accessToken");
+    try {
+      const response = await fetch(
+        `https://monkfish-app-v8pst.ondigitalocean.app/api/order/${orderId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            confirmed: !confirmed,
+          }),
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error("Ошибка при обновлении статуса заказа");
+      }
+    } catch (error) {
+      console.error("Ошибка:", error);
+    }
+  };
+
+  const handleImageClick = async (orderId, confirmed) => {
+    const updatedOrder = await updateOrderStatus(orderId, confirmed);
+    const index = sortedOrders.findIndex((order) => order.id === orderId);
+    const newSortedOrders = [...sortedOrders];
+    newSortedOrders[index].confirmed = updatedOrder.confirmed;
+    setSortedOrders(newSortedOrders);
+  };
+
   return (
     <div className="orders-right">
       <div className="right-btns">
@@ -109,11 +143,25 @@ const OrdersRight = ({ setAddOrderOpen }) => {
           {sortedOrders.length ? (
             sortedOrders.map((order) => (
               <tr key={order.id}>
-                <td>№{order.id}</td>
+                <td>
+                  <div className="flex align-center gap-1">
+                    <img
+                      style={{
+                        cursor: "pointer",
+                      }}
+                      src={order.confirmed ? true_icon : false_icon}
+                      alt=""
+                      onClick={() =>
+                        handleImageClick(order.id, order.confirmed)
+                      }
+                    />
+                    №{order.id}
+                  </div>
+                </td>
                 <td>{formatDate(new Date(order.createdAt))}</td>
                 <td>{formatToRubles(order.amount)}</td>
-                <td></td>
-                <td></td>
+                <td>{formatToRubles(order.amount - order.remains)}</td>
+                <td>{formatToRubles(order.remains)}</td>
               </tr>
             ))
           ) : (

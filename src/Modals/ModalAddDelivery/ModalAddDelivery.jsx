@@ -44,6 +44,7 @@ const ModalAddDelivery = ({
       setUsername("");
       setPhone("");
       setCarNumber("");
+      setSum((prev) => prev + 1);
     } catch (error) {
       console.error("Ошибка при выполнении запроса:", error);
       toast("Не удалось добавить доставщика, пожалуйста перепроверьте данные");

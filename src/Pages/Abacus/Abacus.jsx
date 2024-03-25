@@ -69,7 +69,6 @@ const Abacus = () => {
       }
 
       const data = await response.json();
-      // Обработка полученных данных
       console.log(data);
       const sizeOrders = data.data.ordersAsClient?.length;
       let summa = 0;

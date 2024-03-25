@@ -49,11 +49,11 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
         requestOptions
       );
       const responseData = await response.json();
-      console.log(responseData);
       if (response.ok) {
         toast("Заказ успешно создан");
         setProductsList([]);
         setTotalSelectedPrice(0);
+        setSum((prev) => prev + 1);
       } else {
         toast("При создание заказа произошло ошибка");
       }
