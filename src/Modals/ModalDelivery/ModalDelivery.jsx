@@ -1,9 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import "./ModalDelivery.css";
 import { UserContext } from "../../Context/Context";
+import { Link } from "react-router-dom";
 
 const ModalDelivery = ({ atTheMomentDelivery }) => {
-  const { setDeliveryOpen, clientForDelivary } = useContext(UserContext);
+  const { setDeliveryOpen, clientForDelivary, setAtTheMom } =
+    useContext(UserContext);
+  const totalDebts = atTheMomentDelivery.clientsAsDeliveryman.reduce(
+    (accumulator, client) => {
+      if (client.profile && typeof client.profile.debts === "number") {
+        return accumulator + client.profile.debts;
+      } else {
+        return accumulator;
+      }
+    },
+    0
+  );
+  useEffect(() => {
+    setAtTheMom(atTheMomentDelivery);
+  }, [atTheMomentDelivery]);
   return (
     <div className="modal-overlay_del">
       <div className="modal_del">
@@ -57,7 +72,7 @@ const ModalDelivery = ({ atTheMomentDelivery }) => {
             <span>клиентов</span>
           </div>
           <div className="info-card">
-            <span className="sum-info">20000</span>
+            <span className="sum-info">{totalDebts} ₽</span>
             <span>Долги</span>
           </div>
         </div>
@@ -72,21 +87,29 @@ const ModalDelivery = ({ atTheMomentDelivery }) => {
               </tr>
             </thead>
             <tbody>
-              {clientForDelivary.map((client) => {
-                console.log(client);
+              {atTheMomentDelivery.clientsAsDeliveryman.map((client) => {
                 return (
                   <tr>
                     <td>{client.username}</td>
                     <td>{client.phone}</td>
                     <td>100455</td>
-                    <td>923455</td>
+                    <td>{client.profile.debts}</td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
         </div>
-        <button className="nakladnoy">Напечатать накладную</button>
+        <button className="nakladnoy">
+          <Link
+            to={"/nakladnoy-delivery"}
+            onClick={() => {
+              setDeliveryOpen(false);
+            }}
+          >
+            Напечатать накладную
+          </Link>
+        </button>
       </div>
     </div>
   );

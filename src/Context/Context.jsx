@@ -19,9 +19,10 @@ const UserProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [searchProducts, setSearchProducts] = useState("");
   const [orders, setOrders] = useState([]);
-  const [chechedClient, setCheckedClient] = useState(null);
+  const [checkedClient, setCheckedClient] = useState(null);
   const [clientForDelivary, setClientForDelivary] = useState([]);
   const [devId, setDevId] = useState(null);
+  const [atTheMom, setAtTheMom] = useState({});
   const token = localStorage.getItem("accessToken");
   useEffect(() => {
     const fetchOrders = async () => {
@@ -33,7 +34,7 @@ const UserProvider = ({ children }) => {
         };
 
         const response = await fetch(
-          `https://monkfish-app-v8pst.ondigitalocean.app/api/order?relations[0]=owner&filter[owner][id]=${chechedClient}`,
+          `https://monkfish-app-v8pst.ondigitalocean.app/api/order?relations[0]=owner&filter[owner][id]=${checkedClient}`,
           requestOptions
         );
         if (response.ok) {
@@ -135,12 +136,12 @@ const UserProvider = ({ children }) => {
     if (devId) {
       fetchHomeDeliveryClient();
     }
-    if (chechedClient !== null) {
+    if (checkedClient !== null) {
       fetchOrders();
     }
     fetchUserData();
     fetchDataProducts();
-  }, [deliveryId, token, chechedClient, devId]);
+  }, [deliveryId, token, checkedClient, devId]);
 
   return (
     <UserContext.Provider
@@ -175,10 +176,12 @@ const UserProvider = ({ children }) => {
         setSearchProducts,
         orders,
         setOrders,
-        chechedClient,
+        checkedClient,
         setCheckedClient,
         setDevId,
         clientForDelivary,
+        atTheMom,
+        setAtTheMom,
       }}
     >
       {children}

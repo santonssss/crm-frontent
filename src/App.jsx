@@ -10,6 +10,7 @@ import Abacus from "./Pages/Abacus/Abacus";
 import Signin from "./Pages/Signin/Signin";
 import SignUp from "./Pages/SignUp/SignUp";
 import Main from "./Pages/Main/Main";
+import NadlaknoyDelivery from "./Pages/NadladnoyDelivery/NadlaknoyDelivery";
 function App() {
   const navigate = useNavigate();
   const tok = localStorage.getItem("accessToken");
@@ -28,7 +29,10 @@ function App() {
   return (
     <Routes>
       {isTokenPresent ? (
-        <Route path={"*"} element={<Main />} />
+        <>
+          <Route path="/nakladnoy-delivery" element={<NadlaknoyDelivery />} />
+          <Route path={"*"} element={<Main />} />
+        </>
       ) : (
         <>
           <Route path={"/sign-in"} element={<Signin />} />

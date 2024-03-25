@@ -1,9 +1,44 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Chart.css";
 
 import Chart from "react-apexcharts";
 import Series from "../../Decomponents/Series";
+import { UserContext } from "../../Context/Context";
+
 const ChartWrapper = () => {
+  const { deliveryData } = useContext(UserContext);
+  const [totalDebts, setTotalDebts] = useState(0);
+
+  useEffect(() => {
+    if (deliveryData.length > 0) {
+      let totalDebts = deliveryData.reduce((accDelivery, deliveryman) => {
+        if (deliveryman.clientsAsDeliveryman) {
+          const debtsSum = deliveryman.clientsAsDeliveryman.reduce(
+            (accClient, client) => {
+              if (client.profile && typeof client.profile.debts === "number") {
+                return accClient + client.profile.debts;
+              } else {
+                return accClient;
+              }
+            },
+            0
+          );
+          return accDelivery + debtsSum;
+        } else {
+          return accDelivery;
+        }
+      }, 0);
+      setTotalDebts(totalDebts); // Установка состояния внутри блока if
+    }
+  }, [deliveryData]);
+
+  useEffect(() => {
+    setChartData((prevChartData) => ({
+      ...prevChartData,
+      series: [totalDebts, 100085],
+    }));
+  }, [totalDebts]);
+
   const [chartData, setChartData] = useState({
     options: {
       datalabels: {
@@ -14,8 +49,9 @@ const ChartWrapper = () => {
         mode: null,
       },
     },
-    series: [30085, 100085],
+    series: [totalDebts, 100085],
   });
+
   return (
     <section className="sc">
       <h1>График выручки и задолженности</h1>
@@ -43,7 +79,12 @@ const ChartWrapper = () => {
               sum={100085}
               text={"оплачено"}
             />
-            <Series bg={"bg2"} color={"#F65531"} sum={30085} text={"Долги"} />
+            <Series
+              bg={"bg2"}
+              color={"#F65531"}
+              sum={totalDebts}
+              text={"Долги"}
+            />
           </div>
         </div>
       </div>

@@ -25,6 +25,11 @@ const Delivary = ({ setTheMomentDelivery }) => {
                 (accumulator, client) => accumulator + client.profile.debts,
                 0
               );
+              const formatter = new Intl.NumberFormat("ru-RU", {
+                style: "currency",
+                currency: "RUB",
+              });
+              const formattedTotalDebts = formatter.format(totalDebts);
               return (
                 <tr
                   onClick={() => {
@@ -36,7 +41,7 @@ const Delivary = ({ setTheMomentDelivery }) => {
                 >
                   <td>{delivery.username}</td>
                   <td>{delivery.clientsAsDeliveryman.length}</td>
-                  <td>{totalDebts}</td>
+                  <td>{formattedTotalDebts}</td>
                 </tr>
               );
             })

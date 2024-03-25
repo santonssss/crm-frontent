@@ -111,7 +111,6 @@ const Abacus = () => {
   const handleDateChangeAfter = (date) => {
     setSelectedDateAfter(date);
   };
-  console.log(checkedClient);
   useEffect(() => {
     fetchUser();
     fetchOrdersOfClients();

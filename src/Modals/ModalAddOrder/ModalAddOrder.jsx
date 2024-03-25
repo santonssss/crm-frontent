@@ -188,6 +188,11 @@ const ProductRow = ({ product, selectedPrice, setSelectedPrice }) => {
     setSelectedPrice(e.target.value);
   };
 
+  useEffect(() => {
+    if (!selectedPrice) {
+      setSelectedPrice(product.standard);
+    }
+  }, []);
   return (
     <tr>
       <td>
@@ -198,17 +203,9 @@ const ProductRow = ({ product, selectedPrice, setSelectedPrice }) => {
           {product.name}
         </div>
       </td>
-      <td>{selectedPrice ? formatPrice(selectedPrice) : "Выберите цену"}</td>
+      <td>{selectedPrice ? formatPrice(selectedPrice) : product.standard}</td>
       <td>
         <select value={selectedPrice} onChange={handleSelectChange}>
-          <option
-            value=""
-            style={{
-              display: "none",
-            }}
-          >
-            Выберите
-          </option>
           <option value={product.standard}>
             {formatPrice(product.standard)}
           </option>

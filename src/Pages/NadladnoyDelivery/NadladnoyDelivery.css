@@ -1,0 +1,48 @@
+.nakladnoyy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding-top: 40px;
+  position: relative;
+}
+
+.nakladnoyy a {
+  text-decoration: underline;
+  position: absolute;
+  left: 30px;
+  top: 30px;
+  font-size: 25px;
+}
+.nakladnoyy-content {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.nakladnoyy-content .table-deli {
+  min-height: 10px;
+  overflow: visible !important;
+}
+.nakladnoyy-content .nakladnoy {
+  font-size: 13px;
+  position: absolute;
+  right: 100px;
+  top: 50px;
+  font-weight: 400;
+  padding: 7px 22px;
+  border: 1px solid var(--back-blue);
+  background-color: transparent;
+  border-radius: 10px;
+  margin: 20px 0;
+  cursor: pointer;
+}
+
+@media print {
+  .nakladnoyy-content .nakladnoy {
+    display: none;
+  }
+  .nakladnoyy a {
+    display: none;
+  }
+}
