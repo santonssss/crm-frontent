@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./ModalEditOrder.css";
 import { UserContext } from "../../Context/Context";
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbWEiLCJpZCI6NDMsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzExMjM2MTk2LCJleHAiOjE3MTEzMjI1OTZ9.hXjzpXeC3hFzC-Jg-qdmpizbdsIAIw9Gk7qsErKWw4M'
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbWEiLCJpZCI6NSwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTEzOTU0ODIsImV4cCI6MTcxMTQ4MTg4Mn0.eUjkODDqd2qi3jy6Tbm42cvfWTFwwUz1XF4NWsEQRTg'
 
 
 const ModalPayment = ({ orderId, profileId, onClose }) => {

@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./ModalEditOrder.css";
 import { UserContext } from "../../Context/Context";
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbWEiLCJpZCI6NDMsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzExMjM2MTk2LCJleHAiOjE3MTEzMjI1OTZ9.hXjzpXeC3hFzC-Jg-qdmpizbdsIAIw9Gk7qsErKWw4M'
+const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbWEiLCJpZCI6NSwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTEzOTU0ODIsImV4cCI6MTcxMTQ4MTg4Mn0.eUjkODDqd2qi3jy6Tbm42cvfWTFwwUz1XF4NWsEQRTg'
 
 
-const ModalEditOrder = ({ order, onClose }) => {
+const ModalEditOrder = ({ order, onClose, client }) => {
   const [money, setMoney] = useState(null);
 
   const formatToRubles = (value) => {
@@ -41,14 +41,19 @@ const ModalEditOrder = ({ order, onClose }) => {
       const response = await fetch(
         `https://monkfish-app-v8pst.ondigitalocean.app/api/payment-history`,
         {
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          body: JSON.stringify({
+            money: paymentAmount,
+            order: order.id,
+            profile: client.profile.id
+          })
         }
       );
 
       const data = response.json()
-
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -96,7 +101,6 @@ const ModalEditOrder = ({ order, onClose }) => {
             <th>Сумма</th>
             <th>Оплачен</th>
             <th>Долги</th>
-            <th></th>
           </tr>
         </thead>
         <tbody className="text-gray-700">
@@ -113,7 +117,6 @@ const ModalEditOrder = ({ order, onClose }) => {
                   <td></td>
                   <td>{ formatToRubles(order.amount - order.remains) }</td>
                   <td>{ formatToRubles(order.remains) }</td>
-                  <td></td>
                 </tr>
         </tbody>
       </table>
@@ -130,7 +133,12 @@ const ModalEditOrder = ({ order, onClose }) => {
     Сохранить
   </button>
           </div>
-          <input type="number" placeholder={order.remains} value={paymentAmount} onChange={handlePaymentAmountChange} />
+          <div className="flex text-gray-900">
+            <label htmlFor="paymentInput" className="pr-10">Оплата: </label>
+            <input
+              id="paymentInput" type="number" placeholder={order.remains} value={paymentAmount} onChange={handlePaymentAmountChange} />
+          </div>
+          
           <div className="overflow-x-auto p-4">
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg leading-6 font-medium text-gray-900">История оплаты</h3>

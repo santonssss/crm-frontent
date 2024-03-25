@@ -6,7 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru";
 import ModalEditOrder from "../../Modals/ModalEditOrder/ModalEditOrder";
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbWEiLCJpZCI6NDMsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzExMjM2MTk2LCJleHAiOjE3MTEzMjI1OTZ9.hXjzpXeC3hFzC-Jg-qdmpizbdsIAIw9Gk7qsErKWw4M";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbWEiLCJpZCI6NSwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTEzOTU0ODIsImV4cCI6MTcxMTQ4MTg4Mn0.eUjkODDqd2qi3jy6Tbm42cvfWTFwwUz1XF4NWsEQRTg";
 
 const Abacus = () => {
   const { sidebarOpen, checkedClient } = useContext(UserContext);
@@ -52,11 +52,13 @@ const Abacus = () => {
     }
   };
 
+  console.log(checkedClient)
+
   const fetchUser = async () => {
     try {
       // const queryParams = new URLSearchParams(params).toString();
       const response = await fetch(
-        `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${checkedClient}?relations[0]=ordersAsClient`,
+        `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${checkedClient}?relations[0]=ordersAsClient&relations[1]=profile`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -154,6 +156,7 @@ const Abacus = () => {
               className="custom-datepicker"
               locale={ru}
             />
+            <button>Найти</button>
           </div>
           <table className="order-table">
             <thead>
@@ -210,6 +213,7 @@ const Abacus = () => {
         <ModalEditOrder
           order={selectedOrder}
           onClose={() => setSelectedOrder(null)}
+          client={client}
           // Другие пропсы, которые могут понадобиться для редактирования
         />
       )}
