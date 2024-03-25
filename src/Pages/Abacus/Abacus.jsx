@@ -5,8 +5,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru";
 import ModalEditOrder from "../../Modals/ModalEditOrder/ModalEditOrder";
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhbWEiLCJpZCI6NSwicm9sZSI6InVzZXIiLCJpYXQiOjE3MTEzOTU0ODIsImV4cCI6MTcxMTQ4MTg4Mn0.eUjkODDqd2qi3jy6Tbm42cvfWTFwwUz1XF4NWsEQRTg";
+const token = localStorage.getItem("accessToken");
+
 
 const Abacus = () => {
   const { sidebarOpen, checkedClient } = useContext(UserContext);
