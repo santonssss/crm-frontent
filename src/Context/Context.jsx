@@ -75,7 +75,7 @@ const UserProvider = ({ children }) => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          "https://monkfish-app-v8pst.ondigitalocean.app/api/user?relations[0]=clientsAsDeliveryman.profile&filter[role]=deliveryman",
+          "https://monkfish-app-v8pst.ondigitalocean.app/api/user?relations[0]=clientsAsDeliveryman.profile.paymentHistories&filter[role]=deliveryman",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -141,7 +141,7 @@ const UserProvider = ({ children }) => {
     }
     fetchUserData();
     fetchDataProducts();
-  }, [deliveryId, token, checkedClient, devId, orders, sum]);
+  }, [deliveryId, token, checkedClient, sum]);
 
   return (
     <UserContext.Provider

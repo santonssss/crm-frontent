@@ -8,7 +8,7 @@ import { UserContext } from "../../Context/Context";
 const ChartWrapper = () => {
   const { deliveryData } = useContext(UserContext);
   const [totalDebts, setTotalDebts] = useState(0);
-
+  console.log(deliveryData);
   useEffect(() => {
     if (deliveryData.length > 0) {
       let totalDebts = deliveryData.reduce((accDelivery, deliveryman) => {
@@ -28,9 +28,9 @@ const ChartWrapper = () => {
           return accDelivery;
         }
       }, 0);
-      setTotalDebts(totalDebts); // Установка состояния внутри блока if
+      setTotalDebts(totalDebts);
     }
-  }, [deliveryData]);
+  }, []);
 
   useEffect(() => {
     setChartData((prevChartData) => ({

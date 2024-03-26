@@ -88,6 +88,7 @@ const ModalDelivery = ({ atTheMomentDelivery }) => {
             </thead>
             <tbody>
               {atTheMomentDelivery.clientsAsDeliveryman.map((client) => {
+                console.log(client);
                 return (
                   <tr>
                     <td>{client.username}</td>

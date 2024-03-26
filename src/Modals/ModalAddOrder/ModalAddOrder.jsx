@@ -18,23 +18,28 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
     (user) => user.role === "deliveryman"
   );
   useEffect(() => {
-    const total = Object.values(selectedPrices).reduce(
-      (acc, price) => acc + Number(price),
-      0
-    );
+    const total = productsList.reduce((acc, product, index) => {
+      const price = selectedPrices[index] || product.standard;
+      return acc + price * product.selectedQuantity;
+    }, 0);
     setTotalSelectedPrice(total);
-  }, [selectedPrices]);
+  }, [selectedPrices, productsList]);
   const submitOrder = async (e) => {
     const token = localStorage.getItem("accessToken");
 
     e.preventDefault();
     try {
+      const baskets = productsList.map((product) => ({
+        product: product.id,
+        discountType: product.selectedDiscountType || "standard",
+        quantity: parseInt(product.selectedQuantity) || 1,
+      }));
       const data = {
         amount: totalSelectedPrice,
-        baskets: productsList,
+        baskets: baskets,
         owner: selectedClientId,
       };
-
+      console.log(data);
       const requestOptions = {
         method: "POST",
         headers: {
@@ -141,6 +146,11 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
                         [index]: price,
                       }))
                     }
+                    updateProduct={(updatedProduct) => {
+                      const updatedProductsList = [...productsList];
+                      updatedProductsList[index] = updatedProduct;
+                      setProductsList(updatedProductsList);
+                    }}
                   />
                 ))
               ) : (
@@ -182,10 +192,22 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
     </form>
   );
 };
+const ProductRow = ({
+  product,
+  selectedPrice,
+  setSelectedPrice,
+  updateProduct,
+}) => {
+  const [selectedDiscountType, setSelectedDiscountType] = useState("standard");
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
 
-const ProductRow = ({ product, selectedPrice, setSelectedPrice }) => {
   const handleSelectChange = (e) => {
     setSelectedPrice(e.target.value);
+    setSelectedDiscountType(e.target.dataset.discountType);
+  };
+
+  const handleQuantityChange = (e) => {
+    setSelectedQuantity(e.target.value);
   };
 
   useEffect(() => {
@@ -193,6 +215,17 @@ const ProductRow = ({ product, selectedPrice, setSelectedPrice }) => {
       setSelectedPrice(product.standard);
     }
   }, []);
+
+  useEffect(() => {
+    if (typeof updateProduct === "function") {
+      updateProduct({
+        ...product,
+        selectedDiscountType: selectedDiscountType,
+        selectedQuantity: selectedQuantity,
+      });
+    }
+  }, [selectedDiscountType, selectedQuantity]);
+
   return (
     <tr>
       <td>
@@ -201,18 +234,31 @@ const ProductRow = ({ product, selectedPrice, setSelectedPrice }) => {
             <img src={product.image.url} alt={product.name} />
           )}
           {product.name}
+          <input
+            type="number"
+            name=""
+            id=""
+            className="w-10"
+            value={selectedQuantity}
+            onChange={handleQuantityChange}
+          />
+          <span>кг/шт</span>
         </div>
       </td>
-      <td>{selectedPrice ? formatPrice(selectedPrice) : product.standard}</td>
+      <td>
+        {selectedPrice
+          ? formatPrice(selectedPrice * selectedQuantity)
+          : formatPrice(product.standard * selectedQuantity)}
+      </td>
       <td>
         <select value={selectedPrice} onChange={handleSelectChange}>
-          <option value={product.standard}>
+          <option value={product.standard} data-discount-type="standard">
             {formatPrice(product.standard)}
           </option>
-          <option value={product.discount1}>
+          <option value={product.discount1} data-discount-type="discount1">
             {formatPrice(product.discount1)}
           </option>
-          <option value={product.discount2}>
+          <option value={product.discount2} data-discount-type="discount2">
             {formatPrice(product.discount2)}
           </option>
         </select>
@@ -220,7 +266,6 @@ const ProductRow = ({ product, selectedPrice, setSelectedPrice }) => {
     </tr>
   );
 };
-
 const formatPrice = (price) => {
   return new Intl.NumberFormat("ru-RU", {
     style: "currency",
