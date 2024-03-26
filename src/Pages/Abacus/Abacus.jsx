@@ -158,7 +158,7 @@ const Abacus = () => {
             />
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ml-10"
-            >Найти</button>
+            >Искать</button>
           </div>
           <table className="order-table z-0">
             <thead>
@@ -172,31 +172,33 @@ const Abacus = () => {
               </tr>
             </thead>
             <tbody className="text-gray-700">
-              {orders.length != 0 ? (
-                orders.map((order) => {
-                  return (
-                    <tr>
-                      <td>{order.id}</td>
-                      <td>{formatDate(new Date(order.createdAt))}</td>
-                      <td>{formatToRubles(order.amount)}</td>
-                      <td>{formatToRubles(order.amount - order.remains)}</td>
-                      <td>{formatToRubles(order.remains)}</td>
-                      <td>
-                        <button
-                          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                          onClick={() => handleEditClick(order)}
-                        >
-                          Редактировать
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })
-              ) : (
-                <tr>
-                  <td>Заказов к сожалению нету</td>
-                </tr>
-              )}
+              {
+  orders.length > 0 ? (
+    orders.map((order) => (
+      <tr key={order.id}>
+        <td>{order.id}</td>
+        <td>{formatDate(new Date(order.createdAt))}</td>
+        <td>{formatToRubles(order.amount)}</td>
+        <td>{formatToRubles(order.amount - order.remains)}</td>
+        <td>{formatToRubles(order.remains)}</td>
+        <td>
+          {order.remains != 0 && (
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+              onClick={() => handleEditClick(order)}
+            >
+              Редактировать
+            </button>
+          )}
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="6" className="text-center">Заказов к сожалению нету</td>
+    </tr>
+  )
+}
               <tr className="bg-gray-200">
                 <td>
                   <strong>Итог:</strong>
