@@ -163,7 +163,7 @@ const Abacus = () => {
           </div>
           <div className="abacus-info">
             <span>Сумма заказов:</span>
-            <span>{client.summa}</span>
+            <span>{formatToRubles(client.summa)}</span>
           </div>
           <div className="abacus-info">
             <span>Кол-во заказов:</span>
