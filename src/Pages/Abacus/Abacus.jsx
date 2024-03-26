@@ -22,6 +22,36 @@ const Abacus = () => {
     setSelectedOrder(order);
   };
 
+  const fetchWithDates = async () => {
+    try {
+      const response = await fetch(
+        `https://monkfish-app-v8pst.ondigitalocean.app/api/order/?relations[0]=owner&relations[1]=paymentHistories&filter[owner][id]=${checkedClient}&dateFilter[startDate]=${beforeSelectedDate}&dateFilter[endDate]=${afterSelectedDate}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      let sumPaid = 0;
+      let sumRemains = 0;
+      data.data.records.map((value, index) => {
+        sumRemains += Number(value.remains);
+        sumPaid += Number(value.amount - value.remains);
+      });
+      setPaid(sumPaid);
+      setRemains(sumRemains);
+      setOrders(data.data.records);
+    } catch (error) {
+      console.error("Error during fetch:", error);
+    }
+  }
+
   const fetchOrdersOfClients = async () => {
     try {
       const response = await fetch(
@@ -158,7 +188,12 @@ const Abacus = () => {
             />
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ml-10"
+              onClick={fetchWithDates}
             >Искать</button>
+            <button
+              onClick={fetchOrdersOfClients}
+              className=" border-2 text-gray-800  py-2 px-4 rounded ml-10 hover:text-white hover:bg-gray-700 transition-all"
+            >Reset</button>
           </div>
           <table className="order-table z-0">
             <thead>
@@ -182,13 +217,18 @@ const Abacus = () => {
         <td>{formatToRubles(order.amount - order.remains)}</td>
         <td>{formatToRubles(order.remains)}</td>
         <td>
-          {order.remains != 0 && (
+          {order.remains != 0 ? (
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
               onClick={() => handleEditClick(order)}
             >
               Редактировать
             </button>
+          ) : (
+              <span className= " bg-green-200 text-green-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-700 dark:text-green-300">
+  Paid
+</span>
+
           )}
         </td>
       </tr>
