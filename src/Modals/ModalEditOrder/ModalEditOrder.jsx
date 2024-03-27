@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./ModalEditOrder.css";
 import { UserContext } from "../../Context/Context";
+import toast, { Toaster } from "react-hot-toast";
 const token = localStorage.getItem("accessToken");
 
 
 const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
-  const [money, setMoney] = useState(0);
   const [payOrder, setPayOrder] = useState(order);
+  const [money, setMoney] = useState(Number(payOrder.remains));
+  // const [error, setError] = useState(false);
 
   const formatToRubles = (value) => {
     return new Intl.NumberFormat("ru-RU", {
@@ -28,8 +30,6 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
     return formattedDate;
   }
 
-  const [paymentAmount, setPaymentAmount] = useState(order.remains);
-
   const handlePaymentAmountChange = (event) => {
     setMoney(event.target.value);
   };
@@ -38,7 +38,12 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
 
   const handleAcceptPayment = async () => {
     try {
-      
+      if (money > payOrder.remains) {
+        toast("Оплата превышает сумму долга!!!", {
+          color: 'red'
+        })
+        return;
+      }
       const dataBody = {
         money: Number(money),
         order: order.id,
@@ -73,6 +78,7 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
         }
       );
       const dataOrder = await orderUpadte.json();
+      toast("Оплата прошла успещно!!!")
       setPayOrder(dataOrder.data)
       setMoney(0);
       fetchOrdersOfClients()
@@ -174,7 +180,7 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
 <tr> 
                         <td className="px-4 py-3 whitespace-nowrap">{ value.createdAt }</td>
                         <td className="px-4 py-3 whitespace-nowrap">{ formatToRubles(Number(value.money))}</td>
-                            <td className="px-4 py-3 whitespace-nowrap">{payOrder.amount - value.money}</td>
+                            <td className="px-4 py-3 whitespace-nowrap">{ formatToRubles(payOrder.amount - value.money)}</td>
                           </tr>
                       </>))
                       
@@ -190,6 +196,7 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
             </div>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };
