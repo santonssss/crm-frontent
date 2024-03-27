@@ -95,10 +95,8 @@ const ModalAddClients = () => {
         <div>
           <span>Доставщик</span>
           <select
-            value={
-              selectedPrices[product.id]?.discountType || selectedDiscountType
-            }
-            onChange={handleSelectChange}
+            value={deliverymanAsClient}
+            onChange={(e) => setDeliverymanAsClient(e.target.value)}
           >
             <option value="">Выберите доставщика</option>
             {deliveryMen.map((delivery) => (

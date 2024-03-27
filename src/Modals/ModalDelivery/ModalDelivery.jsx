@@ -1,9 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./ModalDelivery.css";
 import { UserContext } from "../../Context/Context";
 import { Link } from "react-router-dom";
+import ModalDataClientHistory from "../ModalDataClientHistory/ModalDataClientHistory";
 
-const ModalDelivery = ({ atTheMomentDelivery }) => {
+const ModalDelivery = ({
+  atTheMomentDelivery,
+  setOpenHistory,
+  atTheMomentClient,
+  setAtTheMomentClient,
+}) => {
   const { setDeliveryOpen, clientForDelivary, setAtTheMom } =
     useContext(UserContext);
   const totalDebts = atTheMomentDelivery.clientsAsDeliveryman.reduce(
@@ -20,8 +26,13 @@ const ModalDelivery = ({ atTheMomentDelivery }) => {
     setAtTheMom(atTheMomentDelivery);
   }, [atTheMomentDelivery]);
   return (
-    <div className="modal-overlay_del">
-      <div className="modal_del">
+    <div
+      className="modal-overlay_del"
+      onClick={() => {
+        setDeliveryOpen(false);
+      }}
+    >
+      <div className="modal_del" onClick={(e) => e.stopPropagation()}>
         <div
           className="close_del"
           onClick={() => {
@@ -88,12 +99,22 @@ const ModalDelivery = ({ atTheMomentDelivery }) => {
             </thead>
             <tbody>
               {atTheMomentDelivery.clientsAsDeliveryman.map((client) => {
-                console.log(client);
+                let sum = 0;
+                client.profile.paymentHistories.map((client) => {
+                  if (client.paymentType == "debt") {
+                    sum += client.money;
+                  }
+                });
                 return (
-                  <tr>
+                  <tr
+                    onClick={() => {
+                      setAtTheMomentClient(client);
+                      setOpenHistory(true);
+                    }}
+                  >
                     <td>{client.username}</td>
                     <td>{client.phone}</td>
-                    <td>100455</td>
+                    <td>{sum}</td>
                     <td>{client.profile.debts}</td>
                   </tr>
                 );

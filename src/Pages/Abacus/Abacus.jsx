@@ -7,7 +7,6 @@ import ru from "date-fns/locale/ru";
 import ModalEditOrder from "../../Modals/ModalEditOrder/ModalEditOrder";
 const token = localStorage.getItem("accessToken");
 
-
 const Abacus = () => {
   const { sidebarOpen, checkedClient } = useContext(UserContext);
   const [beforeSelectedDate, setSelectedDateBefore] = useState(new Date());
@@ -50,7 +49,7 @@ const Abacus = () => {
     } catch (error) {
       console.error("Error during fetch:", error);
     }
-  }
+  };
 
   const fetchOrdersOfClients = async () => {
     try {
@@ -82,8 +81,6 @@ const Abacus = () => {
     }
   };
 
-  console.log(checkedClient)
-
   const fetchUser = async () => {
     try {
       // const queryParams = new URLSearchParams(params).toString();
@@ -105,10 +102,8 @@ const Abacus = () => {
       const sizeOrders = data.data.ordersAsClient?.length;
       let summa = 0;
       data.data.ordersAsClient?.map((value, index) => {
-        console.log(value.amount);
         summa += Number(value.amount);
       });
-      console.log(summa);
       data.data.sizeOrders = sizeOrders;
       data.data.summa = summa;
       setClient(data.data);
@@ -188,11 +183,15 @@ const Abacus = () => {
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ml-10"
               onClick={fetchWithDates}
-            >Искать</button>
+            >
+              Искать
+            </button>
             <button
               onClick={fetchOrdersOfClients}
               className=" border-2 text-gray-800  py-2 px-4 rounded ml-10 hover:text-white hover:bg-gray-700 transition-all"
-            >Reset</button>
+            >
+              Reset
+            </button>
           </div>
           <table className="order-table z-0">
             <thead>
@@ -206,38 +205,37 @@ const Abacus = () => {
               </tr>
             </thead>
             <tbody className="text-gray-700">
-              {
-  orders.length > 0 ? (
-    orders.map((order) => (
-      <tr key={order.id}>
-        <td>{order.id}</td>
-        <td>{formatDate(new Date(order.createdAt))}</td>
-        <td>{formatToRubles(order.amount)}</td>
-        <td>{formatToRubles(order.amount - order.remains)}</td>
-        <td>{formatToRubles(order.remains)}</td>
-        <td>
-          {order.remains != 0 ? (
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-              onClick={() => handleEditClick(order)}
-            >
-              Редактировать
-            </button>
-          ) : (
-              <span className= " bg-green-200 text-green-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-700 dark:text-green-300">
-  Paid
-</span>
-
-          )}
-        </td>
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan="6" className="text-center">Заказов к сожалению нету</td>
-    </tr>
-  )
-}
+              {orders.length > 0 ? (
+                orders.map((order) => (
+                  <tr key={order.id}>
+                    <td>{order.id}</td>
+                    <td>{formatDate(new Date(order.createdAt))}</td>
+                    <td>{formatToRubles(order.amount)}</td>
+                    <td>{formatToRubles(order.amount - order.remains)}</td>
+                    <td>{formatToRubles(order.remains)}</td>
+                    <td>
+                      {order.remains != 0 ? (
+                        <button
+                          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                          onClick={() => handleEditClick(order)}
+                        >
+                          Редактировать
+                        </button>
+                      ) : (
+                        <span className=" bg-green-200 text-green-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-700 dark:text-green-300">
+                          Оплачен
+                        </span>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center">
+                    Заказов к сожалению нету
+                  </td>
+                </tr>
+              )}
               <tr className="bg-gray-200">
                 <td>
                   <strong>Итог:</strong>
@@ -258,7 +256,6 @@ const Abacus = () => {
           onClose={() => setSelectedOrder(null)}
           client={client}
           fetchOrdersOfClients={fetchOrdersOfClients}
-          // Другие пропсы, которые могут понадобиться для редактирования
         />
       )}
     </div>

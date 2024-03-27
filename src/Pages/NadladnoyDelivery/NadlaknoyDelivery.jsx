@@ -72,6 +72,12 @@ const NadlaknoyDelivery = () => {
             </thead>
             <tbody>
               {atTheMom.clientsAsDeliveryman.map((client) => {
+                let sum = 0;
+                client.profile.paymentHistories.map((client) => {
+                  if (client.paymentType == "debt") {
+                    sum += client.money;
+                  }
+                });
                 return (
                   <tr>
                     <td
@@ -96,7 +102,7 @@ const NadlaknoyDelivery = () => {
                         padding: "10px 15px",
                       }}
                     >
-                      100455 ₽
+                      {sum} ₽
                     </td>
                     <td
                       style={{

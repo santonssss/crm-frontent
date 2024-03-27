@@ -1,0 +1,70 @@
+.modal-overlay_clientHistory {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal_clientHistory {
+  background: #fff;
+  width: 995px;
+  height: 612px;
+  position: relative;
+  border-radius: 10px;
+  padding-top: 46px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.close_clientHistory {
+  position: absolute;
+  cursor: pointer;
+  left: 26px;
+  top: 26px;
+}
+
+.modal_clientHistory table caption {
+  font-family: Montserrat;
+  text-align: left;
+  margin-bottom: 18px;
+  font-size: 20px;
+  font-weight: 500;
+  margin-left: 20px;
+}
+
+.modal_clientHistory table {
+  width: 593px;
+
+  border-spacing: 0;
+}
+.modal_clientHistory table tr th {
+  height: 46px;
+  color: #000;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: left;
+}
+
+.modal_clientHistory table tr th:nth-child(4) {
+  text-align: center;
+}
+.modal_clientHistory table tr td {
+  margin: 3px 0;
+  padding: 5px 0;
+  border: 1px solid #fff;
+}
+
+.modal_clientHistory table tr td:nth-child(4) {
+  color: red;
+  text-align: center;
+}
+.modal_clientHistory table tr:nth-child(2n) {
+  background-color: #eee;
+}

@@ -8,34 +8,38 @@ import { UserContext } from "../../Context/Context";
 const ChartWrapper = () => {
   const { deliveryData } = useContext(UserContext);
   const [totalDebts, setTotalDebts] = useState(0);
-  console.log(deliveryData);
+  const [totalPartly, setTotalPartly] = useState(0);
   useEffect(() => {
     if (deliveryData.length > 0) {
-      let totalDebts = deliveryData.reduce((accDelivery, deliveryman) => {
+      let debtsSum = 0;
+      let partlySum = 0;
+
+      deliveryData.forEach((deliveryman) => {
         if (deliveryman.clientsAsDeliveryman) {
-          const debtsSum = deliveryman.clientsAsDeliveryman.reduce(
-            (accClient, client) => {
-              if (client.profile && typeof client.profile.debts === "number") {
-                return accClient + client.profile.debts;
-              } else {
-                return accClient;
-              }
-            },
-            0
-          );
-          return accDelivery + debtsSum;
-        } else {
-          return accDelivery;
+          deliveryman.clientsAsDeliveryman.forEach((client) => {
+            if (client.profile && typeof client.profile.debts === "number") {
+              debtsSum += client.profile.debts;
+            }
+            if (client.profile && client.profile.paymentHistories) {
+              client.profile.paymentHistories.forEach((payment) => {
+                if (payment.paymentType === "partly") {
+                  partlySum += payment.money;
+                }
+              });
+            }
+          });
         }
-      }, 0);
-      setTotalDebts(totalDebts);
+      });
+
+      setTotalDebts(debtsSum);
+      setTotalPartly(partlySum);
     }
-  }, []);
+  }, [deliveryData]);
 
   useEffect(() => {
     setChartData((prevChartData) => ({
       ...prevChartData,
-      series: [totalDebts, 100085],
+      series: [totalDebts, totalPartly],
     }));
   }, [totalDebts]);
 
@@ -76,7 +80,7 @@ const ChartWrapper = () => {
             <Series
               bg={"bg1"}
               color={"#1E89EC"}
-              sum={100085}
+              sum={totalPartly}
               text={"оплачено"}
             />
             <Series

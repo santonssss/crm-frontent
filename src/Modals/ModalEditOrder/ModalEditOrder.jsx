@@ -4,7 +4,6 @@ import { UserContext } from "../../Context/Context";
 import toast, { Toaster } from "react-hot-toast";
 const token = localStorage.getItem("accessToken");
 
-
 const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
   const [payOrder, setPayOrder] = useState(order);
   const [money, setMoney] = useState(Number(payOrder.remains));
@@ -34,38 +33,45 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
     setMoney(event.target.value);
   };
 
-
-
   const handleAcceptPayment = async () => {
     try {
       if (money > payOrder.remains) {
-        toast("Оплата превышает сумму долга!!!", {
-          color: 'red'
-        })
+        toast("Оплата превышает сумму долга!", {
+          iconTheme: {
+            primary: "red",
+            secondary: "#fff",
+          },
+        });
+        return;
+      } else if (money <= 0) {
+        toast("Сумма оплаты должна быть больше нуля!", {
+          iconTheme: {
+            primary: "red",
+            secondary: "#fff",
+          },
+        });
         return;
       }
       const dataBody = {
         money: Number(money),
         order: order.id,
-        profile: client.profile.id
-      }
+        profile: client.profile.id,
+      };
       console.log(dataBody);
       const response = await fetch(
         `https://monkfish-app-v8pst.ondigitalocean.app/api/payment-history`,
         {
-          method: 'POST',
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(
-            dataBody
-          )
+          body: JSON.stringify(dataBody),
         }
       );
-      
-      const data = await response.json()
-      console.log(data)
+
+      const data = await response.json();
+      console.log(data);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -78,26 +84,22 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
         }
       );
       const dataOrder = await orderUpadte.json();
-      toast("Оплата прошла успещно!!!")
-      setPayOrder(dataOrder.data)
+      toast("Оплата прошла успешно!");
+      setPayOrder(dataOrder.data);
       setMoney(0);
-      fetchOrdersOfClients()
+      fetchOrdersOfClients();
     } catch (error) {
       console.error("Error during fetch:", error);
     }
   };
 
-  
   // useEffect(() => {
   //   fetchOrderById();
   // }, [])
 
   return (
     <div className="modal-overlay_edit-order">
-      <div
-        className="modal-content"
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="edit-order_close" onClick={onClose}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -114,86 +116,110 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
           </svg>
         </div>
         <div className="flex items-center justify-center edit-order_modal">
-        <div className="bg-white rounded-lg shadow-xl">
+          <div className="bg-white rounded-lg shadow-xl">
             <div className="overflow-x-auto">
               <table className="order-table min-w-full divide-y divide-gray-200">
-        <thead>
-          <tr>
-            <th>№ Накладного</th>
-            <th>Дата</th>
-            <th>Сумма</th>
-            <th>Оплачен</th>
-            <th>Долги</th>
-          </tr>
-        </thead>
-        <tbody className="text-gray-700">
-                <tr>
-                  <td>{payOrder.id}</td>
-                  <td>{formatDate(new Date(payOrder.createdAt))}</td>
-                  <td>{formatToRubles(payOrder.amount)}</td>
-                  <td>{ formatToRubles(payOrder.amount - payOrder.remains) }</td>
-                  <td>{ formatToRubles(payOrder.remains) }</td>
-                </tr>
-              <tr className="bg-gray-200">
-                  <td><strong>Итог:</strong></td>
-                  <td></td>
-                  <td></td>
-                  <td>{ formatToRubles(payOrder.amount - payOrder.remains) }</td>
-                  <td>{ formatToRubles(payOrder.remains) }</td>
-                </tr>
-        </tbody>
-      </table>
+                <thead>
+                  <tr>
+                    <th>№ Накладного</th>
+                    <th>Дата</th>
+                    <th>Сумма</th>
+                    <th>Оплачен</th>
+                    <th>Долги</th>
+                  </tr>
+                </thead>
+                <tbody className="text-gray-700">
+                  <tr>
+                    <td>{payOrder.id}</td>
+                    <td>{formatDate(new Date(payOrder.createdAt))}</td>
+                    <td>{formatToRubles(payOrder.amount)}</td>
+                    <td>
+                      {formatToRubles(payOrder.amount - payOrder.remains)}
+                    </td>
+                    <td>{formatToRubles(payOrder.remains)}</td>
+                  </tr>
+                  <tr className="bg-gray-200">
+                    <td>
+                      <strong>Итог:</strong>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      {formatToRubles(payOrder.amount - payOrder.remains)}
+                    </td>
+                    <td>{formatToRubles(payOrder.remains)}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-
-            
-        </div>
-          <div className="flex text-gray-900 mt-20 justify-center items-center">
-            <label htmlFor="paymentInput" className="pr-10">Оплата: </label>
-            <input
-              id="paymentInput" type="number" placeholder={payOrder.remains} value={money} onChange={handlePaymentAmountChange} className="pr-5"/>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded pl-5" onClick={handleAcceptPayment}>
-    Принять оплату
-  </button>
           </div>
-          
+          <div className="flex text-gray-900 mt-20 justify-center items-center">
+            <label htmlFor="paymentInput" className="pr-10">
+              Оплата:{" "}
+            </label>
+            <input
+              id="paymentInput"
+              type="number"
+              placeholder={payOrder.remains}
+              value={money}
+              onChange={handlePaymentAmountChange}
+              className="pr-5"
+            />
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded pl-5"
+              onClick={handleAcceptPayment}
+            >
+              Принять оплату
+            </button>
+          </div>
+
           <div className="overflow-x-auto p-4">
-                <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg leading-6 font-medium text-gray-900">История оплаты</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                История оплаты
+              </h3>
             </div>
             <div className="max-h-[500px] overflow-y-auto overflow-x-auto">
-
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead>
-                        <tr>
-                            <th className="px-4 py-2 text-left text-sm font-semibold">Дата</th>
-                            <th className="px-4 py-2 text-left text-sm font-semibold">Оплачен</th>
-                            <th className="px-4 py-2 text-left text-sm font-semibold">Долги</th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                
-                  {
-                    payOrder.paymentHistories.length > 1 ? (
-                      payOrder.paymentHistories
-                        .filter((value) => value.paymentType !== 'debt')
-                        .map((value, index) => (<>
-<tr> 
-                        <td className="px-4 py-3 whitespace-nowrap">{ value.createdAt }</td>
-                        <td className="px-4 py-3 whitespace-nowrap">{ formatToRubles(Number(value.money))}</td>
-                            <td className="px-4 py-3 whitespace-nowrap">{ formatToRubles(payOrder.amount - value.money)}</td>
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Дата
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Оплачен
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Долги
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {payOrder.paymentHistories.length > 1 ? (
+                    payOrder.paymentHistories
+                      .filter((value) => value.paymentType !== "debt")
+                      .map((value, index) => (
+                        <>
+                          <tr>
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              {value.createdAt}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              {formatToRubles(Number(value.money))}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              {formatToRubles(payOrder.amount - value.money)}
+                            </td>
                           </tr>
-                      </>))
-                      
-                    ) : (
-                  <>
-                    Нету оплаты 
-                  </>
-                    )
-                  }
-                    </tbody>
+                        </>
+                      ))
+                  ) : (
+                    <>Нету оплаты</>
+                  )}
+                </tbody>
               </table>
-              </div>
             </div>
+          </div>
         </div>
       </div>
       <Toaster />
