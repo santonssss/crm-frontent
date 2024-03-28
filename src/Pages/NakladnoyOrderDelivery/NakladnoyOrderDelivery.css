@@ -11,3 +11,31 @@
 .order-table-3 {
   border-spacing: 2px;
 }
+.order-table-3 td {
+  white-space: nowrap;
+  vertical-align: top;
+  padding: 8px;
+}
+
+.order-table-3 th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  padding: 10px;
+}
+.order-naklad {
+  position: relative;
+}
+.order-naklad .nakladnoy {
+  border: 1px solid var(--back-blue);
+  padding: 10px 5px;
+  border-radius: 10px;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+@media print {
+  .order-naklad .nakladnoy {
+    display: none;
+  }
+}

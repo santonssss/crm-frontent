@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { UserContext } from "../../Context/Context";
 import "./NakladnoyOrderDelivery.css";
 
@@ -31,22 +31,36 @@ const NakladnoyOrderDelivery = () => {
       });
   }
 
+  // Считаем общее количество каждого продукта
   const productQuantities = {};
-  products.forEach((product) => {
-    productQuantities[product.id] = 0;
-  });
-
   filteredOrders.forEach((order) => {
     order.baskets.forEach((basket) => {
-      productQuantities[basket.productId] += basket.quantity;
+      const productId = basket.product.id; // Убедитесь, что это правильный путь к ID продукта
+      if (!productQuantities[productId]) {
+        productQuantities[productId] = 0;
+      }
+      productQuantities[productId] += basket.quantity;
     });
   });
+
   const totalAmount = filteredOrders.reduce(
     (total, order) => total + order.amount,
     0
   );
+
   return (
     <div className="order-naklad">
+      <button
+        className="nakladnoy"
+        onClick={() => {
+          window.print();
+          const style = document.createElement("style");
+          style.innerHTML = `@page { size: landscape; }`;
+          document.head.appendChild(style);
+        }}
+      >
+        Напечатать накладную
+      </button>
       <div>
         <strong
           style={{
@@ -63,9 +77,9 @@ const NakladnoyOrderDelivery = () => {
         <thead>
           <tr>
             <th>№ Имя</th>
-            {products.map((product) => {
-              return <th>{product.name}</th>;
-            })}
+            {products.map((product) => (
+              <th key={product.id}>{product.name}</th>
+            ))}
             <th>Сумма</th>
             <th>Платил</th>
             <th>Долг</th>
@@ -73,38 +87,26 @@ const NakladnoyOrderDelivery = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredOrders.map((order, index) => {
-            console.log(order);
-            return (
-              <tr key={order.id}>
-                <td>
-                  {index + 1} {order.clientName}
-                </td>
-                {products.map((product) => (
-                  <td key={product.id}>
-                    {order.baskets.find(
-                      (basket) => basket.product.id === product.id
-                    )
-                      ? order.baskets.find(
-                          (basket) => basket.product.id === product.id
-                        ).quantity
-                      : 0}{" "}
-                    кг/шт
-                  </td>
-                ))}
-                <td>{order.amount} ₽</td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            );
-          })}
+          {filteredOrders.map((order, index) => (
+            <tr key={order.id}>
+              <td>
+                {index + 1}. {order.clientName}
+              </td>
+              {products.map((product) => {
+                const productOrders = order.baskets
+                  .filter((basket) => basket.product.id === product.id)
+                  .map((basket) => `${basket.quantity} к/ш (${basket.summa} ₽)`)
+                  .join(", ");
+                return <td key={product.id}>{productOrders || "—"}</td>;
+              })}
+              <td>{order.amount} ₽</td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          ))}
           <tr>
-            {products.map((prod) => {
-              return <td key={prod.id}></td>;
-            })}
-            <td></td>
-            <td>Всего {totalAmount} ₽</td>
+            <td colSpan={products.length + 4}>Всего {totalAmount} ₽</td>
           </tr>
         </tbody>
       </table>

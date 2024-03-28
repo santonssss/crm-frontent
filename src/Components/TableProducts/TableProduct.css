@@ -10,7 +10,13 @@
   height: 60px;
   object-fit: cover;
 }
-
+.products-wrapper {
+  height: 70vh;
+  overflow: scroll;
+}
+.products-wrapper::-webkit-scrollbar {
+  width: 5px;
+}
 .head-table th {
   padding: 12px 0;
   font-size: 16px;

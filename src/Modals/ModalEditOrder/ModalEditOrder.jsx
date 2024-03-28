@@ -7,8 +7,6 @@ const token = localStorage.getItem("accessToken");
 const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
   const [payOrder, setPayOrder] = useState(order);
   const [money, setMoney] = useState(Number(payOrder.remains));
-  // const [error, setError] = useState(false);
-
   const formatToRubles = (value) => {
     return new Intl.NumberFormat("ru-RU", {
       style: "currency",
@@ -57,7 +55,6 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
         order: order.id,
         profile: client.profile.id,
       };
-      console.log(dataBody);
       const response = await fetch(
         `https://monkfish-app-v8pst.ondigitalocean.app/api/payment-history`,
         {
@@ -159,6 +156,7 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
               value={money}
               onChange={handlePaymentAmountChange}
               className="pr-5"
+              max={payOrder.remains}
             />
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded pl-5"

@@ -8,6 +8,7 @@
 }
 .allClient tbody tr td {
   border: 1px solid black;
+
   padding: 0 5px;
   font-size: 12px;
 }
@@ -26,6 +27,12 @@
   position: absolute;
   right: 15px;
   top: 15px;
+}
+.two-pod {
+  display: flex;
+  align-items: center;
+  gap: 0 100px;
+  margin-top: 20px;
 }
 @media print {
   .allClient .nakladnoy {

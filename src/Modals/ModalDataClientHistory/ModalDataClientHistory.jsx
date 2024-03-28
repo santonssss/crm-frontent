@@ -2,7 +2,12 @@ import React from "react";
 import "./ModalDataClientHistory.css";
 
 const ModalDataClientHistory = ({ setOpenHistory, atTheMomentClient }) => {
-  console.log(atTheMomentClient);
+  const formatToRubles = (value) => {
+    return new Intl.NumberFormat("ru-RU", {
+      style: "currency",
+      currency: "RUB",
+    }).format(value);
+  };
   return (
     <div
       className="modal-overlay_clientHistory"
@@ -62,7 +67,7 @@ const ModalDataClientHistory = ({ setOpenHistory, atTheMomentClient }) => {
               atTheMomentClient.profile.paymentHistories.map((payment) => (
                 <tr key={payment.id}>
                   <td>{new Date(payment.createdAt).toLocaleDateString()}</td>
-                  <td>{payment.money}</td>
+                  <td>{formatToRubles(payment.money)}</td>
                   <td>
                     {payment.paymentType === "debt"
                       ? "Долг"

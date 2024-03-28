@@ -5,12 +5,27 @@ import "./NakladnoyOrderAllClients.css";
 const NakladnoyOrderAllClients = () => {
   const { checkedDelivery } = useContext(UserContext);
   const today = new Date().toLocaleDateString();
+
   if (
     !checkedDelivery ||
     !Array.isArray(checkedDelivery.clientsAsDeliveryman)
   ) {
     return <div>Нет данных</div>;
   }
+
+  // Фильтруем клиентов, у которых есть заказы на сегодня
+  const clientsWithOrdersToday = checkedDelivery.clientsAsDeliveryman.filter(
+    (client) =>
+      client.ordersAsClient.some((order) => {
+        const orderDate = new Date(order.createdAt).toLocaleDateString();
+        return orderDate === today;
+      })
+  );
+
+  if (clientsWithOrdersToday.length === 0) {
+    return <div>На сегодня заказов нет</div>;
+  }
+
   return (
     <div className="allClient">
       <button
@@ -24,15 +39,15 @@ const NakladnoyOrderAllClients = () => {
       >
         Напечатать накладную
       </button>
-      {checkedDelivery.clientsAsDeliveryman.map((client, index) => {
+      {clientsWithOrdersToday.map((client, index) => {
         const filteredOrders = client.ordersAsClient.filter((order) => {
           const orderDate = new Date(order.createdAt).toLocaleDateString();
           return orderDate === today;
         });
 
-        filteredOrders.sort((a, b) => {
-          return new Date(a.createdAt) - new Date(b.createdAt);
-        });
+        filteredOrders.sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        );
 
         return (
           <div key={index} className="client-wrapper-nakladnoy">
@@ -97,6 +112,10 @@ const NakladnoyOrderAllClients = () => {
                 ))}
               </tbody>
             </table>
+            <div className="two-pod">
+              <span>Отпустил _______</span>
+              <span>Получил _______</span>
+            </div>
           </div>
         );
       })}

@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./ModalRedirectProduct.css";
 
 import toast from "react-hot-toast";
+import { UserContext } from "../../Context/Context";
 const ModalRedirectProduct = ({ setProductRedirect, checkedProduct }) => {
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
   const [discount1, setDiscount1] = useState("");
   const [discount2, setDiscount2] = useState("");
+  const { setSum } = useContext(UserContext);
   const token = localStorage.getItem("accessToken");
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -46,11 +48,11 @@ const ModalRedirectProduct = ({ setProductRedirect, checkedProduct }) => {
       );
 
       const data = await response.json();
-      console.log(data);
       if (!response.ok) {
         throw new Error("Ошибка при обновлении данных продукта");
       }
 
+      setSum((prev) => prev + 1);
       toast("Редактирование прошло успешно");
       setProductRedirect(false);
       setProductName("");

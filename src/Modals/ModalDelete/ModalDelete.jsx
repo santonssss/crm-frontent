@@ -4,7 +4,7 @@ import { UserContext } from "../../Context/Context";
 import { TailSpin } from "react-loader-spinner";
 import toast from "react-hot-toast";
 const ModalDelete = () => {
-  const { idDelete, setDeleteOpen } = useContext(UserContext);
+  const { idDelete, setDeleteOpen, setSum } = useContext(UserContext);
   const token = localStorage.getItem("accessToken");
   const handleDelete = async (e) => {
     e.preventDefault();
@@ -22,6 +22,7 @@ const ModalDelete = () => {
       if (response.ok) {
         toast("Пользователь удален успешно");
         setDeleteOpen(false);
+        setSum((prev) => prev + 1);
       } else {
         console.error(
           "Ошибка удаления пользователя. Статус ответа:",

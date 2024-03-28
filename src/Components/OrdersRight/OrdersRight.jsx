@@ -8,7 +8,7 @@ import false_icon from "../../Assets/Image/true.svg";
 import true_icon from "../../Assets/Image/false.svg";
 import { Link } from "react-router-dom";
 const OrdersRight = ({ setAddOrderOpen }) => {
-  const { orders } = useContext(UserContext);
+  const { orders, setSum } = useContext(UserContext);
   const [sortedOrders, setSortedOrders] = useState([]);
   useEffect(() => {
     const sortOrdersByDate = (orders) => {
@@ -80,6 +80,7 @@ const OrdersRight = ({ setAddOrderOpen }) => {
         }
       );
       const data = await response.json();
+      setSum((prev) => prev + 1);
       if (!response.ok) {
         throw new Error("Ошибка при обновлении статуса заказа");
       }

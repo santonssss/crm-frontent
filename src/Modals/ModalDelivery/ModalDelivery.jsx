@@ -20,6 +20,13 @@ const ModalDelivery = ({
     },
     0
   );
+
+  const formatToRubles = (value) => {
+    return new Intl.NumberFormat("ru-RU", {
+      style: "currency",
+      currency: "RUB",
+    }).format(value);
+  };
   useEffect(() => {
     setAtTheMom(atTheMomentDelivery);
   }, [atTheMomentDelivery]);
@@ -78,7 +85,7 @@ const ModalDelivery = ({
             <span>клиентов</span>
           </div>
           <div className="info-card">
-            <span className="sum-info">{totalDebts} ₽</span>
+            <span className="sum-info">{formatToRubles(totalDebts)} ₽</span>
             <span>Долги</span>
           </div>
         </div>
@@ -94,6 +101,11 @@ const ModalDelivery = ({
             </thead>
             <tbody>
               {atTheMomentDelivery.clientsAsDeliveryman.map((client) => {
+                const totalSumForClient =
+                  client.profile.paymentHistories.reduce(
+                    (total, payment) => total + payment.money,
+                    0
+                  );
                 return (
                   <tr
                     onClick={() => {
@@ -103,8 +115,8 @@ const ModalDelivery = ({
                   >
                     <td>{client.username}</td>
                     <td>{client.phone}</td>
-                    <td>{client.profile.debts}</td>
-                    <td>{client.profile.debts}</td>
+                    <td>{formatToRubles(totalSumForClient)}</td>
+                    <td>{formatToRubles(client.profile.debts)}</td>
                   </tr>
                 );
               })}

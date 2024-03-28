@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./ModalChangeDelivary.css";
 import toast, { Toaster } from "react-hot-toast";
+import { UserContext } from "../../Context/Context";
 const ModalChangeDelivary = ({
   deliveryChange,
   setUsername,
@@ -12,6 +13,7 @@ const ModalChangeDelivary = ({
   setModalChange,
 }) => {
   const [loading, setLoading] = useState(false);
+  const { setSum } = useContext(UserContext);
   const handleSubmit = async (e) => {
     const token = localStorage.getItem("accessToken");
     e.preventDefault();
@@ -62,6 +64,7 @@ const ModalChangeDelivary = ({
       setUsername("");
       setPhone("");
       setCarNumber("");
+      setSum((prev) => prev + 1);
     } catch (error) {
       toast(
         "В редактирование произошла ошибка, пожалуйста перепроверьте данные!"

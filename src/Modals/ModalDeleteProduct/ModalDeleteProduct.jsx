@@ -25,6 +25,7 @@ const ModalDeleteProduct = ({ setProductsDelete, checkedProduct }) => {
       const data = await response.json();
       toast("Продукт успешно удален");
       setProductsDelete(false);
+      setSum((prev) => prev + 1);
     } catch (error) {
       console.error("Произошла ошибка при удалении продукта:", error.message);
       toast(

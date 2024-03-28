@@ -58,10 +58,9 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
         setProductsList([]);
         setTotalSelectedPrice(0);
         setSum((prev) => prev + 1);
-      } else {
-        toast("При создание заказа произошло ошибка");
       }
     } catch (error) {
+      toast("При создание заказа произошло ошибка");
       console.error("Произошла ошибка:", error);
     }
   };
@@ -128,6 +127,7 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
             <thead>
               <tr>
                 <th>Товар</th>
+                <th>кг/шт</th>
                 <th>Цена</th>
                 <th>Скидка</th>
               </tr>
@@ -244,16 +244,23 @@ const ProductRow = ({
             <img src={product.image.url} alt={product.name} />
           )}
           {product.name}
-          <input
-            type="number"
-            name=""
-            id=""
-            className="w-10"
-            value={selectedQuantity}
-            onChange={handleQuantityChange}
-          />
-          <span>кг/шт</span>
         </div>
+      </td>
+      <td>
+        <input
+          type="number"
+          style={{
+            border: "1px solid black",
+            borderRadius: "5px",
+            padding: "2px 5px",
+          }}
+          name=""
+          id=""
+          className="w-10"
+          value={selectedQuantity}
+          onChange={handleQuantityChange}
+        />
+        <span>кг/шт</span>
       </td>
       <td>
         {selectedPrice
