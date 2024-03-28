@@ -12,7 +12,7 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
   const [totalSelectedPrice, setTotalSelectedPrice] = useState(0);
   const [openList, setOpenList] = useState(false);
   const [selectedClientId, setSelectedClientId] = useState("");
-  const { deliveryData, setDeliveryId, deliverysClients } =
+  const { deliveryData, setDeliveryId, deliverysClients, setSum } =
     useContext(UserContext);
   const deliveryMen = deliveryData.filter(
     (user) => user.role === "deliveryman"
@@ -39,7 +39,6 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
         baskets: baskets,
         owner: selectedClientId,
       };
-      console.log(data);
       const requestOptions = {
         method: "POST",
         headers: {
@@ -202,10 +201,21 @@ const ProductRow = ({
   const [selectedQuantity, setSelectedQuantity] = useState(1);
 
   const handleSelectChange = (e) => {
-    setSelectedPrice(e.target.value);
-    setSelectedDiscountType(e.target.dataset.discountType);
-  };
+    const newSelectedPrice = parseFloat(e.target.value);
+    setSelectedPrice(newSelectedPrice);
+    const newDiscountType =
+      e.target.options[e.target.selectedIndex].dataset.discountType;
 
+    console.log("Before setting selectedDiscountType:", selectedDiscountType);
+    setSelectedDiscountType(newDiscountType);
+    console.log("After setting selectedDiscountType:", selectedDiscountType);
+
+    updateProduct({
+      ...product,
+      selectedDiscountType: newDiscountType,
+      selectedQuantity: selectedQuantity,
+    });
+  };
   const handleQuantityChange = (e) => {
     setSelectedQuantity(e.target.value);
   };
