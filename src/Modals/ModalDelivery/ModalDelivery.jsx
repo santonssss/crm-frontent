@@ -3,7 +3,11 @@ import "./ModalDelivery.css";
 import { UserContext } from "../../Context/Context";
 import { Link } from "react-router-dom";
 
-const ModalDelivery = ({ atTheMomentDelivery }) => {
+const ModalDelivery = ({
+  atTheMomentDelivery,
+  setOpenHistory,
+  setAtTheMomentClient,
+}) => {
   const { setDeliveryOpen, clientForDelivary, setAtTheMom } =
     useContext(UserContext);
   const totalDebts = atTheMomentDelivery.clientsAsDeliveryman.reduce(
@@ -90,9 +94,13 @@ const ModalDelivery = ({ atTheMomentDelivery }) => {
             </thead>
             <tbody>
               {atTheMomentDelivery.clientsAsDeliveryman.map((client) => {
-                console.log(client);
                 return (
-                  <tr>
+                  <tr
+                    onClick={() => {
+                      setAtTheMomentClient(client);
+                      setOpenHistory(true);
+                    }}
+                  >
                     <td>{client.username}</td>
                     <td>{client.phone}</td>
                     <td>{client.profile.debts}</td>
