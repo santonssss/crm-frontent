@@ -2,7 +2,6 @@ import React from "react";
 import "./ModalDataClientHistory.css";
 
 const ModalDataClientHistory = ({ setOpenHistory, atTheMomentClient }) => {
-  console.log(atTheMomentClient);
   return (
     <div
       className="modal-overlay_clientHistory"

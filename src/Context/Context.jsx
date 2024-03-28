@@ -75,7 +75,7 @@ const UserProvider = ({ children }) => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          "https://monkfish-app-v8pst.ondigitalocean.app/api/user?relations[0]=clientsAsDeliveryman.profile.paymentHistories&filter[role]=deliveryman",
+          "https://monkfish-app-v8pst.ondigitalocean.app/api/user?relations[0]=clientsAsDeliveryman.profile.paymentHistories&relations[1]=clientsAsDeliveryman.ordersAsClient.baskets.product&filter[role]=deliveryman",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -86,7 +86,6 @@ const UserProvider = ({ children }) => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-
         setDeliveryData(data.data.records);
       } catch (error) {
         console.warn(error);

@@ -11,6 +11,8 @@ import Signin from "./Pages/Signin/Signin";
 import SignUp from "./Pages/SignUp/SignUp";
 import Main from "./Pages/Main/Main";
 import NadlaknoyDelivery from "./Pages/NadladnoyDelivery/NadlaknoyDelivery";
+import NakladnoyOrderDelivery from "./Pages/NakladnoyOrderDelivery/NakladnoyOrderDelivery";
+import NakladnoyOrderAllClients from "./Pages/NakladnoyOrderAllClients/NakladnoyOrderAllClients";
 function App() {
   const navigate = useNavigate();
   const tok = localStorage.getItem("accessToken");
@@ -31,6 +33,11 @@ function App() {
       {isTokenPresent ? (
         <>
           <Route path="/nakladnoy-delivery" element={<NadlaknoyDelivery />} />
+          <Route path="/nakladnoy-order" element={<NakladnoyOrderDelivery />} />
+          <Route
+            path="/nakladnoyOrderAllClients"
+            element={<NakladnoyOrderAllClients />}
+          />
           <Route path={"*"} element={<Main />} />
         </>
       ) : (

@@ -10,10 +10,10 @@ const ChartWrapper = () => {
   const [totalDebts, setTotalDebts] = useState(0);
   const [totalPartly, setTotalPartly] = useState(0);
   useEffect(() => {
+    console.log(deliveryData);
     if (deliveryData.length > 0) {
       let debtsSum = 0;
       let partlySum = 0;
-
       deliveryData.forEach((deliveryman) => {
         if (deliveryman.clientsAsDeliveryman) {
           deliveryman.clientsAsDeliveryman.forEach((client) => {
@@ -22,7 +22,11 @@ const ChartWrapper = () => {
             }
             if (client.profile && client.profile.paymentHistories) {
               client.profile.paymentHistories.forEach((payment) => {
-                if (payment.paymentType === "partly") {
+                if (
+                  payment.paymentType === "partly" ||
+                  payment.paymentType === "paid"
+                ) {
+                  console.log(payment.money);
                   partlySum += payment.money;
                 }
               });
@@ -30,7 +34,6 @@ const ChartWrapper = () => {
           });
         }
       });
-
       setTotalDebts(debtsSum);
       setTotalPartly(partlySum);
     }
@@ -41,7 +44,7 @@ const ChartWrapper = () => {
       ...prevChartData,
       series: [totalDebts, totalPartly],
     }));
-  }, [totalDebts]);
+  }, [totalDebts, totalPartly]);
 
   const [chartData, setChartData] = useState({
     options: {
@@ -53,7 +56,7 @@ const ChartWrapper = () => {
         mode: null,
       },
     },
-    series: [totalDebts, 100085],
+    series: [0, 0],
   });
 
   return (

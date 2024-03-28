@@ -6,6 +6,7 @@ import ru from "date-fns/locale/ru";
 import { UserContext } from "../../Context/Context";
 import false_icon from "../../Assets/Image/true.svg";
 import true_icon from "../../Assets/Image/false.svg";
+import { Link } from "react-router-dom";
 const OrdersRight = ({ setAddOrderOpen }) => {
   const { orders } = useContext(UserContext);
   const [sortedOrders, setSortedOrders] = useState([]);
@@ -94,7 +95,6 @@ const OrdersRight = ({ setAddOrderOpen }) => {
     newSortedOrders[index].confirmed = updatedOrder.confirmed;
     setSortedOrders(newSortedOrders);
   };
-
   return (
     <div className="orders-right">
       <div className="right-btns">
@@ -107,7 +107,12 @@ const OrdersRight = ({ setAddOrderOpen }) => {
           Создать <br />
           накладную <span>+</span>
         </button>
-        <button className="right-btn">Печать</button>
+        <Link className="right-btn" to={"/nakladnoy-order"}>
+          Напечатать накладную для Доставщика
+        </Link>
+        <Link className="right-btn " to={"/nakladnoyOrderAllClients"}>
+          Напечатать накладную для всех клиентов
+        </Link>
       </div>
       <table className="order-table">
         <thead>
@@ -162,6 +167,11 @@ const OrdersRight = ({ setAddOrderOpen }) => {
                 <td>{formatToRubles(order.amount)}</td>
                 <td>{formatToRubles(order.amount - order.remains)}</td>
                 <td>{formatToRubles(order.remains)}</td>
+                <td>
+                  <div>
+                    <button className="right-btn">Редактировать</button>
+                  </div>
+                </td>
               </tr>
             ))
           ) : (

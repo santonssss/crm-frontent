@@ -1,15 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import "./ModalDelivery.css";
 import { UserContext } from "../../Context/Context";
 import { Link } from "react-router-dom";
-import ModalDataClientHistory from "../ModalDataClientHistory/ModalDataClientHistory";
 
-const ModalDelivery = ({
-  atTheMomentDelivery,
-  setOpenHistory,
-  atTheMomentClient,
-  setAtTheMomentClient,
-}) => {
+const ModalDelivery = ({ atTheMomentDelivery }) => {
   const { setDeliveryOpen, clientForDelivary, setAtTheMom } =
     useContext(UserContext);
   const totalDebts = atTheMomentDelivery.clientsAsDeliveryman.reduce(
@@ -26,13 +20,8 @@ const ModalDelivery = ({
     setAtTheMom(atTheMomentDelivery);
   }, [atTheMomentDelivery]);
   return (
-    <div
-      className="modal-overlay_del"
-      onClick={() => {
-        setDeliveryOpen(false);
-      }}
-    >
-      <div className="modal_del" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay_del">
+      <div className="modal_del">
         <div
           className="close_del"
           onClick={() => {
@@ -79,7 +68,9 @@ const ModalDelivery = ({
             <span>{atTheMomentDelivery.username}</span>
           </div>
           <div className="info-card">
-            <span className="sum-info">{clientForDelivary.length}</span>
+            <span className="sum-info">
+              {atTheMomentDelivery.clientsAsDeliveryman.length}
+            </span>
             <span>клиентов</span>
           </div>
           <div className="info-card">
@@ -99,22 +90,12 @@ const ModalDelivery = ({
             </thead>
             <tbody>
               {atTheMomentDelivery.clientsAsDeliveryman.map((client) => {
-                let sum = 0;
-                client.profile.paymentHistories.map((client) => {
-                  if (client.paymentType == "debt") {
-                    sum += client.money;
-                  }
-                });
+                console.log(client);
                 return (
-                  <tr
-                    onClick={() => {
-                      setAtTheMomentClient(client);
-                      setOpenHistory(true);
-                    }}
-                  >
+                  <tr>
                     <td>{client.username}</td>
                     <td>{client.phone}</td>
-                    <td>{sum}</td>
+                    <td>{client.profile.debts}</td>
                     <td>{client.profile.debts}</td>
                   </tr>
                 );

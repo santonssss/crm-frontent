@@ -9,14 +9,26 @@ const token = localStorage.getItem("accessToken");
 
 const Abacus = () => {
   const { sidebarOpen, checkedClient } = useContext(UserContext);
-  const [beforeSelectedDate, setSelectedDateBefore] = useState(new Date());
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(today.getDate() - 1);
+  const [beforeSelectedDate, setSelectedDateBefore] = useState(yesterday - 1);
   const [afterSelectedDate, setSelectedDateAfter] = useState(new Date());
   const [orders, setOrders] = useState([]);
   const [client, setClient] = useState({});
   const [paid, setPaid] = useState(0);
   const [remains, setRemains] = useState(0);
   const [selectedOrder, setSelectedOrder] = useState(null);
-
+  const [showUnpaidOnly, setShowUnpaidOnly] = useState(false);
+  const filteredOrders = orders.filter((order) => {
+    const orderDate = new Date(order.createdAt);
+    const unpaidOnlyCondition = showUnpaidOnly ? order.remains !== 0 : true;
+    return (
+      orderDate >= beforeSelectedDate &&
+      orderDate <= afterSelectedDate &&
+      unpaidOnlyCondition
+    );
+  });
   const handleEditClick = (order) => {
     setSelectedOrder(order);
   };
@@ -83,7 +95,6 @@ const Abacus = () => {
 
   const fetchUser = async () => {
     try {
-      // const queryParams = new URLSearchParams(params).toString();
       const response = await fetch(
         `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${checkedClient}?relations[0]=ordersAsClient&relations[1]=profile`,
         {
@@ -98,7 +109,6 @@ const Abacus = () => {
       }
 
       const data = await response.json();
-      console.log(data);
       const sizeOrders = data.data.ordersAsClient?.length;
       let summa = 0;
       data.data.ordersAsClient?.map((value, index) => {
@@ -118,7 +128,15 @@ const Abacus = () => {
       currency: "RUB",
     }).format(value);
   };
-
+  const filteredOrderss = orders.filter((order) => {
+    const orderDate = new Date(order.createdAt);
+    const unpaidOnlyCondition = showUnpaidOnly ? order.remains !== 0 : true;
+    return (
+      orderDate >= beforeSelectedDate &&
+      orderDate <= afterSelectedDate &&
+      unpaidOnlyCondition
+    );
+  });
   function formatDate(date) {
     const day = date.getDate();
     const month = date.getMonth() + 1;
@@ -138,8 +156,10 @@ const Abacus = () => {
     setSelectedDateAfter(date);
   };
   useEffect(() => {
-    fetchUser();
-    fetchOrdersOfClients();
+    if (checkedClient !== null) {
+      fetchUser();
+      fetchOrdersOfClients();
+    }
   }, [checkedClient]);
   return (
     <div className={`abacus-page ${sidebarOpen ? "p-o" : "p-c"}`}>
@@ -157,7 +177,7 @@ const Abacus = () => {
           </div>
           <div className="abacus-info">
             <span>Сумма заказов:</span>
-            <span>{formatToRubles(client.summa)}</span>
+            <span>{client.summa ? formatToRubles(client.summa) : ""}</span>
           </div>
           <div className="abacus-info">
             <span>Кол-во заказов:</span>
@@ -180,18 +200,14 @@ const Abacus = () => {
               className="custom-datepicker"
               locale={ru}
             />
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded ml-10"
-              onClick={fetchWithDates}
-            >
-              Искать
-            </button>
-            <button
-              onClick={fetchOrdersOfClients}
-              className=" border-2 text-gray-800  py-2 px-4 rounded ml-10 hover:text-white hover:bg-gray-700 transition-all"
-            >
-              Reset
-            </button>
+          </div>
+          <div className="w-s   flex gap-3">
+            <input
+              type="checkbox"
+              checked={showUnpaidOnly}
+              onChange={() => setShowUnpaidOnly(!showUnpaidOnly)}
+            />
+            <label>Показать только неоплаченные долги</label>
           </div>
           <table className="order-table z-0">
             <thead>
@@ -206,9 +222,9 @@ const Abacus = () => {
             </thead>
             <tbody className="text-gray-700">
               {orders.length > 0 ? (
-                orders.map((order) => (
+                filteredOrders.map((order) => (
                   <tr key={order.id}>
-                    <td>{order.id}</td>
+                    <td>№{order.id}</td>
                     <td>{formatDate(new Date(order.createdAt))}</td>
                     <td>{formatToRubles(order.amount)}</td>
                     <td>{formatToRubles(order.amount - order.remains)}</td>

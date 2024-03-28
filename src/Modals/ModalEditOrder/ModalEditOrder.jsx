@@ -71,7 +71,6 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
       );
 
       const data = await response.json();
-      console.log(data);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -92,10 +91,6 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
       console.error("Error during fetch:", error);
     }
   };
-
-  // useEffect(() => {
-  //   fetchOrderById();
-  // }, [])
 
   return (
     <div className="modal-overlay_edit-order">

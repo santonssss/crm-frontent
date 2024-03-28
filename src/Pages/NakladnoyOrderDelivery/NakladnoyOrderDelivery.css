@@ -1,0 +1,13 @@
+.order-table-3 thead tr th {
+  border: 1px solid black;
+  padding: 0 5px;
+  font-size: 12px;
+}
+.order-table-3 tbody tr td {
+  border: 1px solid black;
+  padding: 0 5px;
+  font-size: 12px;
+}
+.order-table-3 {
+  border-spacing: 2px;
+}
