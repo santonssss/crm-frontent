@@ -30,12 +30,10 @@ const NakladnoyOrderDelivery = () => {
         );
       });
   }
-
-  // Считаем общее количество каждого продукта
   const productQuantities = {};
   filteredOrders.forEach((order) => {
     order.baskets.forEach((basket) => {
-      const productId = basket.product.id; // Убедитесь, что это правильный путь к ID продукта
+      const productId = basket.product.id;
       if (!productQuantities[productId]) {
         productQuantities[productId] = 0;
       }
@@ -106,7 +104,16 @@ const NakladnoyOrderDelivery = () => {
             </tr>
           ))}
           <tr>
-            <td colSpan={products.length + 4}>Всего {totalAmount} ₽</td>
+            <td colSpan={products.length + 4}>
+              Всего{" "}
+              <strong
+                style={{
+                  textDecoration: "underline",
+                }}
+              >
+                {totalAmount} ₽
+              </strong>
+            </td>
           </tr>
         </tbody>
       </table>

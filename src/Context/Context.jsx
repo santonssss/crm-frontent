@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
 
@@ -24,7 +25,18 @@ const UserProvider = ({ children }) => {
   const [devId, setDevId] = useState(null);
   const [atTheMom, setAtTheMom] = useState({});
   const [sum, setSum] = useState(0);
+  const nav = useNavigate();
   const token = localStorage.getItem("accessToken");
+  const handleErrorResponse = (response) => {
+    if (!response.ok) {
+      localStorage.removeItem("accessToken");
+      if (response.status === 403) {
+        nav("/login");
+      }
+      throw new Error("Network response was not ok");
+    }
+    return response;
+  };
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -62,6 +74,7 @@ const UserProvider = ({ children }) => {
             },
           }
         );
+        handleErrorResponse(response);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
@@ -82,6 +95,7 @@ const UserProvider = ({ children }) => {
             },
           }
         );
+        handleErrorResponse(response);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

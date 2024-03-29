@@ -90,24 +90,25 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
   };
 
   return (
-    <div className="modal-overlay_edit-order">
+    <div className="modal-overlay_edit-order" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <div className="edit-order_close" onClick={onClose}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="26"
-            height="26"
-            fill="black"
-            className="bi bi-x"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fillRule="evenodd"
-              d="M3.146 3.146a.5.5 0 0 1 .708 0L8 7.293l4.146-4.147a.5.5 0 1 1 .708.708L8.707 8l4.147 4.146a.5.5 0 1 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8 3.146 3.854a.5.5 0 0 1 0-.708z"
-            />
-          </svg>
-        </div>
         <div className="flex items-center justify-center edit-order_modal">
+          {" "}
+          <div className="edit-order_close" onClick={onClose}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="26"
+              height="26"
+              fill="black"
+              className="bi bi-x"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fillRule="evenodd"
+                d="M3.146 3.146a.5.5 0 0 1 .708 0L8 7.293l4.146-4.147a.5.5 0 1 1 .708.708L8.707 8l4.147 4.146a.5.5 0 1 1-.708.708L8 8.707l-4.146 4.147a.5.5 0 0 1-.708-.708L7.293 8 3.146 3.854a.5.5 0 0 1 0-.708z"
+              />
+            </svg>
+          </div>
           <div className="bg-white rounded-lg shadow-xl">
             <div className="overflow-x-auto">
               <table className="order-table min-w-full divide-y divide-gray-200">
@@ -165,7 +166,6 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
               Принять оплату
             </button>
           </div>
-
           <div className="overflow-x-auto p-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg leading-6 font-medium text-gray-900">

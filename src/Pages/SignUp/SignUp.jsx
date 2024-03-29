@@ -69,9 +69,6 @@ const SignUp = () => {
           Логин или пароль введены неправильно
         </span>
       ) : null}
-      <Link className="link" to={"/sign-in"}>
-        Зарегистрироваться
-      </Link>
       <button type="submit">Войти</button>
     </form>
   );

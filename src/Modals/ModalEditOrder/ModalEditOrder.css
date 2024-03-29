@@ -22,6 +22,7 @@
   background-color: white;
   border-radius: 8px;
   padding: 54px 50px;
+  position: relative;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   width: 1000px;
   height: 700px;
@@ -31,7 +32,6 @@
 }
 
 .modal-content_edit-order {
-  position: relative;
   background-color: white;
   display: flex;
   height: 500px;
