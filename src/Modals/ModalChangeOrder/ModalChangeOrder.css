@@ -1,0 +1,30 @@
+.modal-overlay_ChangeOrder {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content_ChangeOrder {
+  position: relative;
+  width: 800px;
+  height: 350px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 10px 0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--back-blue);
+  border-radius: 10px;
+  overflow-y: scroll;
+}
+
+.modal-content_ChangeOrder table tbody tr td {
+  padding: 10px 10px;
+}

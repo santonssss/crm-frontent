@@ -206,9 +206,7 @@ const ProductRow = ({
     const newDiscountType =
       e.target.options[e.target.selectedIndex].dataset.discountType;
 
-    console.log("Before setting selectedDiscountType:", selectedDiscountType);
     setSelectedDiscountType(newDiscountType);
-    console.log("After setting selectedDiscountType:", selectedDiscountType);
 
     updateProduct({
       ...product,

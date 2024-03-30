@@ -7,9 +7,12 @@ import { UserContext } from "../../Context/Context";
 import false_icon from "../../Assets/Image/true.svg";
 import true_icon from "../../Assets/Image/false.svg";
 import { Link } from "react-router-dom";
+import ModalChangeOrder from "../../Modals/ModalChangeOrder/ModalChangeOrder";
 const OrdersRight = ({ setAddOrderOpen }) => {
   const { orders, setSum } = useContext(UserContext);
   const [sortedOrders, setSortedOrders] = useState([]);
+  const [openChangeDelivery, setOpenChangeDelivery] = useState(false);
+  const [atTheMomentOrder, setAtTheMomemtOrder] = useState({});
   useEffect(() => {
     const sortOrdersByDate = (orders) => {
       return orders.sort((a, b) => {
@@ -170,7 +173,15 @@ const OrdersRight = ({ setAddOrderOpen }) => {
                 <td>{formatToRubles(order.remains)}</td>
                 <td>
                   <div>
-                    <button className="right-btn">Редактировать</button>
+                    <button
+                      className="right-btn"
+                      onClick={() => {
+                        setOpenChangeDelivery(true);
+                        setAtTheMomemtOrder(order);
+                      }}
+                    >
+                      Редактировать
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -182,6 +193,12 @@ const OrdersRight = ({ setAddOrderOpen }) => {
           )}
         </tbody>
       </table>
+      {openChangeDelivery && (
+        <ModalChangeOrder
+          atTheMomentOrder={atTheMomentOrder}
+          setOpenChangeDelivery={setOpenChangeDelivery}
+        />
+      )}
     </div>
   );
 };

@@ -47,7 +47,7 @@ const UserProvider = ({ children }) => {
         };
 
         const response = await fetch(
-          `https://monkfish-app-v8pst.ondigitalocean.app/api/order?relations[0]=owner&filter[owner][id]=${checkedClient}`,
+          `https://monkfish-app-v8pst.ondigitalocean.app/api/order?relations[0]=owner&filter[owner][id]=${checkedClient}&relations[1]=baskets.product`,
           requestOptions
         );
         if (response.ok) {
