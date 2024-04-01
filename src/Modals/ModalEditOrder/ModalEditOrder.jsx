@@ -4,16 +4,15 @@ import { UserContext } from "../../Context/Context";
 import toast, { Toaster } from "react-hot-toast";
 const token = localStorage.getItem("accessToken");
 
-const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
-  const [payOrder, setPayOrder] = useState(order);
-  const [money, setMoney] = useState(Number(payOrder.remains));
+const ModalEditOrder = ({ orders, onClose, client, fetchOrdersOfClients, remains }) => {
+  const [money, setMoney] = useState(Number(remains));
+  const [histories, setHistories] = useState([]);
   const formatToRubles = (value) => {
     return new Intl.NumberFormat("ru-RU", {
       style: "currency",
       currency: "RUB",
     }).format(value);
   };
-
   function formatDate(date) {
     const day = date.getDate();
     const month = date.getMonth() + 1;
@@ -31,9 +30,37 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
     setMoney(event.target.value);
   };
 
+  console.log(histories)
+
+  const fetchHistories = async () => {
+    try {
+      const response = await fetch(
+        `https://monkfish-app-v8pst.ondigitalocean.app/api/payment-history/?relations[0]=profile&filter[profile][id]=${client.profile.id}&sort[createdAt]=desc`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      setHistories(data.data.records);
+    } catch (error) {
+      console.error("Error during fetch:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchHistories()
+  })
+
   const handleAcceptPayment = async () => {
     try {
-      if (money > payOrder.remains) {
+      if (money > remains) {
         toast("Оплата превышает сумму долга!", {
           iconTheme: {
             primary: "red",
@@ -52,7 +79,6 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
       }
       const dataBody = {
         money: Number(money),
-        order: order.id,
         profile: client.profile.id,
       };
       const response = await fetch(
@@ -71,19 +97,11 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      const orderUpadte = await fetch(
-        `https://monkfish-app-v8pst.ondigitalocean.app/api/order/${order.id}?relations[0]=paymentHistories`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const dataOrder = await orderUpadte.json();
+      
       toast("Оплата прошла успешно!");
-      setPayOrder(dataOrder.data);
       setMoney(0);
       fetchOrdersOfClients();
+      onClose();
     } catch (error) {
       console.error("Error during fetch:", error);
     }
@@ -122,15 +140,23 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
                   </tr>
                 </thead>
                 <tbody className="text-gray-700">
-                  <tr>
-                    <td>{payOrder.id}</td>
-                    <td>{formatDate(new Date(payOrder.createdAt))}</td>
-                    <td>{formatToRubles(payOrder.amount)}</td>
-                    <td>
-                      {formatToRubles(payOrder.amount - payOrder.remains)}
-                    </td>
-                    <td>{formatToRubles(payOrder.remains)}</td>
+                  {orders.length > 0 ? (
+                orders.map((order) => (
+                  <tr key={order.id}>
+                    <td>№{order.id}</td>
+                    <td>{formatDate(new Date(order.createdAt))}</td>
+                    <td>{formatToRubles(order.amount)}</td>
+                    <td>{formatToRubles(order.amount - order.remains)}</td>
+                    <td>{formatToRubles(order.remains)}</td>
                   </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="text-center">
+                    Заказов к сожалению нету
+                  </td>
+                </tr>
+              )}
                   <tr className="bg-gray-200">
                     <td>
                       <strong>Итог:</strong>
@@ -138,9 +164,8 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
                     <td></td>
                     <td></td>
                     <td>
-                      {formatToRubles(payOrder.amount - payOrder.remains)}
                     </td>
-                    <td>{formatToRubles(payOrder.remains)}</td>
+                    <td>{formatToRubles(remains)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -153,11 +178,11 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
             <input
               id="paymentInput"
               type="number"
-              placeholder={payOrder.remains}
+              placeholder={remains}
               value={money}
               onChange={handlePaymentAmountChange}
               className="pr-5"
-              max={payOrder.remains}
+              max={remains}
             />
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded pl-5"
@@ -182,15 +207,12 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
                     <th className="px-4 py-2 text-left text-sm font-semibold">
                       Оплачен
                     </th>
-                    <th className="px-4 py-2 text-left text-sm font-semibold">
-                      Долги
-                    </th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {payOrder.paymentHistories.length > 1 ? (
-                    payOrder.paymentHistories
-                      .filter((value) => value.paymentType !== "debt")
+                  {
+                    histories
+                      .filter((value) => value.paymentType != "debt")
                       .map((value, index) => (
                         <>
                           <tr>
@@ -200,15 +222,10 @@ const ModalEditOrder = ({ order, onClose, client, fetchOrdersOfClients }) => {
                             <td className="px-4 py-3 whitespace-nowrap">
                               {formatToRubles(Number(value.money))}
                             </td>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              {formatToRubles(payOrder.amount - value.money)}
-                            </td>
                           </tr>
                         </>
                       ))
-                  ) : (
-                    <>Нету оплаты</>
-                  )}
+                  }
                 </tbody>
               </table>
             </div>

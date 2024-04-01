@@ -12,7 +12,7 @@ const ModalAddProducts = () => {
   const [discount1, setDiscount1] = useState(0);
   const [discount2, setDiscount2] = useState(0);
   const token = localStorage.getItem("accessToken");
-  const { setAddProductsOpen } = useContext(UserContext);
+  const { setAddProductsOpen, setSum } = useContext(UserContext);
   const fileInputRef = React.createRef();
 
   const handleDragOver = (e) => {

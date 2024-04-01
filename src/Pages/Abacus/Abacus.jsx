@@ -18,8 +18,9 @@ const Abacus = () => {
   const [client, setClient] = useState({});
   const [paid, setPaid] = useState(0);
   const [remains, setRemains] = useState(0);
-  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
   const [showUnpaidOnly, setShowUnpaidOnly] = useState(false);
+  const [debtsOrder, setDebtsOrder] = useState([]);
   const filteredOrders = orders.filter((order) => {
     const orderDate = new Date(order.createdAt);
     const unpaidOnlyCondition = showUnpaidOnly ? order.remains !== 0 : true;
@@ -29,8 +30,9 @@ const Abacus = () => {
       unpaidOnlyCondition
     );
   });
-  const handleEditClick = (order) => {
-    setSelectedOrder(order);
+  const handleEditClick = () => {
+    setDebtsOrder(orders.filter((value, index) => value.remains !== 0))
+    setOpenModal(true);
   };
 
   const fetchWithDates = async () => {
@@ -96,7 +98,7 @@ const Abacus = () => {
   const fetchUser = async () => {
     try {
       const response = await fetch(
-        `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${checkedClient}?relations[0]=ordersAsClient&relations[1]=profile`,
+        `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${checkedClient}?relations[0]=ordersAsClient&relations[1]=profile&relations[2]=profile.paymentHistories`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -230,14 +232,7 @@ const Abacus = () => {
                     <td>{formatToRubles(order.amount - order.remains)}</td>
                     <td>{formatToRubles(order.remains)}</td>
                     <td>
-                      {order.remains != 0 ? (
-                        <button
-                          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                          onClick={() => handleEditClick(order)}
-                        >
-                          Редактировать
-                        </button>
-                      ) : (
+                      {order.paymentType == "paid" && (
                         <span className=" bg-green-200 text-green-800 text-sm font-semibold mr-2 px-2.5 py-0.5 rounded dark:bg-green-700 dark:text-green-300">
                           Оплачен
                         </span>
@@ -260,16 +255,24 @@ const Abacus = () => {
                 <td></td>
                 <td>{formatToRubles(paid)}</td>
                 <td>{formatToRubles(remains)}</td>
-                <td></td>
+              <td>
+                <button
+                          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                          onClick={handleEditClick}
+                        >
+                          Редактировать
+                        </button>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-      {selectedOrder && (
+      {openModal && (
         <ModalEditOrder
-          order={selectedOrder}
-          onClose={() => setSelectedOrder(null)}
+          orders={debtsOrder}
+          onClose={() => setOpenModal(false)}
+          remains={remains}
           client={client}
           fetchOrdersOfClients={fetchOrdersOfClients}
         />
