@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import "./TableProduct.css";
 import { UserContext } from "../../Context/Context";
-
+import defa_icon from "../../Assets/Icons/defa.png";
 const TableProducts = ({
   setCheckedProduct,
   setProductsDelete,
@@ -34,8 +34,10 @@ const TableProducts = ({
             <tr key={product.id}>
               <td>
                 <div>
-                  {product.image && product.image.url && (
+                  {product.image && product.image.url ? (
                     <img src={product.image.url} alt={product.name} />
+                  ) : (
+                    <img src={defa_icon} alt={product.name} />
                   )}
                   <span>{product.name}</span>
                 </div>

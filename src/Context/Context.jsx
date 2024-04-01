@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
@@ -27,10 +27,17 @@ const UserProvider = ({ children }) => {
   const [sum, setSum] = useState(0);
   const nav = useNavigate();
   const token = localStorage.getItem("accessToken");
+  const location = useLocation();
+  const currentPath = location.pathname;
+
   const handleErrorResponse = (response) => {
     if (!response.ok) {
       localStorage.removeItem("accessToken");
-      if (response.status === 403) {
+      if (
+        response.status === 403 &&
+        currentPath !== "/login" &&
+        currentPath !== "/sign-in"
+      ) {
         nav("/login");
       }
       throw new Error("Network response was not ok");

@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./ModalChangeOrder.css";
 import close_icon from "../../Assets/Icons/iconamoon_close-duotone.png";
-
+import defa from "../../Assets/Icons/defa.png";
+import { Toaster, toast } from "react-hot-toast";
+import { UserContext } from "../../Context/Context";
 const ModalChangeOrder = ({ setOpenChangeDelivery, atTheMomentOrder }) => {
   const [basketData, setBasketData] = useState(
     atTheMomentOrder.baskets.map((item) => ({ ...item }))
   );
+  const { setSum } = useContext(UserContext);
   const token = localStorage.getItem("accessToken");
-  console.log(atTheMomentOrder);
 
   const recalculateSumma = (item) => {
     const basePrice = item.product.standard;
@@ -33,6 +35,7 @@ const ModalChangeOrder = ({ setOpenChangeDelivery, atTheMomentOrder }) => {
     const { value } = e.target;
     const updatedBasket = [...basketData];
     updatedBasket[index].quantity = parseInt(value, 10) || 0;
+    updatedBasket[index].summa = recalculateSumma(updatedBasket[index]);
     setBasketData(updatedBasket);
   };
 
@@ -48,13 +51,12 @@ const ModalChangeOrder = ({ setOpenChangeDelivery, atTheMomentOrder }) => {
     e.preventDefault();
     const itemToUpdate = basketData[itemIndex];
     const idProd = itemToUpdate.id;
-    console.log(itemToUpdate);
 
     try {
       const bodyData = {
         discountType: itemToUpdate.discountType,
         quantity: itemToUpdate.quantity,
-        summa: itemToUpdate.summa, // Включаем summa в данные для отправки
+        summa: itemToUpdate.summa,
       };
 
       const response = await fetch(
@@ -70,18 +72,16 @@ const ModalChangeOrder = ({ setOpenChangeDelivery, atTheMomentOrder }) => {
       );
 
       const data = await response.json();
-      console.log(data);
-
+      toast("Изменение отправлены успешно");
+      setSum((prev) => prev + 1);
       if (!response.ok) {
         throw new Error("Failed to update basket");
       }
 
-      // Вычисляем новую сумму заказа (amount)
       const newAmount = basketData.reduce((total, item) => {
         return total + item.summa;
       }, 0);
 
-      // Отправляем PATCH-запрос для обновления суммы заказа
       const orderResponse = await fetch(
         `https://monkfish-app-v8pst.ondigitalocean.app/api/order/${atTheMomentOrder.id}`,
         {
@@ -95,13 +95,13 @@ const ModalChangeOrder = ({ setOpenChangeDelivery, atTheMomentOrder }) => {
       );
 
       const orderData = await orderResponse.json();
-      console.log(orderData);
 
       if (!orderResponse.ok) {
         throw new Error("Failed to update order amount");
       }
     } catch (error) {
       console.error("Error updating basket:", error);
+      toast("Ошибка в отправке изменений!");
     }
   };
 
@@ -116,7 +116,9 @@ const ModalChangeOrder = ({ setOpenChangeDelivery, atTheMomentOrder }) => {
       >
         <div
           className="close_order"
-          onClick={() => setOpenChangeDelivery(false)}
+          onClick={() => {
+            setOpenChangeDelivery(false);
+          }}
         >
           <img src={close_icon} alt="close" />
         </div>
@@ -135,11 +137,10 @@ const ModalChangeOrder = ({ setOpenChangeDelivery, atTheMomentOrder }) => {
               <tr key={index}>
                 <td>
                   <div className="flex items-center gap-2">
-                    {item.product.image && item.product.image.url && (
-                      <img
-                        src={item.product.image.url}
-                        alt={item.product.name}
-                      />
+                    {item.product.image && item.product.image.url ? (
+                      <img src={item.image.url} alt={item.product.name} />
+                    ) : (
+                      <img src={defa} alt={item.product.name} />
                     )}
                     {item.product.name}
                   </div>
@@ -195,6 +196,7 @@ const ModalChangeOrder = ({ setOpenChangeDelivery, atTheMomentOrder }) => {
           </tbody>
         </table>
       </div>
+      <Toaster />
     </form>
   );
 };

@@ -84,7 +84,7 @@ const NakladnoyOrderAllClients = () => {
                             : basket.discountType === "discount2"
                             ? basket.product.discount2
                             : basket.product.standard}
-                          ₽{console.log(order)}
+                          ₽
                         </td>
                         <td>{basket.summa}₽</td>
                       </tr>

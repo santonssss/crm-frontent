@@ -66,7 +66,7 @@
   width: 40px;
   align-items: center;
   height: 40px;
-  position: absolute;
+  z-index: 30;
 }
 .modal-content_addOrder table {
   border: 2px solid var(--back-blue);

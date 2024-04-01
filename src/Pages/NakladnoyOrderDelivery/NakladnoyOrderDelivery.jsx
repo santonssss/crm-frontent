@@ -93,7 +93,7 @@ const NakladnoyOrderDelivery = () => {
               {products.map((product) => {
                 const productOrders = order.baskets
                   .filter((basket) => basket.product.id === product.id)
-                  .map((basket) => `${basket.quantity} к/ш (${basket.summa} ₽)`)
+                  .map((basket) => `${basket.quantity} к/ш `)
                   .join(", ");
                 return <td key={product.id}>{productOrders || "—"}</td>;
               })}

@@ -12,7 +12,6 @@ const ClientsTable = ({
 }) => {
   const { deliverysClients, checkedDelivery, setDeleteOpen, setIdDelete } =
     useContext(UserContext);
-  console.log(checkedDelivery);
   return (
     <table className="mt-5 tableclient">
       <thead>

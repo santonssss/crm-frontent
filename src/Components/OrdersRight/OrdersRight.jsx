@@ -8,29 +8,35 @@ import false_icon from "../../Assets/Image/true.svg";
 import true_icon from "../../Assets/Image/false.svg";
 import { Link } from "react-router-dom";
 import ModalChangeOrder from "../../Modals/ModalChangeOrder/ModalChangeOrder";
+
 const OrdersRight = ({ setAddOrderOpen }) => {
   const { orders, setSum } = useContext(UserContext);
   const [sortedOrders, setSortedOrders] = useState([]);
+  const [initialSortedOrders, setInitialSortedOrders] = useState([]);
   const [openChangeDelivery, setOpenChangeDelivery] = useState(false);
   const [atTheMomentOrder, setAtTheMomemtOrder] = useState({});
-  useEffect(() => {
-    const sortOrdersByDate = (orders) => {
-      return orders.sort((a, b) => {
-        const dateA = new Date(a.createdAt);
-        const dateB = new Date(b.createdAt);
-        return dateA - dateB;
-      });
-    };
 
-    const sorted = sortOrdersByDate(orders);
-    setSortedOrders(sorted);
+  useEffect(() => {
+    if (orders.length > 0) {
+      const sortOrdersByDate = (orders) => {
+        return orders.sort((a, b) => {
+          const dateA = new Date(a.createdAt);
+          const dateB = new Date(b.createdAt);
+          return dateA - dateB;
+        });
+      };
+
+      const sorted = sortOrdersByDate(orders);
+      setSortedOrders(sorted);
+      setInitialSortedOrders(sorted); // Сохраняем изначально отсортированные заказы
+    }
   }, [orders]);
 
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-
   const [beforeSelectedDate, setBeforeSelectedDate] = useState(yesterday);
   const [afterSelectedDate, setAfterSelectedDate] = useState(new Date());
+
   const handleDateChangeBefore = (date) => {
     setBeforeSelectedDate(date);
     filterOrders(date, afterSelectedDate);
@@ -42,18 +48,25 @@ const OrdersRight = ({ setAddOrderOpen }) => {
   };
 
   const filterOrders = (beforeDate, afterDate) => {
-    const filtered = orders.filter((order) => {
+    const startOfDayBefore = new Date(beforeDate);
+    startOfDayBefore.setHours(0, 0, 0, 0);
+    const startOfDayAfter = new Date(afterDate);
+    startOfDayAfter.setHours(0, 0, 0, 0);
+
+    const filtered = initialSortedOrders.filter((order) => {
       const orderDate = new Date(order.createdAt);
-      return orderDate >= beforeDate && orderDate <= afterDate;
+      return orderDate >= startOfDayBefore && orderDate <= startOfDayAfter;
     });
-    setSortedOrders(filtered);
+    setSortedOrders(() => filtered);
   };
+
   const formatToRubles = (value) => {
     return new Intl.NumberFormat("ru-RU", {
       style: "currency",
       currency: "RUB",
     }).format(value);
   };
+
   function formatDate(date) {
     const day = date.getDate();
     const month = date.getMonth() + 1;
@@ -66,6 +79,7 @@ const OrdersRight = ({ setAddOrderOpen }) => {
 
     return formattedDate;
   }
+
   const updateOrderStatus = async (orderId, confirmed) => {
     const token = localStorage.getItem("accessToken");
     try {
@@ -99,6 +113,7 @@ const OrdersRight = ({ setAddOrderOpen }) => {
     newSortedOrders[index].confirmed = updatedOrder.confirmed;
     setSortedOrders(newSortedOrders);
   };
+
   return (
     <div className="orders-right">
       <div className="right-btns">

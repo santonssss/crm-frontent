@@ -4,7 +4,13 @@ import { UserContext } from "../../Context/Context";
 import toast, { Toaster } from "react-hot-toast";
 const token = localStorage.getItem("accessToken");
 
-const ModalEditOrder = ({ orders, onClose, client, fetchOrdersOfClients, remains }) => {
+const ModalEditOrder = ({
+  orders,
+  onClose,
+  client,
+  fetchOrdersOfClients,
+  remains,
+}) => {
   const [money, setMoney] = useState(Number(remains));
   const [histories, setHistories] = useState([]);
   const formatToRubles = (value) => {
@@ -30,8 +36,6 @@ const ModalEditOrder = ({ orders, onClose, client, fetchOrdersOfClients, remains
     setMoney(event.target.value);
   };
 
-  console.log(histories)
-
   const fetchHistories = async () => {
     try {
       const response = await fetch(
@@ -55,8 +59,8 @@ const ModalEditOrder = ({ orders, onClose, client, fetchOrdersOfClients, remains
   };
 
   useEffect(() => {
-    fetchHistories()
-  })
+    fetchHistories();
+  });
 
   const handleAcceptPayment = async () => {
     try {
@@ -97,7 +101,7 @@ const ModalEditOrder = ({ orders, onClose, client, fetchOrdersOfClients, remains
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      
+
       toast("Оплата прошла успешно!");
       setMoney(0);
       fetchOrdersOfClients();
@@ -141,30 +145,29 @@ const ModalEditOrder = ({ orders, onClose, client, fetchOrdersOfClients, remains
                 </thead>
                 <tbody className="text-gray-700">
                   {orders.length > 0 ? (
-                orders.map((order) => (
-                  <tr key={order.id}>
-                    <td>№{order.id}</td>
-                    <td>{formatDate(new Date(order.createdAt))}</td>
-                    <td>{formatToRubles(order.amount)}</td>
-                    <td>{formatToRubles(order.amount - order.remains)}</td>
-                    <td>{formatToRubles(order.remains)}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="6" className="text-center">
-                    Заказов к сожалению нету
-                  </td>
-                </tr>
-              )}
+                    orders.map((order) => (
+                      <tr key={order.id}>
+                        <td>№{order.id}</td>
+                        <td>{formatDate(new Date(order.createdAt))}</td>
+                        <td>{formatToRubles(order.amount)}</td>
+                        <td>{formatToRubles(order.amount - order.remains)}</td>
+                        <td>{formatToRubles(order.remains)}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="text-center">
+                        Заказов к сожалению нету
+                      </td>
+                    </tr>
+                  )}
                   <tr className="bg-gray-200">
                     <td>
                       <strong>Итог:</strong>
                     </td>
                     <td></td>
                     <td></td>
-                    <td>
-                    </td>
+                    <td></td>
                     <td>{formatToRubles(remains)}</td>
                   </tr>
                 </tbody>
@@ -191,13 +194,13 @@ const ModalEditOrder = ({ orders, onClose, client, fetchOrdersOfClients, remains
               Принять оплату
             </button>
           </div>
-          <div className="overflow-x-auto p-4">
+          <div className="overflow-x-auto kk p-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg leading-6 font-medium text-gray-900">
                 История оплаты
               </h3>
             </div>
-            <div className="max-h-[500px] overflow-y-auto overflow-x-auto">
+            <div className="max-h-[500px] overflow-y-auto kk overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead>
                   <tr>
@@ -210,22 +213,20 @@ const ModalEditOrder = ({ orders, onClose, client, fetchOrdersOfClients, remains
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {
-                    histories
-                      .filter((value) => value.paymentType != "debt")
-                      .map((value, index) => (
-                        <>
-                          <tr>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              {value.createdAt}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              {formatToRubles(Number(value.money))}
-                            </td>
-                          </tr>
-                        </>
-                      ))
-                  }
+                  {histories
+                    .filter((value) => value.paymentType != "debt")
+                    .map((value, index) => (
+                      <>
+                        <tr>
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            {value.createdAt}
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            {formatToRubles(Number(value.money))}
+                          </td>
+                        </tr>
+                      </>
+                    ))}
                 </tbody>
               </table>
             </div>

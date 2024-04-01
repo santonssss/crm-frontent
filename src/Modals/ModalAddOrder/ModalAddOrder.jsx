@@ -1,10 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./ModalAddOrder.css";
-import lavash from "../../Assets/Image/lavash.png";
 import close_icon from "../../Assets/Icons/iconamoon_close-duotone.png";
 import ModalProductsList from "../ModalProductsList/ModalProductsList";
 import { UserContext } from "../../Context/Context";
-
+import defa from "../../Assets/Icons/defa.png";
 import toast, { Toaster } from "react-hot-toast";
 const ModalAddOrder = ({ setAddOrderOpen }) => {
   const [productsList, setProductsList] = useState([]);
@@ -238,8 +237,10 @@ const ProductRow = ({
     <tr>
       <td>
         <div className="flex items-center gap-2">
-          {product.image && product.image.url && (
+          {product.image && product.image.url ? (
             <img src={product.image.url} alt={product.name} />
+          ) : (
+            <img src={defa} alt={product.name} />
           )}
           {product.name}
         </div>
