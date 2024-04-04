@@ -64,17 +64,19 @@ const ModalDataClientHistory = ({ setOpenHistory, atTheMomentClient }) => {
             {atTheMomentClient &&
               atTheMomentClient.profile &&
               atTheMomentClient.profile.paymentHistories &&
-              atTheMomentClient.profile.paymentHistories.map((payment) => (
-                <tr key={payment.id}>
-                  <td>{new Date(payment.createdAt).toLocaleDateString()}</td>
-                  <td>{formatToRubles(payment.money)}</td>
-                  <td>
-                    {payment.paymentType === "debt"
-                      ? "Долг"
-                      : "Частичный платеж"}
-                  </td>
-                </tr>
-              ))}
+              atTheMomentClient.profile.paymentHistories
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .map((payment) => (
+                  <tr key={payment.id}>
+                    <td>{new Date(payment.createdAt).toLocaleDateString()}</td>
+                    <td>{formatToRubles(payment.money)}</td>
+                    <td>
+                      {payment.paymentType === "debt"
+                        ? "Долг"
+                        : "Частичный платеж"}
+                    </td>
+                  </tr>
+                ))}
           </tbody>
         </table>
       </div>

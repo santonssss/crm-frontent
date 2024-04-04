@@ -12,11 +12,12 @@ const Products = () => {
   const [productDelete, setProductsDelete] = useState(false);
   const [checkedProduct, setCheckedProduct] = useState({});
   const [productRedirect, setProductRedirect] = useState(false);
+  const role = localStorage.getItem("role");
   return (
     <div className={`home-wrap ${sidebarOpen ? "p-o" : "p-c"}`}>
       <h2 className="products_title">Продукты</h2>
       <div className="sum-tovars">Товаров: {products.length}</div>
-      <AddProducts />
+      {role !== "optometrist" && <AddProducts />}
       <TableProducts
         setCheckedProduct={setCheckedProduct}
         setProductsDelete={setProductsDelete}

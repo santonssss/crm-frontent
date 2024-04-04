@@ -34,6 +34,13 @@
   gap: 0 100px;
   margin-top: 20px;
 }
+.client-wrapper-nakladnoy {
+  page-break-inside: avoid;
+}
+
+.client-wrapper-nakladnoy:nth-child(odd) {
+  page-break-after: always;
+}
 @media print {
   .allClient .nakladnoy {
     display: none;

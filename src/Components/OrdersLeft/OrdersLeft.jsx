@@ -12,9 +12,14 @@ const OrdersLeft = () => {
     setCheckedClient,
   } = useContext(UserContext);
   const [searchQuery, setSearchQuery] = useState("");
-  const deliveryMen = deliveryData.filter(
-    (user) => user.role === "deliveryman"
-  );
+  const role = localStorage.getItem("role");
+  const optomId = localStorage.getItem("idOptom");
+  const deliveryMen =
+    role === "optometrist"
+      ? deliveryData.filter(
+          (user) => user.role === "optometrist" && user.id === Number(optomId)
+        )
+      : deliveryData.filter((user) => user.role === "deliveryman");
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
   };

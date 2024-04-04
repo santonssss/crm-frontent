@@ -5,7 +5,7 @@ const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
-  const [role, setRole] = useState("");
+  const [role, setRole] = useState("user");
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -27,7 +27,7 @@ const Signin = () => {
           }),
         }
       );
-
+      const data = await response.json();
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -39,7 +39,6 @@ const Signin = () => {
 
   const handleRoleChange = (selectedRole) => {
     setRole(selectedRole);
-    console.log(role);
   };
 
   return (
@@ -78,7 +77,7 @@ const Signin = () => {
           handleRoleChange(role === "optometrist" ? "user" : "optometrist")
         }
       >
-        {role === "optometrist" ? "пользователя" : "Оптомщика"}
+        {role === "optometrist" ? "Для оптомщика" : "Для пользователя"}
       </button>
       <button type="submit">Зарегистрироваться</button>
     </form>

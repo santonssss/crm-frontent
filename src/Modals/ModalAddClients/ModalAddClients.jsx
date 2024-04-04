@@ -3,6 +3,7 @@ import "./ModalAddClients.css";
 import { UserContext } from "../../Context/Context";
 import { TailSpin } from "react-loader-spinner";
 import toast, { Toaster } from "react-hot-toast";
+
 const ModalAddClients = () => {
   const { setAddClientsOpen, setSum } = useContext(UserContext);
   const [username, setName] = useState("");
@@ -14,6 +15,9 @@ const ModalAddClients = () => {
   const deliveryMen = deliveryData.filter(
     (user) => user.role === "deliveryman"
   );
+
+  const roleValid = localStorage.getItem("role");
+  const optomId = localStorage.getItem("idOptom");
   const handleSubmit = async (event) => {
     setLoading(true);
     const token = localStorage.getItem("accessToken");
@@ -32,20 +36,23 @@ const ModalAddClients = () => {
             username,
             phone,
             address,
-            deliverymanAsClient,
+            deliverymanAsClient:
+              roleValid === "optometrist" ? optomId : deliverymanAsClient,
             role,
           }),
         }
       );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
       const data = await response.json();
       toast("Пользователь добавлен успешно");
       setName("");
       setPhone("");
       setAddress("");
       setSum((prev) => prev + 1);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
     } catch (error) {
       toast(
         "Не удалось добавить пользователя, пожалуйста перепроверьте данные"
@@ -93,18 +100,20 @@ const ModalAddClients = () => {
           />
         </div>
         <div>
-          <span>Доставщик</span>
-          <select
-            value={deliverymanAsClient}
-            onChange={(e) => setDeliverymanAsClient(e.target.value)}
-          >
-            <option value="">Выберите доставщика</option>
-            {deliveryMen.map((delivery) => (
-              <option key={delivery.id} value={delivery.id}>
-                {delivery.username}
-              </option>
-            ))}
-          </select>
+          {roleValid === "optometrist" ? null : <span>Доставщик</span>}
+          {roleValid === "optometrist" ? null : (
+            <select
+              value={deliverymanAsClient}
+              onChange={(e) => setDeliverymanAsClient(e.target.value)}
+            >
+              <option value="">Выберите доставщика</option>
+              {deliveryMen.map((delivery) => (
+                <option key={delivery.id} value={delivery.id}>
+                  {delivery.username}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
         <div className="add_btns">
           <button type="submit">

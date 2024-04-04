@@ -63,6 +63,7 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
       console.error("Произошла ошибка:", error);
     }
   };
+  const role = localStorage.getItem("role");
   return (
     <form className="modal-overlay_addOrder" onSubmit={submitOrder}>
       <div
@@ -72,30 +73,32 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
         <div className="close_order" onClick={() => setAddOrderOpen(false)}>
           <img src={close_icon} alt="close" />
         </div>
-        <select
-          name=""
-          className="sel"
-          onChange={(e) => {
-            const selectedDeliveryId = e.target.value;
-            setDeliveryId(selectedDeliveryId);
-          }}
-        >
-          <option
-            value=""
-            style={{
-              display: "none",
+        {role !== "optometrist" && (
+          <select
+            name=""
+            className="sel"
+            onChange={(e) => {
+              const selectedDeliveryId = e.target.value;
+              setDeliveryId(selectedDeliveryId);
             }}
           >
-            Выбрать достащика
-          </option>
-          {deliveryMen.length > 0 ? (
-            deliveryMen.map((delivery) => {
-              return <option value={delivery.id}>{delivery.username}</option>;
-            })
-          ) : (
-            <p>Доставщиков пока что нету</p>
-          )}
-        </select>
+            <option
+              value=""
+              style={{
+                display: "none",
+              }}
+            >
+              Выбрать доставщика
+            </option>
+            {deliveryMen.length > 0 ? (
+              deliveryMen.map((delivery) => {
+                return <option value={delivery.id}>{delivery.username}</option>;
+              })
+            ) : (
+              <p>Доставщиков пока что нету</p>
+            )}
+          </select>
+        )}
         <select
           name=""
           className="sel"
@@ -252,6 +255,7 @@ const ProductRow = ({
             border: "1px solid black",
             borderRadius: "5px",
             padding: "2px 5px",
+            width: "100px",
           }}
           name=""
           id=""

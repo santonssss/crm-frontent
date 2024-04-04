@@ -50,6 +50,9 @@ const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    const role = localStorage.getItem("role");
+    const optomId = localStorage.getItem("idOptom");
+
     const fetchOrders = async () => {
       try {
         const requestOptions = {
@@ -96,69 +99,124 @@ const UserProvider = ({ children }) => {
         console.error("Error fetching data:", error);
       }
     };
-
-    const fetchUserData = async () => {
+    let fetchUserData = async () => {
       try {
-        const response = await fetch(
-          "https://monkfish-app-v8pst.ondigitalocean.app/api/user?relations[0]=clientsAsDeliveryman.profile.paymentHistories&relations[1]=clientsAsDeliveryman.ordersAsClient.baskets.product&filter[role]=deliveryman",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        let apiUrl = "https://monkfish-app-v8pst.ondigitalocean.app/api/user?";
+        let deliveryDataAll = [];
+
+        if (role === "optometrist") {
+          apiUrl += `filter[role]=optometrist`;
+        } else {
+          apiUrl += `filter[role]=deliveryman`;
+        }
+
+        apiUrl += "&relations[0]=clientsAsDeliveryman.profile.paymentHistories";
+        apiUrl +=
+          "&relations[1]=clientsAsDeliveryman.ordersAsClient.baskets.product";
+
+        const response = await fetch(apiUrl, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         handleErrorResponse(response);
+
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
+
         const data = await response.json();
-        setDeliveryData(data.data.records);
+        deliveryDataAll = [...data.data.records];
+
+        if (role !== "optometrist") {
+          let apiUrlOptometrist =
+            "https://monkfish-app-v8pst.ondigitalocean.app/api/user?";
+          apiUrlOptometrist += `filter[role]=optometrist`;
+          apiUrlOptometrist +=
+            "&relations[0]=clientsAsDeliveryman.profile.paymentHistories";
+          apiUrlOptometrist +=
+            "&relations[1]=clientsAsDeliveryman.ordersAsClient.baskets.product";
+
+          const responseOptometrist = await fetch(apiUrlOptometrist, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          handleErrorResponse(responseOptometrist);
+
+          if (!responseOptometrist.ok) {
+            throw new Error("Network response was not ok");
+          }
+
+          const dataOptometrist = await responseOptometrist.json();
+          deliveryDataAll = [
+            ...deliveryDataAll,
+            ...dataOptometrist.data.records,
+          ];
+        }
+
+        setDeliveryData(deliveryDataAll);
       } catch (error) {
         console.warn(error);
       }
     };
+
     const fetchDeliveriesClients = async () => {
       try {
-        const response = await fetch(
-          `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${deliveryId}?relations[0]=clientsAsDeliveryman.profile`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const url =
+          role === "optometrist"
+            ? `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${optomId}?relations[0]=clientsAsDeliveryman.profile`
+            : `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${deliveryId}?relations[0]=clientsAsDeliveryman.profile`;
+
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
+
         const data = await response.json();
         setDeliveryClients(data.data.clientsAsDeliveryman);
       } catch (error) {
         console.warn(error);
       }
     };
+
     const fetchHomeDeliveryClient = async () => {
       try {
-        const response = await fetch(
-          `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${devId}?relations[0]=clientsAsDeliveryman&relations[1]=profile`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const url =
+          role === "optometrist"
+            ? `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${optomId}?relations[0]=clientsAsDeliveryman&relations[1]=profile`
+            : `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${devId}?relations[0]=clientsAsDeliveryman&relations[1]=profile`;
+
+        const response = await fetch(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
+
         const data = await response.json();
         setClientForDelivary(data.data.clientsAsDeliveryman);
       } catch (error) {
         console.warn(error);
       }
     };
+
     if (deliveryId) {
       fetchDeliveriesClients();
     }
-    if (devId) {
+    if (role === "optometrist") {
+      fetchHomeDeliveryClient();
+    } else if (devId !== null && devId !== undefined) {
       fetchHomeDeliveryClient();
     }
     if (checkedClient !== null) {

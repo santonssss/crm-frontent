@@ -2,11 +2,22 @@ import React, { useContext } from "react";
 import "./Delivary.css";
 import { UserContext } from "../../Context/Context";
 import { TailSpin } from "react-loader-spinner";
+
 const Delivary = ({ setTheMomentDelivery }) => {
   const { setDeliveryOpen, deliveryData, setDevId } = useContext(UserContext);
-  const deliveryMen = deliveryData.filter(
-    (user) => user.role === "deliveryman"
-  );
+  const role = localStorage.getItem("role");
+  const optomId = localStorage.getItem("idOptom");
+
+  // Фильтрация доставщиков в зависимости от роли
+  const deliveryMen = deliveryData.filter((user) => {
+    if (role === "optometrist") {
+      return user.role === "optometrist" && user.id === Number(optomId);
+    } else {
+      // Отображение всех доставщиков для не оптомщика
+      return user.role === "deliveryman" || user.role === "optometrist";
+    }
+  });
+
   return (
     <section className="delivary">
       <table>

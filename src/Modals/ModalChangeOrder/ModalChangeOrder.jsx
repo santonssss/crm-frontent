@@ -152,6 +152,7 @@ const ModalChangeOrder = ({ setOpenChangeDelivery, atTheMomentOrder }) => {
                       border: "1px solid black",
                       borderRadius: "5px",
                       padding: "2px 5px",
+                      width: "100px",
                     }}
                     name=""
                     id=""

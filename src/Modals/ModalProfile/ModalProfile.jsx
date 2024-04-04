@@ -6,6 +6,7 @@ const ModalProfile = () => {
     useContext(UserContext);
   const user = localStorage.getItem("username");
   const phone = localStorage.getItem("phone");
+  const role = localStorage.getItem("role");
   return (
     <div
       className="modal-overlay"
@@ -62,7 +63,7 @@ const ModalProfile = () => {
         <h3>{user}</h3>
         <div className="info">
           <span>Должность</span>
-          <span>Менеджер</span>
+          <span>{role === "optometrist" ? "Провайдер" : "Администратор"}</span>
         </div>
         <div className="info">
           <span>Номер телефона</span>

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import "./Chart.css";
-
 import Chart from "react-apexcharts";
 import Series from "../../Decomponents/Series";
 import { UserContext } from "../../Context/Context";
@@ -9,11 +8,20 @@ const ChartWrapper = () => {
   const { deliveryData } = useContext(UserContext);
   const [totalDebts, setTotalDebts] = useState(0);
   const [totalPartly, setTotalPartly] = useState(0);
+  const role = localStorage.getItem("role");
+  const optomId = localStorage.getItem("idOptom");
+
+  let deliveryMen = [];
+  if (role !== "optometrist") {
+    deliveryMen = deliveryData.filter((user) => user.role === "deliveryman");
+  }
+
   useEffect(() => {
-    if (deliveryData.length > 0) {
+    const dataToUse = role === "optometrist" ? deliveryData : deliveryMen;
+    if (dataToUse.length > 0) {
       let debtsSum = 0;
       let partlySum = 0;
-      deliveryData.forEach((deliveryman) => {
+      dataToUse.forEach((deliveryman) => {
         if (deliveryman.clientsAsDeliveryman) {
           deliveryman.clientsAsDeliveryman.forEach((client) => {
             if (client.profile && typeof client.profile.debts === "number") {
@@ -35,7 +43,7 @@ const ChartWrapper = () => {
       setTotalDebts(debtsSum);
       setTotalPartly(partlySum);
     }
-  }, [deliveryData]);
+  }, [role, deliveryData, deliveryMen]);
 
   useEffect(() => {
     setChartData((prevChartData) => ({
