@@ -32,7 +32,11 @@ const UserProvider = ({ children }) => {
 
   const handleErrorResponse = (response) => {
     if (!response.ok) {
-      localStorage.removeItem("accessToken");
+      const role = localStorage.getItem("role");
+      if (role !== "optometrist") {
+        localStorage.removeItem("accessToken");
+      }
+
       if (
         response.status === 403 &&
         currentPath !== "/login" &&
@@ -44,6 +48,7 @@ const UserProvider = ({ children }) => {
     }
     return response;
   };
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {

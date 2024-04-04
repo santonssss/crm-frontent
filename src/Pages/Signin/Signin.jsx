@@ -5,6 +5,7 @@ const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
+  const [role, setRole] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -22,6 +23,7 @@ const Signin = () => {
             username,
             password,
             phone,
+            role,
           }),
         }
       );
@@ -31,8 +33,13 @@ const Signin = () => {
       }
       navigate("/login");
     } catch (error) {
-      setError(error.message);
+      console.error("Error:", error);
     }
+  };
+
+  const handleRoleChange = (selectedRole) => {
+    setRole(selectedRole);
+    console.log(role);
   };
 
   return (
@@ -65,9 +72,14 @@ const Signin = () => {
           required
         />
       </div>
-      <Link className="link" to={"/login"}>
-        Есть аккаунт?
-      </Link>
+      <button
+        className="def"
+        onClick={() =>
+          handleRoleChange(role === "optometrist" ? "user" : "optometrist")
+        }
+      >
+        {role === "optometrist" ? "пользователя" : "Оптомщика"}
+      </button>
       <button type="submit">Зарегистрироваться</button>
     </form>
   );

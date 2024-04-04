@@ -29,9 +29,13 @@ const SignUp = () => {
       }
 
       const data = await response.json();
+
+      console.log(data);
       localStorage.setItem("username", data.data.user.username);
       localStorage.setItem("phone", data.data.user.phone);
       localStorage.setItem("accessToken", data.data.accessToken);
+      localStorage.setItem("role", data.data.user.role);
+      localStorage.setItem("idOptom", data.data.user.id);
       navigate("/");
     } catch (error) {
       console.error("Ошибка при выполнении запроса:", error);
