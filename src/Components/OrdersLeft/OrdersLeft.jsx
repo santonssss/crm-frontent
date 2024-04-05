@@ -19,7 +19,9 @@ const OrdersLeft = () => {
       ? deliveryData.filter(
           (user) => user.role === "optometrist" && user.id === Number(optomId)
         )
-      : deliveryData.filter((user) => user.role === "deliveryman");
+      : deliveryData.filter(
+          (user) => user.role === "deliveryman" || user.role === "optometrist"
+        );
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
   };
