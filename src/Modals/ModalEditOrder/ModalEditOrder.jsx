@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./ModalEditOrder.css";
 import { UserContext } from "../../Context/Context";
 import toast, { Toaster } from "react-hot-toast";
+import { TrashIcon } from '@heroicons/react/24/outline';
 const token = localStorage.getItem("accessToken");
 
 const ModalEditOrder = ({
@@ -36,10 +37,36 @@ const ModalEditOrder = ({
     setMoney(event.target.value);
   };
 
+  const deleteClick = async (id, paidMoney) => {
+    try {
+      const response = await fetch(
+        `https://monkfish-app-v8pst.ondigitalocean.app/api/payment-history/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+      fetchHistories()
+      fetchOrdersOfClients()
+      setMoney(money+paidMoney)
+    } catch (error) {
+      console.error("Error during fetch:", error);
+    }
+  }
+
   const fetchHistories = async () => {
     try {
       const response = await fetch(
-        `https://monkfish-app-v8pst.ondigitalocean.app/api/payment-history/?relations[0]=profile&filter[profile][id]=${client.profile.id}&sort[createdAt]=desc`,
+        `https://monkfish-app-v8pst.ondigitalocean.app/api/payment-history/?relations[0]=profile&relations[1]=order&filter[profile][id]=${client.profile.id}&sort[createdAt]=desc`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -208,6 +235,9 @@ const ModalEditOrder = ({
                       Дата
                     </th>
                     <th className="px-4 py-2 text-left text-sm font-semibold">
+                      № Накладного
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
                       Оплачен
                     </th>
                   </tr>
@@ -222,7 +252,19 @@ const ModalEditOrder = ({
                             {value.createdAt}
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap">
+                            {Number(value.order.id)}
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap">
                             {formatToRubles(Number(value.money))}
+                          </td>
+                          <td>
+                            <button
+                              className="flex items-center justify-center px-4 py-2 bg-red-500 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out"
+                              onClick={() => deleteClick(value.id, value.money)}
+                            >
+                              <TrashIcon className="w-4 h-4 mr-2" />
+                              Delete
+                            </button>
                           </td>
                         </tr>
                       </>
