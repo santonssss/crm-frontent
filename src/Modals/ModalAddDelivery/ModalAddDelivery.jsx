@@ -37,6 +37,9 @@ const ModalAddDelivery = ({
       );
 
       if (!response.ok) {
+        toast(
+          "Не удалось добавить доставщика, пожалуйста перепроверьте данные"
+        );
         throw new Error("Network response was not ok");
       }
 
@@ -47,7 +50,6 @@ const ModalAddDelivery = ({
       setSum((prev) => prev + 1);
     } catch (error) {
       console.error("Ошибка при выполнении запроса:", error);
-      toast("Не удалось добавить доставщика, пожалуйста перепроверьте данные");
     } finally {
       setLoading(false);
     }

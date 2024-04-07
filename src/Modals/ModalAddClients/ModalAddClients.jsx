@@ -13,7 +13,7 @@ const ModalAddClients = () => {
   const [deliverymanAsClient, setDeliverymanAsClient] = useState("");
   const { deliveryData } = useContext(UserContext);
   const deliveryMen = deliveryData.filter(
-    (user) => user.role === "deliveryman"
+    (user) => user.role === "deliveryman" || user.role === "optometrist"
   );
 
   const roleValid = localStorage.getItem("role");

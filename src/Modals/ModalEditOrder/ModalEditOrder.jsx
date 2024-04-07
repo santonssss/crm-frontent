@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./ModalEditOrder.css";
 import { UserContext } from "../../Context/Context";
 import toast, { Toaster } from "react-hot-toast";
-import { TrashIcon } from '@heroicons/react/24/outline';
+import { TrashIcon } from "@heroicons/react/24/outline";
 const token = localStorage.getItem("accessToken");
 
 const ModalEditOrder = ({
@@ -55,13 +55,13 @@ const ModalEditOrder = ({
       }
 
       const data = await response.json();
-      fetchHistories()
-      fetchOrdersOfClients()
-      setMoney(money+paidMoney)
+      fetchHistories();
+      fetchOrdersOfClients();
+      setMoney(money + paidMoney);
     } catch (error) {
       console.error("Error during fetch:", error);
     }
-  }
+  };
 
   const fetchHistories = async () => {
     try {

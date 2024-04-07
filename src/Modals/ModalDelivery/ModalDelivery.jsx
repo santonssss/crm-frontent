@@ -101,11 +101,15 @@ const ModalDelivery = ({
             </thead>
             <tbody>
               {atTheMomentDelivery.clientsAsDeliveryman.map((client) => {
-                const totalSumForClient =
-                  client.profile.paymentHistories.reduce(
-                    (total, payment) => total + payment.money,
-                    0
-                  );
+                const totalDebtForClient =
+                  client.profile.paymentHistories.reduce((total, payment) => {
+                    if (payment.paymentType === "debt") {
+                      return total + payment.money;
+                    } else {
+                      return total;
+                    }
+                  }, 0);
+
                 return (
                   <tr
                     onClick={() => {
@@ -115,7 +119,7 @@ const ModalDelivery = ({
                   >
                     <td>{client.username}</td>
                     <td>{client.phone}</td>
-                    <td>{formatToRubles(totalSumForClient)}</td>
+                    <td>{formatToRubles(totalDebtForClient)}</td>
                     <td>{formatToRubles(client.profile.debts)}</td>
                   </tr>
                 );

@@ -19,10 +19,7 @@ function App() {
   const isTokenPresent = tok !== null && tok !== undefined && tok !== "";
   useEffect(() => {
     if (!isTokenPresent) {
-      if (
-        window.location.pathname !== "/login" &&
-        window.location.pathname !== "/sign-in"
-      ) {
+      if (window.location.pathname !== "/login") {
         navigate("/login");
       }
     }
@@ -30,6 +27,7 @@ function App() {
 
   return (
     <Routes>
+      <Route path={"/sign-in123123123123"} element={<Signin />} />
       {isTokenPresent ? (
         <>
           <Route path="/nakladnoy-delivery" element={<NadlaknoyDelivery />} />
@@ -42,7 +40,6 @@ function App() {
         </>
       ) : (
         <>
-          <Route path={"/sign-in"} element={<Signin />} />
           <Route path={"/login"} element={<SignUp />} />
         </>
       )}

@@ -8,12 +8,10 @@ const Delivary = ({ setTheMomentDelivery }) => {
   const role = localStorage.getItem("role");
   const optomId = localStorage.getItem("idOptom");
 
-  // Фильтрация доставщиков в зависимости от роли
   const deliveryMen = deliveryData.filter((user) => {
     if (role === "optometrist") {
       return user.role === "optometrist" && user.id === Number(optomId);
     } else {
-      // Отображение всех доставщиков для не оптомщика
       return user.role === "deliveryman" || user.role === "optometrist";
     }
   });
@@ -58,7 +56,9 @@ const Delivary = ({ setTheMomentDelivery }) => {
             })
           ) : (
             <tr>
-              <TailSpin radius={"2px"} width={30} height={30} />
+              <td colSpan="3" className="p-4 text-center text-gray-500">
+                Добавьте доставщиков чтобы видеть их в списке
+              </td>
             </tr>
           )}
         </tbody>

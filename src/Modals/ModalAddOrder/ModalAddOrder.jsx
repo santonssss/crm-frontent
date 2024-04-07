@@ -58,6 +58,7 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
         setTotalSelectedPrice(0);
         setSum((prev) => prev + 1);
       }
+      setSum((prev) => prev + 1);
     } catch (error) {
       toast("При создание заказа произошло ошибка");
       console.error("Произошла ошибка:", error);

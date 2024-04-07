@@ -31,7 +31,7 @@ const Signin = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       console.error("Error:", error);
     }

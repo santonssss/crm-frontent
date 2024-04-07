@@ -40,7 +40,9 @@ const ClientsTable = ({
               <td>{checkedDelivery.phone}</td>
               <td>{checkedDelivery.carNumber}</td>
               <td>
-                {deliverysClients.length == 0 ? "" : deliverysClients.length}
+                {deliverysClients.length == 0
+                  ? "Нету"
+                  : deliverysClients.length}
               </td>
               <td>
                 <div className="flex">

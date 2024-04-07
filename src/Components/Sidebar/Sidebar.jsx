@@ -18,7 +18,7 @@ const Sidebar = () => {
   const handleSidebarClose = () => {
     setSidebarOpen(false);
   };
-
+  const role = localStorage.getItem("role");
   return (
     <div className="sidebar">
       {!sidebarOpen ? (
@@ -29,18 +29,22 @@ const Sidebar = () => {
               <li>
                 <img src={majesticons} alt="icon" />
               </li>
-              <li>
-                <img src={eos} alt="icon" />
-              </li>
-              <li>
-                <img src={lets} alt="icon" />
-              </li>
-              <li>
-                <img src={ion} alt="icon" />
-              </li>
-              <li>
-                <img src={grommet} alt="icon" />
-              </li>
+              {role !== "optometrist" && (
+                <>
+                  <li>
+                    <img src={eos} alt="icon" />
+                  </li>
+                  <li>
+                    <img src={lets} alt="icon" />
+                  </li>
+                  <li>
+                    <img src={ion} alt="icon" />
+                  </li>
+                  <li>
+                    <img src={grommet} alt="icon" />
+                  </li>
+                </>
+              )}
             </ul>
           </nav>
         </div>
@@ -56,22 +60,26 @@ const Sidebar = () => {
                   <img src={majesticons} alt="icon" />
                   <Link to={"/"}>Главная</Link>
                 </li>
-                <li>
-                  <img src={eos} alt="icon" />
-                  <Link to={"/products"}>Продукты</Link>
-                </li>
-                <li>
-                  <img src={lets} alt="icon" />
-                  <Link to={"/orders"}>Заказы</Link>
-                </li>
-                <li>
-                  <img src={ion} alt="icon" />
-                  <Link to={"/clients"}>Клиенты</Link>
-                </li>
-                <li>
-                  <img src={grommet} alt="icon" />
-                  <Link to={"/abacus"}>Счеты</Link>
-                </li>
+                {role !== "optometrist" && (
+                  <>
+                    <li>
+                      <img src={eos} alt="icon" />
+                      <Link to={"/products"}>Продукты</Link>
+                    </li>
+                    <li>
+                      <img src={lets} alt="icon" />
+                      <Link to={"/orders"}>Заказы</Link>
+                    </li>
+                    <li>
+                      <img src={ion} alt="icon" />
+                      <Link to={"/clients"}>Клиенты</Link>
+                    </li>
+                    <li>
+                      <img src={grommet} alt="icon" />
+                      <Link to={"/abacus"}>Счеты</Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </nav>
           </div>

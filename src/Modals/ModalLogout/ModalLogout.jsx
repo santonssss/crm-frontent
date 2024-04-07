@@ -13,7 +13,7 @@ const ModalLogout = () => {
           <button
             onClick={() => {
               localStorage.removeItem("accessToken");
-              navigate("/sign-in");
+              navigate("/login");
               setLogoutOpen(false);
             }}
           >
