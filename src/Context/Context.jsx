@@ -33,15 +33,8 @@ const UserProvider = ({ children }) => {
   const handleErrorResponse = (response) => {
     if (!response.ok) {
       const role = localStorage.getItem("role");
-      if (role !== "optometrist") {
-        localStorage.removeItem("accessToken");
-      }
-
-      if (
-        response.status === 403 &&
-        currentPath !== "/login" &&
-        currentPath !== "/sign-in"
-      ) {
+      localStorage.removeItem("accessToken");
+      if (response.status === 403 && currentPath !== "/login") {
         nav("/login");
       }
       throw new Error("Network response was not ok");
