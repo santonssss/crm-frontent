@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./ModalDeleteProduct.css";
 import toast from "react-hot-toast";
+import { UserContext } from "../../Context/Context";
 const ModalDeleteProduct = ({ setProductsDelete, checkedProduct }) => {
+  const { setSum } = useContext(UserContext);
   async function deleteProductById(e) {
     e.preventDefault();
     try {
@@ -19,6 +21,9 @@ const ModalDeleteProduct = ({ setProductsDelete, checkedProduct }) => {
       );
 
       if (!response.ok) {
+        toast(
+          "При удаление продукта возникли проблемы пожалуйста перепроверьте данные!"
+        );
         throw new Error("Ошибка при удалении продукта");
       }
 
@@ -28,9 +33,7 @@ const ModalDeleteProduct = ({ setProductsDelete, checkedProduct }) => {
       setSum((prev) => prev + 1);
     } catch (error) {
       console.error("Произошла ошибка при удалении продукта:", error.message);
-      toast(
-        "При удаление продукта возникли проблемы пожалуйста перепроверьте данные!"
-      );
+
       return null;
     }
   }

@@ -14,7 +14,7 @@ const ModalAddProducts = () => {
   const token = localStorage.getItem("accessToken");
   const { setAddProductsOpen, setSum } = useContext(UserContext);
   const fileInputRef = React.createRef();
-
+  const [fileName, setFileName] = useState("");
   const handleDragOver = (e) => {
     e.preventDefault();
     setDragging(true);
@@ -40,6 +40,7 @@ const ModalAddProducts = () => {
   const handleFileInputChange = (e) => {
     const file = e.target.files[0];
     onFileUpload(file);
+    setFileName(file.name);
   };
 
   const uploadImage = async () => {
@@ -152,6 +153,7 @@ const ModalAddProducts = () => {
           />
           <span>Загрузите фотографию</span>
         </div>
+        <span>{fileName && fileName}</span>
         <div className="inputs">
           <div className="inp">
             <span>Название:</span>
