@@ -73,6 +73,7 @@ const Signin = () => {
       </div>
       <button
         className="def"
+        type="button"
         onClick={() =>
           handleRoleChange(role === "optometrist" ? "user" : "optometrist")
         }
