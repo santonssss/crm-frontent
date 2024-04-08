@@ -25,6 +25,9 @@ const OrdersLeft = () => {
   const handleInputChange = (e) => {
     setSearchQuery(e.target.value);
   };
+  const filteredDeliveryMen = deliveryMen.filter((delivery) =>
+    delivery.username.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   const handleSelectChange = (e) => {
     const selectedDeliveryId = parseInt(e.target.value, 10);
     setDeliveryId(selectedDeliveryId);
@@ -73,7 +76,7 @@ const OrdersLeft = () => {
           >
             Доставщики
           </option>
-          {deliveryMen.map((delivery) => (
+          {filteredDeliveryMen.map((delivery) => (
             <option key={delivery.id} value={delivery.id}>
               {delivery.username}
             </option>
