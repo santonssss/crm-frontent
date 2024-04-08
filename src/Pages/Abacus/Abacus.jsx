@@ -31,7 +31,7 @@ const Abacus = () => {
     );
   });
   const handleEditClick = () => {
-    setDebtsOrder(orders.filter((value, index) => value.remains !== 0))
+    setDebtsOrder(orders.filter((value, index) => value.remains !== 0));
     setOpenModal(true);
   };
 
@@ -255,13 +255,13 @@ const Abacus = () => {
                 <td></td>
                 <td>{formatToRubles(paid)}</td>
                 <td>{formatToRubles(remains)}</td>
-              <td>
-                <button
-                          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                          onClick={handleEditClick}
-                        >
-                          Редактировать
-                        </button>
+                <td>
+                  <button
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                    onClick={handleEditClick}
+                  >
+                    Редактировать
+                  </button>
                 </td>
               </tr>
             </tbody>

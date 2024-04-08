@@ -28,7 +28,7 @@ const OrdersRight = ({ setAddOrderOpen }) => {
 
       const sorted = sortOrdersByDate(orders);
       setSortedOrders(sorted);
-      setInitialSortedOrders(sorted); // Сохраняем изначально отсортированные заказы
+      setInitialSortedOrders(sorted);
     }
   }, [orders]);
 

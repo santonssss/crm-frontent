@@ -85,7 +85,9 @@ const OrdersLeft = () => {
               <div
                 className="list-name"
                 key={index}
-                onClick={() => setCheckedClient(client.id)}
+                onClick={() => {
+                  setCheckedClient(client.id);
+                }}
               >
                 {client.username}
               </div>

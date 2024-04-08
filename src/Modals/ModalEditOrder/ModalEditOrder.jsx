@@ -14,6 +14,7 @@ const ModalEditOrder = ({
 }) => {
   const [money, setMoney] = useState(Number(remains));
   const [histories, setHistories] = useState([]);
+  const { sum, setSum } = useContext(UserContext);
   const formatToRubles = (value) => {
     return new Intl.NumberFormat("ru-RU", {
       style: "currency",
@@ -55,6 +56,7 @@ const ModalEditOrder = ({
       }
 
       const data = await response.json();
+      setSum((prev) => prev + 1);
       fetchHistories();
       fetchOrdersOfClients();
       setMoney(money + paidMoney);
@@ -87,7 +89,7 @@ const ModalEditOrder = ({
 
   useEffect(() => {
     fetchHistories();
-  });
+  }, [sum]);
 
   const handleAcceptPayment = async () => {
     try {
@@ -130,6 +132,7 @@ const ModalEditOrder = ({
       }
 
       toast("Оплата прошла успешно!");
+      setSum((prev) => prev + 1);
       setMoney(0);
       fetchOrdersOfClients();
       onClose();
