@@ -15,7 +15,6 @@ const ClientsRight = ({ setModalChange, setDeliveryChange }) => {
           </CustomButton>
           <ClientsTable
             dilivery={"Доставщик"}
-            tel={"Номер телефона"}
             car_num={"Номер машины"}
             client_name={"Клиенты"}
             setModalChange={setModalChange}
@@ -28,7 +27,6 @@ const ClientsRight = ({ setModalChange, setDeliveryChange }) => {
       </CustomButton>
       <ClientsTable
         address={"Адрес"}
-        tel={"Номер телефона"}
         client_name={"Клиенты"}
         setModalChange={setModalChange}
         setDeliveryChange={setDeliveryChange}

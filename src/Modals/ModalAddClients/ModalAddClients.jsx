@@ -8,7 +8,6 @@ const ModalAddClients = () => {
   const { setAddClientsOpen, setSum } = useContext(UserContext);
   const [username, setName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
   const [deliverymanAsClient, setDeliverymanAsClient] = useState("");
   const { deliveryData } = useContext(UserContext);
@@ -34,7 +33,6 @@ const ModalAddClients = () => {
           },
           body: JSON.stringify({
             username,
-            phone,
             address,
             deliverymanAsClient:
               roleValid === "optometrist" ? optomId : deliverymanAsClient,
@@ -50,7 +48,6 @@ const ModalAddClients = () => {
       const data = await response.json();
       toast("Пользователь добавлен успешно");
       setName("");
-      setPhone("");
       setAddress("");
       setSum((prev) => prev + 1);
     } catch (error) {
@@ -79,15 +76,6 @@ const ModalAddClients = () => {
             placeholder="Имя"
             value={username}
             onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div>
-          <span>Телефон</span>
-          <input
-            type="text"
-            placeholder="+7 (777) 777 77 77"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
           />
         </div>
         <div>

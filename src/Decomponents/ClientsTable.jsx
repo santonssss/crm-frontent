@@ -3,7 +3,6 @@ import { UserContext } from "../Context/Context";
 
 const ClientsTable = ({
   dilivery,
-  tel,
   car_num,
   client_name,
   address,
@@ -18,7 +17,6 @@ const ClientsTable = ({
         {car_num ? (
           <tr>
             <th>{dilivery}</th>
-            <th>{tel}</th>
             <th>{car_num}</th>
             <th>{client_name}</th>
             <th></th>
@@ -26,7 +24,6 @@ const ClientsTable = ({
         ) : (
           <tr>
             <th>{client_name}</th>
-            <th>{tel}</th>
             <th>{address}</th>
             <th></th>
           </tr>
@@ -37,7 +34,6 @@ const ClientsTable = ({
           Object.keys(checkedDelivery).length !== 0 ? (
             <tr>
               <td>{checkedDelivery.username}</td>
-              <td>{checkedDelivery.phone}</td>
               <td>{checkedDelivery.carNumber}</td>
               <td>
                 {deliverysClients.length == 0
@@ -94,7 +90,6 @@ const ClientsTable = ({
             return (
               <tr>
                 <td>{delivery.username}</td>
-                <td>{delivery.phone}</td>
                 <td>{delivery.address}</td>
                 <td>
                   <div className="flex">

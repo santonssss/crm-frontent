@@ -45,9 +45,7 @@ const ModalDataClientHistory = ({ setOpenHistory, atTheMomentClient }) => {
           <div className="data_cl">
             <span>Имя:</span> <strong>{atTheMomentClient.username}</strong>
           </div>
-          <div className="data_cl">
-            <span>Телефон:</span> <strong>{atTheMomentClient.phone}</strong>
-          </div>
+
           <div className="data_cl">
             <span>Адресс:</span> <strong>{atTheMomentClient.address}</strong>
           </div>

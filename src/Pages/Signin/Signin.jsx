@@ -4,7 +4,6 @@ import { Link, useNavigate } from "react-router-dom";
 const Signin = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [phone, setPhone] = useState("");
   const [role, setRole] = useState("user");
   const navigate = useNavigate();
 
@@ -22,7 +21,6 @@ const Signin = () => {
           body: JSON.stringify({
             username,
             password,
-            phone,
             role,
           }),
         }
@@ -59,15 +57,6 @@ const Signin = () => {
           placeholder="Пароль"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <div className="sign-inp">
-        <input
-          type="text"
-          placeholder="Телефон"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
           required
         />
       </div>

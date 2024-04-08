@@ -6,8 +6,6 @@ import toast, { Toaster } from "react-hot-toast";
 const ModalAddDelivery = ({
   username,
   setUsername,
-  phone,
-  setPhone,
   carNumber,
   setCarNumber,
 }) => {
@@ -29,7 +27,6 @@ const ModalAddDelivery = ({
           },
           body: JSON.stringify({
             username,
-            phone,
             carNumber,
             role,
           }),
@@ -45,7 +42,6 @@ const ModalAddDelivery = ({
 
       toast("Доставщик добавлен успешно");
       setUsername("");
-      setPhone("");
       setCarNumber("");
       setSum((prev) => prev + 1);
     } catch (error) {
@@ -74,15 +70,6 @@ const ModalAddDelivery = ({
           />
         </div>
         <div>
-          <span>Телефон</span>
-          <input
-            type="text"
-            placeholder="+7 (777) 777 77 77"
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-        </div>
-        <div>
           <span>Номер машины</span>
           <input
             type="text"
@@ -91,7 +78,6 @@ const ModalAddDelivery = ({
             onChange={(e) => setCarNumber(e.target.value)}
           />
         </div>
-
         <div className="add_btns">
           <button type="submit">
             {!loading ? (

@@ -5,7 +5,6 @@ const ModalProfile = () => {
   const { setModalProfileOpen, logoutOpen, setLogoutOpen } =
     useContext(UserContext);
   const user = localStorage.getItem("username");
-  const phone = localStorage.getItem("phone");
   const role = localStorage.getItem("role");
   return (
     <div
@@ -64,10 +63,6 @@ const ModalProfile = () => {
         <div className="info">
           <span>Должность</span>
           <span>{role === "optometrist" ? "Провайдер" : "Администратор"}</span>
-        </div>
-        <div className="info">
-          <span>Номер телефона</span>
-          <span>{phone}</span>
         </div>
       </div>
     </div>

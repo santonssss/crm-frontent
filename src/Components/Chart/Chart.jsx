@@ -10,14 +10,18 @@ const ChartWrapper = () => {
   const [totalPartly, setTotalPartly] = useState(0);
   const role = localStorage.getItem("role");
   const optomId = localStorage.getItem("idOptom");
-
   let deliveryMen = [];
   if (role !== "optometrist") {
-    deliveryMen = deliveryData.filter((user) => user.role === "deliveryman");
+    deliveryMen = deliveryData.filter(
+      (user) => user.role === "deliveryman" || user.role === "optometrist"
+    );
+  } else {
+    deliveryMen = deliveryData.filter(
+      (user) => user.role === "optometrist" && user.id === Number(optomId)
+    );
   }
-
   useEffect(() => {
-    const dataToUse = role === "optometrist" ? deliveryData : deliveryMen;
+    const dataToUse = role === "optometrist" ? deliveryMen : deliveryMen;
     if (dataToUse.length > 0) {
       let debtsSum = 0;
       let partlySum = 0;
@@ -64,7 +68,6 @@ const ChartWrapper = () => {
     },
     series: [0, 0],
   });
-
   return (
     <section className="sc">
       <h1>График выручки и задолженности</h1>

@@ -30,7 +30,6 @@ const SignUp = () => {
 
       const data = await response.json();
       localStorage.setItem("username", data.data.user.username);
-      localStorage.setItem("phone", data.data.user.phone);
       localStorage.setItem("accessToken", data.data.accessToken);
       localStorage.setItem("role", data.data.user.role);
       localStorage.setItem("idOptom", data.data.user.id);

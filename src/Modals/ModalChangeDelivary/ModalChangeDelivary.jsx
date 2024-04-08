@@ -6,8 +6,6 @@ const ModalChangeDelivary = ({
   deliveryChange,
   setUsername,
   username,
-  phone,
-  setPhone,
   carNumber,
   setCarNumber,
   setModalChange,
@@ -24,10 +22,6 @@ const ModalChangeDelivary = ({
 
       if (username.trim() !== "") {
         updatedData.username = username;
-      }
-
-      if (phone.trim() !== "") {
-        updatedData.phone = phone;
       }
 
       if (deliveryChange.role === "client") {
@@ -62,7 +56,6 @@ const ModalChangeDelivary = ({
       toast("Редактирование прошло успешно");
       setModalChange(false);
       setUsername("");
-      setPhone("");
       setCarNumber("");
       setSum((prev) => prev + 1);
     } catch (error) {
@@ -102,13 +95,6 @@ const ModalChangeDelivary = ({
           }
           value={carNumber}
           onChange={(e) => setCarNumber(e.target.value)}
-        />
-
-        <input
-          type="text"
-          placeholder={deliveryChange.phone}
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
         />
         <button onClick={handleSubmit} disabled={loading}>
           {loading ? "Загрузка..." : "Редактировать"}

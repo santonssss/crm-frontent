@@ -19,7 +19,6 @@ const Clients = () => {
   const [modalChange, setModalChange] = useState(false);
   const [deliveryChange, setDeliveryChange] = useState({});
   const [username, setUsername] = useState("");
-  const [phone, setPhone] = useState("");
   const [carNumber, setCarNumber] = useState("");
   return (
     <div className={`clients-page ${sidebarOpen ? "p-o" : "p-c"}`}>
@@ -43,8 +42,6 @@ const Clients = () => {
         <ModalAddDelivery
           setUsername={setUsername}
           username={username}
-          phone={phone}
-          setPhone={setPhone}
           carNumber={carNumber}
           setCarNumber={setCarNumber}
         />
@@ -55,8 +52,6 @@ const Clients = () => {
           deliveryChange={deliveryChange}
           setUsername={setUsername}
           username={username}
-          phone={phone}
-          setPhone={setPhone}
           carNumber={carNumber}
           setCarNumber={setCarNumber}
           setModalChange={setModalChange}

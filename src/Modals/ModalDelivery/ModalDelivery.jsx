@@ -94,7 +94,6 @@ const ModalDelivery = ({
             <thead>
               <tr>
                 <th>Клиент</th>
-                <th>Телефон</th>
                 <th>Сумма</th>
                 <th>Долг</th>
               </tr>
@@ -118,7 +117,6 @@ const ModalDelivery = ({
                     }}
                   >
                     <td>{client.username}</td>
-                    <td>{client.phone}</td>
                     <td>{formatToRubles(totalDebtForClient)}</td>
                     <td>{formatToRubles(client.profile.debts)}</td>
                   </tr>

@@ -50,14 +50,6 @@ const NadlaknoyDelivery = () => {
                     padding: "10px 15px",
                   }}
                 >
-                  Телефон
-                </th>
-                <th
-                  style={{
-                    border: "1px solid black ",
-                    padding: "10px 15px",
-                  }}
-                >
                   Сумма
                 </th>
                 <th
@@ -88,14 +80,7 @@ const NadlaknoyDelivery = () => {
                     >
                       {client.username}
                     </td>
-                    <td
-                      style={{
-                        border: "1px solid black ",
-                        padding: "10px 15px",
-                      }}
-                    >
-                      {client.phone}
-                    </td>
+
                     <td
                       style={{
                         border: "1px solid black ",

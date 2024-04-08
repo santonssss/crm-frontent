@@ -14,7 +14,7 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
   const { deliveryData, setDeliveryId, deliverysClients, setSum } =
     useContext(UserContext);
   const deliveryMen = deliveryData.filter(
-    (user) => user.role === "deliveryman"
+    (user) => user.role === "deliveryman" || user.role === "optometrist"
   );
   useEffect(() => {
     const total = productsList.reduce((acc, product, index) => {

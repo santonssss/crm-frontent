@@ -149,7 +149,6 @@ const UserProvider = ({ children }) => {
             ...dataOptometrist.data.records,
           ];
         }
-
         setDeliveryData(deliveryDataAll);
       } catch (error) {
         console.warn(error);
