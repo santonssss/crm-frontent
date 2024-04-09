@@ -5,7 +5,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ru from "date-fns/locale/ru";
 import ModalEditOrder from "../../Modals/ModalEditOrder/ModalEditOrder";
-const token = localStorage.getItem("accessToken");
 
 const Abacus = () => {
   const { sidebarOpen, checkedClient } = useContext(UserContext);
@@ -66,9 +65,11 @@ const Abacus = () => {
   };
 
   const fetchOrdersOfClients = async () => {
+    const token = localStorage.getItem("accessToken");
     try {
+      const idshka = checkedClient;
       const response = await fetch(
-        `https://monkfish-app-v8pst.ondigitalocean.app/api/order/?relations[0]=owner&relations[1]=paymentHistories&filter[owner][id]=${checkedClient}`,
+        `https://monkfish-app-v8pst.ondigitalocean.app/api/order/?relations[0]=owner&relations[1]=paymentHistories&filter[owner][id]=${idshka}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -79,7 +80,6 @@ const Abacus = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
       const data = await response.json();
       let sumPaid = 0;
       let sumRemains = 0;
@@ -96,9 +96,11 @@ const Abacus = () => {
   };
 
   const fetchUser = async () => {
+    const token = localStorage.getItem("accessToken");
     try {
+      const idshka = checkedClient;
       const response = await fetch(
-        `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${checkedClient}?relations[0]=ordersAsClient&relations[1]=profile&relations[2]=profile.paymentHistories`,
+        `https://monkfish-app-v8pst.ondigitalocean.app/api/user/${idshka}?relations[0]=ordersAsClient&relations[1]=profile&relations[2]=profile.paymentHistories`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -109,7 +111,6 @@ const Abacus = () => {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-
       const data = await response.json();
       const sizeOrders = data.data.ordersAsClient?.length;
       let summa = 0;
@@ -158,10 +159,9 @@ const Abacus = () => {
     setSelectedDateAfter(date);
   };
   useEffect(() => {
-    if (checkedClient !== null) {
-      fetchUser();
-      fetchOrdersOfClients();
-    }
+    fetchUser();
+    fetchOrdersOfClients();
+    console.log(checkedClient);
   }, [checkedClient]);
   return (
     <div className={`abacus-page ${sidebarOpen ? "p-o" : "p-c"}`}>
