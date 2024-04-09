@@ -24,6 +24,14 @@ const Main = () => {
         <Route path="/clients" element={<Clients />} />
         <Route path="/abacus" element={<Abacus />} />
       </Routes>
+      <div
+        className="reload bg-blue-500 text-white font-bold py-2 px-4 rounded cursor-pointer hover:bg-blue-700"
+        onClick={() => {
+          window.location.reload();
+        }}
+      >
+        Обновить данные
+      </div>
     </div>
   );
 };

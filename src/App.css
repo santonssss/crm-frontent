@@ -136,6 +136,13 @@ input {
   right: 0;
   top: 0;
 }
+.reload {
+  position: fixed;
+  z-index: 15;
+  right: 0;
+  top: 80px;
+  right: 60px;
+}
 .z-ind {
   z-index: 100;
 }
