@@ -16,6 +16,13 @@
   border-radius: 5px;
   cursor: pointer;
 }
+.right-btn.disabled {
+  background-color: #ccc !important;
+  border-color: #ccc !important;
+  color: #666 !important;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
 
 .right-btn span {
   font-size: 20px;

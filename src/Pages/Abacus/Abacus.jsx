@@ -159,9 +159,10 @@ const Abacus = () => {
     setSelectedDateAfter(date);
   };
   useEffect(() => {
-    fetchUser();
-    fetchOrdersOfClients();
-    console.log(checkedClient);
+    if (checkedClient !== null) {
+      fetchUser();
+      fetchOrdersOfClients();
+    }
   }, [checkedClient]);
   return (
     <div className={`abacus-page ${sidebarOpen ? "p-o" : "p-c"}`}>

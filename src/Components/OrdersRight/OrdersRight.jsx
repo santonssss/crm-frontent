@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import ModalChangeOrder from "../../Modals/ModalChangeOrder/ModalChangeOrder";
 
 const OrdersRight = ({ setAddOrderOpen }) => {
-  const { orders, setSum } = useContext(UserContext);
+  const { orders, setSum, checkedDelivery } = useContext(UserContext);
   const [sortedOrders, setSortedOrders] = useState([]);
   const [initialSortedOrders, setInitialSortedOrders] = useState([]);
   const [openChangeDelivery, setOpenChangeDelivery] = useState(false);
@@ -113,7 +113,6 @@ const OrdersRight = ({ setAddOrderOpen }) => {
     newSortedOrders[index].confirmed = updatedOrder.confirmed;
     setSortedOrders(newSortedOrders);
   };
-
   return (
     <div className="orders-right">
       <div className="right-btns">
@@ -126,10 +125,31 @@ const OrdersRight = ({ setAddOrderOpen }) => {
           Создать <br />
           накладную <span>+</span>
         </button>
-        <Link className="right-btn" to={"/nakladnoy-order"}>
-          Напечатать накладную для Доставщика
+        <Link
+          className={`right-btn ${
+            Object.keys(checkedDelivery).length === 0 ? "disabled" : ""
+          }`}
+          to={"/nakladnoy-order"}
+          onClick={() => setAddOrderOpen(true)}
+          title={
+            Object.keys(checkedDelivery).length === 0
+              ? "Выберите доставщика"
+              : ""
+          }
+        >
+          Создать накладную <span>+</span>
         </Link>
-        <Link className="right-btn " to={"/nakladnoyOrderAllClients"}>
+        <Link
+          className={`right-btn ${
+            Object.keys(checkedDelivery).length === 0 ? "disabled" : ""
+          }`}
+          to={"/nakladnoyOrderAllClients"}
+          title={
+            Object.keys(checkedDelivery).length === 0
+              ? "Выберите доставщика"
+              : ""
+          }
+        >
           Напечатать накладную для всех клиентов
         </Link>
       </div>
