@@ -86,7 +86,10 @@ const OrdersLeft = () => {
           {filteredClients.length > 0 ? (
             filteredClients.map((client, index) => (
               <div
-                className="list-name"
+                className={`list-name `}
+                style={{
+                  border: client.id === checkedClient ? "1px solid red" : "",
+                }}
                 key={index}
                 onClick={() => {
                   setCheckedClient(client.id);

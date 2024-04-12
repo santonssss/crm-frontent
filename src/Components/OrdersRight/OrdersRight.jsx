@@ -9,27 +9,27 @@ import true_icon from "../../Assets/Image/false.svg";
 import { Link } from "react-router-dom";
 import ModalChangeOrder from "../../Modals/ModalChangeOrder/ModalChangeOrder";
 
+import toast, { Toaster } from "react-hot-toast";
 const OrdersRight = ({ setAddOrderOpen }) => {
   const { orders, setSum, checkedDelivery } = useContext(UserContext);
   const [sortedOrders, setSortedOrders] = useState([]);
   const [initialSortedOrders, setInitialSortedOrders] = useState([]);
   const [openChangeDelivery, setOpenChangeDelivery] = useState(false);
   const [atTheMomentOrder, setAtTheMomemtOrder] = useState({});
+  const [stat, setStat] = useState(false);
 
   useEffect(() => {
-    if (orders.length > 0) {
-      const sortOrdersByDate = (orders) => {
-        return orders.sort((a, b) => {
-          const dateA = new Date(a.createdAt);
-          const dateB = new Date(b.createdAt);
-          return dateA - dateB;
-        });
-      };
+    const sortOrdersByDate = (orders) => {
+      return orders.sort((a, b) => {
+        const dateA = new Date(a.createdAt);
+        const dateB = new Date(b.createdAt);
+        return dateA - dateB;
+      });
+    };
 
-      const sorted = sortOrdersByDate(orders);
-      setSortedOrders(sorted);
-      setInitialSortedOrders(sorted);
-    }
+    const sorted = sortOrdersByDate(orders);
+    setSortedOrders(sorted);
+    setInitialSortedOrders(sorted);
   }, [orders]);
 
   const yesterday = new Date();
@@ -112,6 +112,14 @@ const OrdersRight = ({ setAddOrderOpen }) => {
     const newSortedOrders = [...sortedOrders];
     newSortedOrders[index].confirmed = updatedOrder.confirmed;
     setSortedOrders(newSortedOrders);
+    const updatedInitialSortedOrders = initialSortedOrders.map((order) => {
+      if (order.id === orderId) {
+        return { ...order, confirmed: updatedOrder.confirmed };
+      } else {
+        return order;
+      }
+    });
+    setInitialSortedOrders(updatedInitialSortedOrders);
   };
   return (
     <div className="orders-right">
@@ -219,6 +227,43 @@ const OrdersRight = ({ setAddOrderOpen }) => {
                     </button>
                   </div>
                 </td>
+                <td>
+                  <div>
+                    <button
+                      className="right-btn"
+                      onClick={() => {
+                        setStat(true);
+                        const token = localStorage.getItem("accessToken");
+                        fetch(
+                          `https://monkfish-app-v8pst.ondigitalocean.app/api/order/${order.id}`,
+                          {
+                            method: "DELETE",
+                            headers: {
+                              Authorization: `Bearer ${token}`,
+                            },
+                          }
+                        )
+                          .then((response) => {
+                            if (response.ok) {
+                              setSum((prev) => prev - 1);
+                              toast("Удаление прошло успешно");
+                            } else {
+                              setSum((prev) => prev + 1);
+                              toast("При удаление возникли ошибки");
+                            }
+                          })
+                          .catch((error) => {
+                            toast("При удаление возникли ошибки");
+                          })
+                          .finally(() => {
+                            setStat(false);
+                          });
+                      }}
+                    >
+                      {stat ? "Удаление..." : "Удалить"}
+                    </button>
+                  </div>
+                </td>
               </tr>
             ))
           ) : (
@@ -234,6 +279,7 @@ const OrdersRight = ({ setAddOrderOpen }) => {
           setOpenChangeDelivery={setOpenChangeDelivery}
         />
       )}
+      <Toaster />
     </div>
   );
 };

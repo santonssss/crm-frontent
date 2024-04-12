@@ -32,7 +32,6 @@ const UserProvider = ({ children }) => {
 
   const handleErrorResponse = (response) => {
     if (!response.ok) {
-      const role = localStorage.getItem("role");
       localStorage.removeItem("accessToken");
       if (response.status === 403 && currentPath !== "/login") {
         nav("/login");
