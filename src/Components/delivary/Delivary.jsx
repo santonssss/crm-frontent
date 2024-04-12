@@ -15,7 +15,6 @@ const Delivary = ({ setTheMomentDelivery }) => {
       return user.role === "deliveryman" || user.role === "optometrist";
     }
   });
-
   return (
     <section className="delivary">
       <table>

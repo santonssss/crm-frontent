@@ -16,6 +16,20 @@
   border-radius: 5px;
   cursor: pointer;
 }
+.right-btndel {
+  padding: 4px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0 29px;
+  background-color: red;
+  border: 1px solid white;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 5px;
+  cursor: pointer;
+}
 .right-btn.disabled {
   background-color: #ccc !important;
   border-color: #ccc !important;

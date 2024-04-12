@@ -10,16 +10,15 @@ const ModalDelivery = ({
 }) => {
   const { setDeliveryOpen, clientForDelivary, setAtTheMom } =
     useContext(UserContext);
-  const totalDebts = atTheMomentDelivery.clientsAsDeliveryman.reduce(
-    (accumulator, client) => {
-      if (client.profile && typeof client.profile.debts === "number") {
-        return accumulator + client.profile.debts;
-      } else {
-        return accumulator;
-      }
-    },
-    0
-  );
+  const totalDebts = atTheMomentDelivery.clientsAsDeliveryman
+    ? atTheMomentDelivery.clientsAsDeliveryman.reduce((accumulator, client) => {
+        if (client.profile && typeof client.profile.debts === "number") {
+          return accumulator + client.profile.debts;
+        } else {
+          return accumulator;
+        }
+      }, 0)
+    : 0;
 
   const formatToRubles = (value) => {
     return new Intl.NumberFormat("ru-RU", {

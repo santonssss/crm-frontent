@@ -229,39 +229,41 @@ const OrdersRight = ({ setAddOrderOpen }) => {
                 </td>
                 <td>
                   <div>
-                    <button
-                      className="right-btn"
-                      onClick={() => {
-                        setStat(true);
-                        const token = localStorage.getItem("accessToken");
-                        fetch(
-                          `https://monkfish-app-v8pst.ondigitalocean.app/api/order/${order.id}`,
-                          {
-                            method: "DELETE",
-                            headers: {
-                              Authorization: `Bearer ${token}`,
-                            },
-                          }
-                        )
-                          .then((response) => {
-                            if (response.ok) {
-                              setSum((prev) => prev - 1);
-                              toast("Удаление прошло успешно");
-                            } else {
-                              setSum((prev) => prev + 1);
-                              toast("При удаление возникли ошибки");
+                    {order.amount - order.remains === 0 && (
+                      <button
+                        className="right-btndel"
+                        onClick={() => {
+                          setStat(true);
+                          const token = localStorage.getItem("accessToken");
+                          fetch(
+                            `https://monkfish-app-v8pst.ondigitalocean.app/api/order/${order.id}`,
+                            {
+                              method: "DELETE",
+                              headers: {
+                                Authorization: `Bearer ${token}`,
+                              },
                             }
-                          })
-                          .catch((error) => {
-                            toast("При удаление возникли ошибки");
-                          })
-                          .finally(() => {
-                            setStat(false);
-                          });
-                      }}
-                    >
-                      {stat ? "Удаление..." : "Удалить"}
-                    </button>
+                          )
+                            .then((response) => {
+                              if (response.ok) {
+                                setSum((prev) => prev - 1);
+                                toast("Удаление прошло успешно");
+                              } else {
+                                setSum((prev) => prev + 1);
+                                toast("При удаление возникли ошибки");
+                              }
+                            })
+                            .catch((error) => {
+                              toast("При удаление возникли ошибки");
+                            })
+                            .finally(() => {
+                              setStat(false);
+                            });
+                        }}
+                      >
+                        {stat ? "Удаление..." : "Удалить"}
+                      </button>
+                    )}
                   </div>
                 </td>
               </tr>
