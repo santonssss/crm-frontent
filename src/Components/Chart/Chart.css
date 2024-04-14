@@ -85,3 +85,20 @@
   font-weight: 500;
   text-align: left;
 }
+@media (max-width: 500px) {
+  .chart-wrapper {
+    width: 300px;
+    min-height: 250px;
+    border-radius: 10px;
+    border: 1px solid var(--back-blue);
+    padding: 14px 20px;
+  }
+  .sc h1 {
+    font-family: var(--font-mons);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .sc {
+    padding-top: 20px;
+  }
+}

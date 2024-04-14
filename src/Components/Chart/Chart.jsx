@@ -21,31 +21,63 @@ const ChartWrapper = () => {
     );
   }
   useEffect(() => {
-    const dataToUse = role === "optometrist" ? deliveryMen : deliveryMen;
-    if (dataToUse.length > 0) {
-      let debtsSum = 0;
-      let partlySum = 0;
-      dataToUse.forEach((deliveryman) => {
-        if (deliveryman.clientsAsDeliveryman) {
-          deliveryman.clientsAsDeliveryman.forEach((client) => {
-            if (client.profile && typeof client.profile.debts === "number") {
-              debtsSum += client.profile.debts;
-            }
-            if (client.profile && client.profile.paymentHistories) {
-              client.profile.paymentHistories.forEach((payment) => {
+    if (role === "root") {
+      if (deliveryData && deliveryData.length > 0) {
+        let debtsSum = 0;
+        let partlySum = 0;
+        deliveryData.forEach((deliveryman) => {
+          if (deliveryman.role === "deliveryman") {
+            if (deliveryman.clientsAsDeliveryman) {
+              deliveryman.clientsAsDeliveryman.forEach((client) => {
                 if (
-                  payment.paymentType === "partly" ||
-                  payment.paymentType === "paid"
+                  client.profile &&
+                  typeof client.profile.debts === "number"
                 ) {
-                  partlySum += payment.money;
+                  debtsSum += client.profile.debts;
+                }
+                if (client.profile && client.profile.paymentHistories) {
+                  client.profile.paymentHistories.forEach((payment) => {
+                    if (
+                      payment.paymentType === "partly" ||
+                      payment.paymentType === "paid"
+                    ) {
+                      partlySum += payment.money;
+                    }
+                  });
                 }
               });
             }
-          });
-        }
-      });
-      setTotalDebts(debtsSum);
-      setTotalPartly(partlySum);
+          }
+        });
+        setTotalDebts(debtsSum);
+        setTotalPartly(partlySum);
+      }
+    } else {
+      if (deliveryMen && deliveryMen.length > 0) {
+        let debtsSum = 0;
+        let partlySum = 0;
+        deliveryMen.forEach((deliveryman) => {
+          if (deliveryman.clientsAsDeliveryman) {
+            deliveryman.clientsAsDeliveryman.forEach((client) => {
+              if (client.profile && typeof client.profile.debts === "number") {
+                debtsSum += client.profile.debts;
+              }
+              if (client.profile && client.profile.paymentHistories) {
+                client.profile.paymentHistories.forEach((payment) => {
+                  if (
+                    payment.paymentType === "partly" ||
+                    payment.paymentType === "paid"
+                  ) {
+                    partlySum += payment.money;
+                  }
+                });
+              }
+            });
+          }
+        });
+        setTotalDebts(debtsSum);
+        setTotalPartly(partlySum);
+      }
     }
   }, [role, deliveryData, deliveryMen]);
 
