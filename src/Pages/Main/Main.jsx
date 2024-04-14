@@ -25,18 +25,12 @@ const Main = () => {
         onClick={() => setSidebarOpen(false)}
       ></div>
       <Routes>
-        {role === "root" ? (
-          <Route path="/info-mobile-les" element={<MobilePage />} />
-        ) : (
-          <>
-            <Route path="/info-mobile-les" element={<MobilePage />} />
-            <Route index element={<HomePage />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/clients" element={<Clients />} />
-            <Route path="/abacus" element={<Abacus />} />
-          </>
-        )}
+        <Route path="/info-mobile-les" element={<MobilePage />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/products" element={<Products />} />
+        <Route path="/orders" element={<Orders />} />
+        <Route path="/clients" element={<Clients />} />
+        <Route path="/abacus" element={<Abacus />} />
       </Routes>
       {role !== "root" && (
         <div
