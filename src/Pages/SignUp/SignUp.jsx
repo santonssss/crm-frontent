@@ -33,11 +33,7 @@ const SignUp = () => {
       localStorage.setItem("accessToken", data.data.accessToken);
       localStorage.setItem("role", data.data.user.role);
       localStorage.setItem("idOptom", data.data.user.id);
-      if (data.data.user.role === "root") {
-        navigate("/info-mobile-les");
-      } else {
-        navigate("/");
-      }
+      navigate("/");
     } catch (error) {
       console.error("Ошибка при выполнении запроса:", error);
       setError(error.message);
