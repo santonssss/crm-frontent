@@ -12,9 +12,11 @@ import MobilePage from "../MobilePage/MobilePage";
 const Main = () => {
   const { setSidebarOpen, sidebarOpen } = useContext(UserContext);
   const role = localStorage.getItem("role");
+
   useEffect(() => {
-    console.log(role);
-  }, [role]);
+    setSidebarOpen(role !== "root");
+  }, [role, setSidebarOpen]);
+
   return (
     <div className="container">
       {role !== "root" && <Sidebar />}
@@ -26,13 +28,13 @@ const Main = () => {
         {role === "root" ? (
           <Route path="/" element={<MobilePage />} />
         ) : (
-          <React.Fragment>
-            <Route path="/" element={<HomePage />} />
+          <>
+            <Route index element={<HomePage />} />
             <Route path="/products" element={<Products />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/abacus" element={<Abacus />} />
-          </React.Fragment>
+          </>
         )}
       </Routes>
       {role !== "root" && (
