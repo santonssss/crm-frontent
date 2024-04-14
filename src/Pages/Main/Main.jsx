@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import HomePage from "../Home/HomePage";
 import Orders from "../Orders/Orders";
@@ -12,7 +12,9 @@ import MobilePage from "../MobilePage/MobilePage";
 const Main = () => {
   const { setSidebarOpen, sidebarOpen } = useContext(UserContext);
   const role = localStorage.getItem("role");
-
+  useEffect(() => {
+    console.log(role);
+  }, [role]);
   return (
     <div className="container">
       {role !== "root" && <Sidebar />}
