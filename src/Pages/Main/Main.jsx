@@ -26,9 +26,10 @@ const Main = () => {
       ></div>
       <Routes>
         {role === "root" ? (
-          <Route path="/" element={<MobilePage />} />
+          <Route path="/info-mobile-les" element={<MobilePage />} />
         ) : (
           <>
+            <Route path="/info-mobile-les" element={<MobilePage />} />
             <Route index element={<HomePage />} />
             <Route path="/products" element={<Products />} />
             <Route path="/orders" element={<Orders />} />
