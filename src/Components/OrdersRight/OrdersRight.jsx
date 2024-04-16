@@ -215,17 +215,19 @@ const OrdersRight = ({ setAddOrderOpen }) => {
                 <td>{formatToRubles(order.amount - order.remains)}</td>
                 <td>{formatToRubles(order.remains)}</td>
                 <td>
-                  <div>
-                    <button
-                      className="right-btn"
-                      onClick={() => {
-                        setOpenChangeDelivery(true);
-                        setAtTheMomemtOrder(order);
-                      }}
-                    >
-                      Редактировать
-                    </button>
-                  </div>
+                  {order.amount - order.remains === 0 && (
+                    <div>
+                      <button
+                        className="right-btn"
+                        onClick={() => {
+                          setOpenChangeDelivery(true);
+                          setAtTheMomemtOrder(order);
+                        }}
+                      >
+                        Редактировать
+                      </button>
+                    </div>
+                  )}
                 </td>
                 <td>
                   <div>

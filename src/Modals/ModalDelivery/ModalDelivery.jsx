@@ -19,7 +19,6 @@ const ModalDelivery = ({
         }
       }, 0)
     : 0;
-
   const formatToRubles = (value) => {
     return new Intl.NumberFormat("ru-RU", {
       style: "currency",
@@ -84,7 +83,7 @@ const ModalDelivery = ({
             <span>клиентов</span>
           </div>
           <div className="info-card">
-            <span className="sum-info">{formatToRubles(totalDebts)} ₽</span>
+            <span className="sum-info">{formatToRubles(totalDebts)}</span>
             <span>Долги</span>
           </div>
         </div>
