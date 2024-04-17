@@ -6,6 +6,9 @@
 .allClient {
   position: relative;
 }
+.allClient table {
+  width: 100%;
+}
 .allClient tbody tr td {
   border: 1px solid black;
   padding: 0 5px;
