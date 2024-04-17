@@ -1,16 +1,15 @@
 .allClient thead tr th {
   border: 1px solid black;
   padding: 0 5px;
-  font-size: 12px;
+  font-size: 15px;
 }
 .allClient {
   position: relative;
 }
 .allClient tbody tr td {
   border: 1px solid black;
-
   padding: 0 5px;
-  font-size: 12px;
+  font-size: 15px;
 }
 .allClient {
   border-spacing: 2px;

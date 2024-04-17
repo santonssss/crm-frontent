@@ -215,57 +215,53 @@ const OrdersRight = ({ setAddOrderOpen }) => {
                 <td>{formatToRubles(order.amount - order.remains)}</td>
                 <td>{formatToRubles(order.remains)}</td>
                 <td>
-                  {order.amount - order.remains === 0 && (
-                    <div>
-                      <button
-                        className="right-btn"
-                        onClick={() => {
-                          setOpenChangeDelivery(true);
-                          setAtTheMomemtOrder(order);
-                        }}
-                      >
-                        Редактировать
-                      </button>
-                    </div>
-                  )}
+                  <div>
+                    <button
+                      className="right-btn"
+                      onClick={() => {
+                        setOpenChangeDelivery(true);
+                        setAtTheMomemtOrder(order);
+                      }}
+                    >
+                      Редактировать
+                    </button>
+                  </div>
                 </td>
                 <td>
                   <div>
-                    {order.amount - order.remains === 0 && (
-                      <button
-                        className="right-btndel"
-                        onClick={() => {
-                          setStat(true);
-                          const token = localStorage.getItem("accessToken");
-                          fetch(
-                            `https://monkfish-app-v8pst.ondigitalocean.app/api/order/${order.id}`,
-                            {
-                              method: "DELETE",
-                              headers: {
-                                Authorization: `Bearer ${token}`,
-                              },
-                            }
-                          )
-                            .then((response) => {
-                              if (response.ok) {
-                                setSum((prev) => prev - 1);
-                                toast("Удаление прошло успешно");
-                              } else {
-                                setSum((prev) => prev + 1);
-                                toast("При удаление возникли ошибки");
-                              }
-                            })
-                            .catch((error) => {
+                    <button
+                      className="right-btndel"
+                      onClick={() => {
+                        setStat(true);
+                        const token = localStorage.getItem("accessToken");
+                        fetch(
+                          `https://monkfish-app-v8pst.ondigitalocean.app/api/order/${order.id}`,
+                          {
+                            method: "DELETE",
+                            headers: {
+                              Authorization: `Bearer ${token}`,
+                            },
+                          }
+                        )
+                          .then((response) => {
+                            if (response.ok) {
+                              setSum((prev) => prev - 1);
+                              toast("Удаление прошло успешно");
+                            } else {
+                              setSum((prev) => prev + 1);
                               toast("При удаление возникли ошибки");
-                            })
-                            .finally(() => {
-                              setStat(false);
-                            });
-                        }}
-                      >
-                        {stat ? "Удаление..." : "Удалить"}
-                      </button>
-                    )}
+                            }
+                          })
+                          .catch((error) => {
+                            toast("При удаление возникли ошибки");
+                          })
+                          .finally(() => {
+                            setStat(false);
+                          });
+                      }}
+                    >
+                      {stat ? "Удаление..." : "Удалить"}
+                    </button>
                   </div>
                 </td>
               </tr>
