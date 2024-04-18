@@ -9,7 +9,6 @@ const ChartWrapper = () => {
   const [totalDebts, setTotalDebts] = useState(0);
   const [totalPartly, setTotalPartly] = useState(0);
   const role = localStorage.getItem("role");
-  console.log(deliveryData);
   const optomId = localStorage.getItem("idOptom");
   let deliveryMen = [];
   if (role !== "optometrist") {

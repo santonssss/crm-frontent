@@ -1,10 +1,15 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../../Context/Context";
 import "./NakladnoyOrderDelivery.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import ru from "date-fns/locale/ru";
 
 const NakladnoyOrderDelivery = () => {
   const { checkedDelivery, products } = useContext(UserContext);
-  const currentDate = new Date();
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const currentDate = selectedDate;
   const formattedDate = `${currentDate.getDate()}/${
     currentDate.getMonth() + 1
   }/${currentDate.getFullYear()}`;
@@ -30,6 +35,7 @@ const NakladnoyOrderDelivery = () => {
         );
       });
   }
+
   const productQuantities = {};
   filteredOrders.forEach((order) => {
     order.baskets.forEach((basket) => {
@@ -52,21 +58,18 @@ const NakladnoyOrderDelivery = () => {
         className="nakladnoy"
         onClick={() => {
           window.print();
-          const style = document.createElement("style");
-          style.innerHTML = `@page { size: landscape; }`;
-          document.head.appendChild(style);
         }}
       >
         Напечатать накладную
       </button>
-      <div>
-        <strong
-          style={{
-            textDecoration: "underline",
-          }}
-        >
-          {formattedDate}
-        </strong>
+      <div className="flex items-center justify-center">
+        <DatePicker
+          selected={selectedDate}
+          onChange={(date) => setSelectedDate(date)}
+          dateFormat="dd.MM.yyyy"
+          className="custom-datepicker bg-blue-500 rounded-sm mt-5 cursor-pointer"
+          locale={ru}
+        />
       </div>
       <div>
         <strong>{checkedDelivery.username}</strong>

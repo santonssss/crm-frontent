@@ -29,6 +29,7 @@
   position: absolute;
   right: 15px;
   top: 15px;
+  z-index: 20;
 }
 .two-pod {
   display: flex;
@@ -39,12 +40,15 @@
 .client-wrapper-nakladnoy {
   page-break-inside: avoid;
 }
-
 .client-wrapper-nakladnoy:nth-child(odd) {
+  clear: both;
   page-break-after: always;
 }
 @media print {
   .allClient .nakladnoy {
+    display: none;
+  }
+  .custom-datepicker {
     display: none;
   }
 }

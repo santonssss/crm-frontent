@@ -1,10 +1,19 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../../Context/Context";
 import "./NakladnoyOrderAllClients.css";
 
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import ru from "date-fns/locale/ru";
+
 const NakladnoyOrderAllClients = () => {
   const { checkedDelivery } = useContext(UserContext);
-  const today = new Date().toLocaleDateString();
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const formattedSelectedDate = selectedDate.toLocaleDateString();
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
 
   if (
     !checkedDelivery ||
@@ -13,18 +22,13 @@ const NakladnoyOrderAllClients = () => {
     return <div>Нет данных</div>;
   }
 
-  // Фильтруем клиентов, у которых есть заказы на сегодня
-  const clientsWithOrdersToday = checkedDelivery.clientsAsDeliveryman.filter(
-    (client) =>
+  const clientsWithOrdersOnSelectedDate =
+    checkedDelivery.clientsAsDeliveryman.filter((client) =>
       client.ordersAsClient.some((order) => {
         const orderDate = new Date(order.createdAt).toLocaleDateString();
-        return orderDate === today;
+        return orderDate === formattedSelectedDate;
       })
-  );
-
-  if (clientsWithOrdersToday.length === 0) {
-    return <div>На сегодня заказов нет</div>;
-  }
+    );
 
   return (
     <div className="allClient">
@@ -33,23 +37,25 @@ const NakladnoyOrderAllClients = () => {
         onClick={() => {
           window.print();
           const style = document.createElement("style");
-          style.innerHTML = `@page { size: landscape; }`;
+          style.innerHTML = `@page { size: portrait; }`;
           document.head.appendChild(style);
         }}
       >
         Напечатать накладную
       </button>
-      {clientsWithOrdersToday.map((client, index) => {
-        const filteredOrders = client.ordersAsClient.filter((order) => {
-          const orderDate = new Date(order.createdAt).toLocaleDateString();
-          return orderDate === today;
-        });
-
-        filteredOrders.sort(
-          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-        );
-
-        return (
+      <div className="flex items-center justify-center">
+        <DatePicker
+          selected={selectedDate}
+          dateFormat="dd.MM.yyyy"
+          className="custom-datepicker bg-blue-500 rounded-sm mt-5 cursor-pointer "
+          locale={ru}
+          onChange={handleDateChange}
+        />
+      </div>
+      {clientsWithOrdersOnSelectedDate.length === 0 ? (
+        <div>Нет данных для выбранной даты</div>
+      ) : (
+        clientsWithOrdersOnSelectedDate.map((client, index) => (
           <div key={index} className="client-wrapper-nakladnoy">
             <div>
               <strong>Продавец:</strong> {checkedDelivery.username}
@@ -58,7 +64,7 @@ const NakladnoyOrderAllClients = () => {
               <strong>Покупатель:</strong> {client.username}
             </div>
             <div>
-              <strong>Дата:</strong> {new Date().toLocaleDateString()}
+              <strong>Дата:</strong> {formattedSelectedDate}
             </div>
             <table>
               <thead>
@@ -71,45 +77,51 @@ const NakladnoyOrderAllClients = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredOrders.map((order, orderIndex) => (
-                  <React.Fragment key={orderIndex}>
-                    {order.baskets.map((basket, basketIndex) => (
-                      <tr key={basketIndex}>
-                        <td>{basketIndex + 1}</td>
-                        <td>{basket.product.name}</td>
-                        <td>{basket.quantity}</td>
-                        <td>
-                          {basket.discountType === "discount1"
-                            ? basket.product.discount1
-                            : basket.discountType === "discount2"
-                            ? basket.product.discount2
-                            : basket.product.standard}
-                          ₽
+                {client.ordersAsClient
+                  .filter(
+                    (order) =>
+                      new Date(order.createdAt).toLocaleDateString() ===
+                      formattedSelectedDate
+                  )
+                  .map((order, orderIndex) => (
+                    <React.Fragment key={orderIndex}>
+                      {order.baskets.map((basket, basketIndex) => (
+                        <tr key={basketIndex}>
+                          <td>{basketIndex + 1}</td>
+                          <td>{basket.product.name}</td>
+                          <td>{basket.quantity}</td>
+                          <td>
+                            {basket.discountType === "discount1"
+                              ? basket.product.discount1
+                              : basket.discountType === "discount2"
+                              ? basket.product.discount2
+                              : basket.product.standard}
+                            ₽
+                          </td>
+                          <td>{basket.summa}₽</td>
+                        </tr>
+                      ))}
+                      <tr>
+                        <td colSpan="4">
+                          <strong>Общая сумма:</strong>
                         </td>
-                        <td>{basket.summa}₽</td>
+                        <td
+                          style={{
+                            textDecoration: "underline",
+                          }}
+                        >
+                          <strong>
+                            {" "}
+                            {order.baskets.reduce(
+                              (total, basket) => total + basket.summa,
+                              0
+                            )}
+                            ₽
+                          </strong>
+                        </td>
                       </tr>
-                    ))}{" "}
-                    <tr>
-                      <td colSpan="4">
-                        <strong>Общая сумма:</strong>
-                      </td>
-                      <td
-                        style={{
-                          textDecoration: "underline",
-                        }}
-                      >
-                        <strong>
-                          {" "}
-                          {order.baskets.reduce(
-                            (total, basket) => total + basket.summa,
-                            0
-                          )}
-                          ₽
-                        </strong>
-                      </td>
-                    </tr>
-                  </React.Fragment>
-                ))}
+                    </React.Fragment>
+                  ))}
               </tbody>
             </table>
             <div className="two-pod">
@@ -117,8 +129,8 @@ const NakladnoyOrderAllClients = () => {
               <span>Получил _______</span>
             </div>
           </div>
-        );
-      })}
+        ))
+      )}
     </div>
   );
 };
