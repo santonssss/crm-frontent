@@ -5,11 +5,15 @@ import ModalProductsList from "../ModalProductsList/ModalProductsList";
 import { UserContext } from "../../Context/Context";
 import defa from "../../Assets/Icons/defa.png";
 import toast, { Toaster } from "react-hot-toast";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import ru from "date-fns/locale/ru";
 const ModalAddOrder = ({ setAddOrderOpen }) => {
   const [productsList, setProductsList] = useState([]);
   const [selectedPrices, setSelectedPrices] = useState({});
   const [totalSelectedPrice, setTotalSelectedPrice] = useState(0);
   const [openList, setOpenList] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedClientId, setSelectedClientId] = useState("");
   const { deliveryData, setDeliveryId, deliverysClients, setSum } =
     useContext(UserContext);
@@ -37,6 +41,7 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
         amount: totalSelectedPrice,
         baskets: baskets,
         owner: selectedClientId,
+        createdAt: selectedDate.toISOString(),
       };
       const requestOptions = {
         method: "POST",
@@ -65,6 +70,9 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
     }
   };
   const role = localStorage.getItem("role");
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
   return (
     <form className="modal-overlay_addOrder" onSubmit={submitOrder}>
       <div
@@ -173,7 +181,14 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
             disabled={totalSelectedPrice === 0}
           >
             Сохранить
-          </button>
+          </button>{" "}
+          <DatePicker
+            selected={selectedDate}
+            dateFormat="dd.MM.yyyy"
+            className="custom-datepicker bg-white text-white rounded-sm mt-5 cursor-pointer "
+            locale={ru}
+            onChange={handleDateChange}
+          />
           <button
             type="button"
             className="bg "
