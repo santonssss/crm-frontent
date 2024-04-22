@@ -19,13 +19,13 @@ const Main = () => {
 
   return (
     <div className="container">
-      {role !== "root" && <Sidebar />}
+      {role !== "root" && role !== "optometrist" ? <Sidebar /> : null}
       <div
         className={`overlay ${sidebarOpen ? "z-ind" : ""}`}
         onClick={() => setSidebarOpen(false)}
       ></div>
       <Routes>
-        {role === "root" ? (
+        {role === "root" || role === "optometrist" ? (
           <Route path="/" element={<MobilePage />} />
         ) : (
           <>
@@ -37,7 +37,7 @@ const Main = () => {
           </>
         )}
       </Routes>
-      {role !== "root" && (
+      {role !== "root" && role !== "optometrist" ? (
         <div
           className="reload bg-blue-500 text-white font-bold py-2 px-4 rounded cursor-pointer hover:bg-blue-700"
           onClick={() => {
@@ -46,7 +46,7 @@ const Main = () => {
         >
           Обновить данные
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

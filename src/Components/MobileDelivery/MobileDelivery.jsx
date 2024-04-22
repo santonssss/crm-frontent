@@ -10,10 +10,13 @@ const MobileDelivery = () => {
   const [atDel, setDet] = useState({});
   const [openTheMod, setTheMod] = useState(false);
   const [openTheModHis, setTheModHis] = useState(false);
+  const optomId = localStorage.getItem("idOptom");
   const [clienHistory, setClient] = useState({});
   const deliveryMen = deliveryData.filter((user) => {
     if (role === "root") {
       return user.role === "deliveryman";
+    } else {
+      return user.role === "optometrist" && user.id === Number(optomId);
     }
   });
   return (
