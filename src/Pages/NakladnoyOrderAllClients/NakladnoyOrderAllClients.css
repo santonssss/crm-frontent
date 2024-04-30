@@ -39,8 +39,9 @@
 }
 .client-wrapper-nakladnoy {
   page-break-inside: avoid;
+  clear: both;
 }
-.client-wrapper-nakladnoy:nth-child(odd) {
+.client-wrapper-nakladnoy:nth-child(3n + 2):not(:last-child) {
   clear: both;
   page-break-after: always;
 }
