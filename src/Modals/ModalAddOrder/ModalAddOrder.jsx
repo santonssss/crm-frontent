@@ -214,6 +214,7 @@ const ProductRow = ({ product, setSelectedPrice, updateProduct }) => {
   const [selectedQuantity, setSelectedQuantity] = useState(1);
   const [selectedPrice, setSelectedPriceLocal] = useState(product.standard);
   const handleSelectChange = (e) => {
+    setSelectedPriceLocal(e.target.value);
     const newSelectedPrice = parseFloat(e.target.value);
     setSelectedPrice(newSelectedPrice);
     const newDiscountType =
