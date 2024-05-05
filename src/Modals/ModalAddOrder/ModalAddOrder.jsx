@@ -137,7 +137,7 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
           <table>
             <thead>
               <tr>
-                <th>Товар</th>
+                <th>Товар.</th>
                 <th>кг/шт</th>
                 <th>Цена</th>
                 <th>Скидка</th>
@@ -209,15 +209,10 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
     </form>
   );
 };
-const ProductRow = ({
-  product,
-  selectedPrice,
-  setSelectedPrice,
-  updateProduct,
-}) => {
+const ProductRow = ({ product, setSelectedPrice, updateProduct }) => {
   const [selectedDiscountType, setSelectedDiscountType] = useState("standard");
   const [selectedQuantity, setSelectedQuantity] = useState(1);
-
+  const [selectedPrice, setSelectedPriceLocal] = useState(product.standard);
   const handleSelectChange = (e) => {
     const newSelectedPrice = parseFloat(e.target.value);
     setSelectedPrice(newSelectedPrice);
@@ -240,7 +235,7 @@ const ProductRow = ({
     if (!selectedPrice) {
       setSelectedPrice(product.standard);
     }
-  }, []);
+  }, [selectedPrice]);
 
   useEffect(() => {
     if (typeof updateProduct === "function") {
@@ -282,7 +277,7 @@ const ProductRow = ({
         <span>кг/шт</span>
       </td>
       <td>
-        {selectedPrice
+        {selectedPrice !== undefined
           ? formatPrice(selectedPrice * selectedQuantity)
           : formatPrice(product.standard * selectedQuantity)}
       </td>
