@@ -29,7 +29,6 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
   }, [selectedPrices, productsList]);
   const submitOrder = async (e) => {
     const token = localStorage.getItem("accessToken");
-
     e.preventDefault();
     try {
       const baskets = productsList.map((product) => ({
@@ -62,6 +61,7 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
         setProductsList([]);
         setTotalSelectedPrice(0);
         setSum((prev) => prev + 1);
+        setSelectedPrices({});
       }
       setSum((prev) => prev + 1);
     } catch (error) {
@@ -219,9 +219,7 @@ const ProductRow = ({ product, setSelectedPrice, updateProduct }) => {
     setSelectedPrice(newSelectedPrice);
     const newDiscountType =
       e.target.options[e.target.selectedIndex].dataset.discountType;
-
     setSelectedDiscountType(newDiscountType);
-
     updateProduct({
       ...product,
       selectedDiscountType: newDiscountType,
