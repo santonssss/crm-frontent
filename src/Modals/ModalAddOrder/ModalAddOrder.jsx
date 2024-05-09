@@ -172,7 +172,7 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
           </table>
         </div>
         <h3>
-          Итого <span>{formatPrice(totalSelectedPrice)}</span>
+          Итого. <span>{formatPrice(totalSelectedPrice)}</span>
         </h3>
         <div className="btns_order ">
           <button
