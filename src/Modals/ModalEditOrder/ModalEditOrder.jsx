@@ -3,7 +3,6 @@ import "./ModalEditOrder.css";
 import { UserContext } from "../../Context/Context";
 import toast, { Toaster } from "react-hot-toast";
 import { TrashIcon } from "@heroicons/react/24/outline";
-const token = localStorage.getItem("accessToken");
 
 const ModalEditOrder = ({
   orders,
@@ -15,6 +14,7 @@ const ModalEditOrder = ({
   const [money, setMoney] = useState(Number(remains));
   const [histories, setHistories] = useState([]);
   const { sum, setSum } = useContext(UserContext);
+  const token = localStorage.getItem("accessToken");
   const formatToRubles = (value) => {
     return new Intl.NumberFormat("ru-RU", {
       style: "currency",
@@ -250,7 +250,7 @@ const ModalEditOrder = ({
                     .filter((value) => value.paymentType != "debt")
                     .map((value, index) => (
                       <>
-                        <tr>
+                        <tr key={value.id}>
                           <td className="px-4 py-3 whitespace-nowrap">
                             {value.createdAt}
                           </td>

@@ -25,6 +25,7 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
       const price = selectedPrices[index] || product.standard;
       return acc + price * product.selectedQuantity;
     }, 0);
+
     setTotalSelectedPrice(total);
   }, [selectedPrices, productsList]);
   const submitOrder = async (e) => {
@@ -101,7 +102,11 @@ const ModalAddOrder = ({ setAddOrderOpen }) => {
             </option>
             {deliveryMen.length > 0 ? (
               deliveryMen.map((delivery) => {
-                return <option value={delivery.id}>{delivery.username}</option>;
+                return (
+                  <option key={delivery.id} value={delivery.id}>
+                    {delivery.username}
+                  </option>
+                );
               })
             ) : (
               <p>Доставщиков пока что нету</p>
