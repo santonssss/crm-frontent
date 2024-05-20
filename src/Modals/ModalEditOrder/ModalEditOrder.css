@@ -71,3 +71,38 @@
   height: 40px;
   object-fit: cover;
 }
+.conf {
+  height: 400px;
+  overflow-y: scroll;
+}
+.conf {
+  --sb-track-color: #304d5a;
+  --sb-thumb-color: #5957e2;
+  --sb-size: 2px;
+}
+
+.conf::-webkit-scrollbar {
+  width: var(--sb-size);
+}
+
+.conf::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
+  border-radius: 3px;
+}
+
+.conf::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
+  border-radius: 41px;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  body {
+    scrollbar-color: var(--sb-thumb-color) var(--sb-track-color);
+  }
+}
+
+.conf::-webkit-scrollbar {
+  width: 3px;
+  background-color: gray;
+  border-radius: 15px;
+}

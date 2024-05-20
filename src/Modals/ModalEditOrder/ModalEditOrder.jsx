@@ -162,7 +162,7 @@ const ModalEditOrder = ({
             </svg>
           </div>
           <div className="bg-white rounded-lg shadow-xl">
-            <div className="overflow-x-auto">
+            <div className="overflow-x-auto conf">
               <table className="order-table min-w-full divide-y divide-gray-200">
                 <thead>
                   <tr>
